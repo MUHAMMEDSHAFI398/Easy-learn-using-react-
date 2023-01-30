@@ -3,7 +3,7 @@ import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBIcon, MDBInput } from 'mdb-rea
 import './Body.css'
 
 
-function Logo() {
+function Body() {
   return (
    
     <div className='border-login container  mb-5 '  >
@@ -72,6 +72,6 @@ function Logo() {
   )
 }
 
-export default Logo
+export default Body
 
 
