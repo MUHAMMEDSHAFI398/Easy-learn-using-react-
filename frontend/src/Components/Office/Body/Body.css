@@ -1,0 +1,11 @@
+body{
+    background-color: rgb(244, 243, 242);
+}
+.border-login{
+    border-radius: 25px;
+    border: 1px solid green;
+}
+.image{
+    margin-left: 100px;
+}
+
