@@ -10,9 +10,9 @@ body{
     margin-left: 5px;
     margin-bottom: 10px;
 }
-.submit-btn{
+.submit-login{
     margin-bottom: 70px;
-    background-color: green;
+    background-color: red;
     color: white;
 }
 .input{

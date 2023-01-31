@@ -71,7 +71,7 @@ function Body() {
                   onChange={onChangeHandle}
 
                 />
-                <MDBInput className='submit-btn'
+                <MDBInput className='submit-login btn btn-success'
                   wrapperClass='mb-4 ms-4 me-4'
                   type='submit' value='Login'
                   id='formControlLg' size="lg"

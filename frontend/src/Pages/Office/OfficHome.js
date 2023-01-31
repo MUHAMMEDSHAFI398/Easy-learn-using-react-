@@ -1,10 +1,12 @@
 import React from 'react'
-import OfficeHome from '../../Components/Office/OfficeHome/OfficeHome'
+import OfficeHome from '../../Components/Office/OfficeHome/OfficeHome';
+import Sidebar from '../../Components/Office/Sidebar/Sidebar';
 
 
 function OfficHome() {
   return (
-    <div>
+    <div className='d-flex'>
+      <Sidebar/>
       <OfficeHome/>
     </div>
   )
