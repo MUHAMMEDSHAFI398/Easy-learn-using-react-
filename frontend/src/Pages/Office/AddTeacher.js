@@ -1,6 +1,6 @@
 import React from 'react'
 import Sidebar from '../../Components/Office/Sidebar/Sidebar';
-import AddTeachers from '../../Components/Office/AddTeacher/AddTeacher';
+import AddTeachers from '../../Components/Office/AddTeacher/AddTeachers';
 
 function AddTeacher() {
   return (

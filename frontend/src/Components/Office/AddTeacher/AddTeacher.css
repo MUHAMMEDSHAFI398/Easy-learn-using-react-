@@ -1,0 +1,27 @@
+*{
+    max-width: 100%;
+}
+
+.input-tag{
+    border-radius: 10px;
+    width: 320px;
+    height: 39px;
+    border: 1px solid black;
+    background-color: rgb(244, 243, 242);
+
+}
+.border-body{
+    margin-left: 60px;
+    border-radius: 25px;
+    border: 1px solid black;
+    margin-top: 50px;
+    
+}
+.imagedisplay{
+    width: 200px;
+    height: 150px;
+    background-color: rgb(244, 243, 242);
+    border-radius: 25px;
+    border: 1px solid black;
+}
+

@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css'
 import AddTeacher from "./Pages/Office/AddTeacher";
 import Login from './Pages/Office/Login';
 import OfficeHome from "./Pages/Office/OfficHome";
