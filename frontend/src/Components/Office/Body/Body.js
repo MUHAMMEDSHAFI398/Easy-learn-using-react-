@@ -1,9 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { MDBContainer, MDBCol, MDBRow, MDBInput } from 'mdb-react-ui-kit';
+import {useNavigate} from "react-router-dom";
+import axios from '../../../axios'
 import './Body.css'
 
 
 function Body() {
+
+  const initialVlaues = { email: "", password: "" };
+  const [formValues, setFormValues] = useState(initialVlaues);
+  const navigate = useNavigate();
+
+  const onChangeHandle = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    axios.post('office/login',{
+
+        email: formValues.email,
+        password: formValues.password,
+
+    }).then((response)=>{
+        console.log(response.data);
+        navigate('/office/home');
+
+    }).catch((error)=>{
+        console.log(error); 
+        
+    })
+}
+
   return (
 
     <div className='border-login container  mb-5 '  >
@@ -23,13 +52,31 @@ function Body() {
                 <h1 className="hi mb-5 mt-3">Login</h1>
 
               </div>
+              
+               <form onSubmit={handleSubmit}>
+               <MDBInput
+                  value={formValues.email}
+                  onChange={onChangeHandle}
+                  wrapperClass='mb-4 ms-4 me-4'
+                  className='input' name='email'
+                  label='Email address' id='formControlLg'
+                  type='email' size="lg"
+                />
 
+                <MDBInput wrapperClass='mb-4 ms-4 me-4'
+                  className='input' name='password'
+                  label='Password' id='formControlLg'
+                  type='password' size="lg"
+                  value={formValues.password}
+                  onChange={onChangeHandle}
 
-              <MDBInput wrapperClass='mb-4 ms-4 me-4' className='input' label='Email address' id='formControlLg' type='email' size="lg" />
-              <MDBInput wrapperClass='mb-4 ms-4 me-4' className='input' label='Password' id='formControlLg' type='password' size="lg" />
-              <MDBInput  className='submit-btn' wrapperClass='mb-4 ms-4 me-4' type='submit' value='Login' id='formControlLg' size="lg" />
-
-
+                />
+                <MDBInput className='submit-btn'
+                  wrapperClass='mb-4 ms-4 me-4'
+                  type='submit' value='Login'
+                  id='formControlLg' size="lg"
+                />
+               </form>
 
             </div>
 
@@ -39,7 +86,7 @@ function Body() {
 
         </MDBRow>
 
-        
+
       </MDBContainer>
     </div>
 
