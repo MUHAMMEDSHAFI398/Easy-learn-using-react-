@@ -23,7 +23,7 @@ function ViewTeachers() {
             <th scope="col">Qualification</th>
             <th scope="col">Experiance</th>
             <th scope="col">Controlls</th>
-            <th scope="col">View</th>
+            <th scope="col">View profile</th>
           </tr>
         </thead>
 
@@ -38,7 +38,7 @@ function ViewTeachers() {
             <td>Otto</td>
             <td>@mdo</td>
             <td><button className='block-button'>Block</button></td>
-            <td><i className="fa fa-chevron-circle-right"></i></td>
+            <td><i className="ms-4 fa fa-chevron-circle-right"></i></td>
           </tr>
           <tr>
             <th scope="row">2</th>
@@ -49,7 +49,7 @@ function ViewTeachers() {
             <td>Otto</td>
             <td>@mdo</td>
             <td><button className='block-button'>Block</button></td>
-            <td><i className="fa fa-chevron-circle-right"></i></td>
+            <td><i className="ms-4 fa fa-chevron-circle-right"></i></td>
           </tr>
           <tr>
             <th scope="row">2</th>
@@ -60,7 +60,7 @@ function ViewTeachers() {
             <td>Otto</td>
             <td>Otto</td>
             <td><button className='block-button'>Block</button></td>
-            <td><i className="fa fa-chevron-circle-right"></i></td>
+            <td><i className="ms-4 fa fa-chevron-circle-right"></i></td>
           </tr>
         </tbody>
       </table>
