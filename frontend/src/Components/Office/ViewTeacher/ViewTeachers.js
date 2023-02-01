@@ -11,9 +11,8 @@ function ViewTeachers() {
           <button className='button'>Leave applications</button>
           <button className='button ms-4'>Add teacher</button>
         </div>
-      </div>
-
-      <table className="parentTable table-responsive table table-bordered table-striped">
+        <div class="table-responsive">
+        <table className="table-responsive table table-bordered table-striped mt-5">
         <thead>
           <tr>
             <th scope="col">Teacher id</th>
@@ -32,8 +31,8 @@ function ViewTeachers() {
 
           <tr>
             <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
+            <td>Mark zucker berg</td>
+            <td>1234567899</td>
             <td>@mdo</td>
             <td>Mark</td>
             <td>Otto</td>
@@ -65,6 +64,10 @@ function ViewTeachers() {
           </tr>
         </tbody>
       </table>
+      </div>
+      </div>
+
+     
  
     </div>
   )
