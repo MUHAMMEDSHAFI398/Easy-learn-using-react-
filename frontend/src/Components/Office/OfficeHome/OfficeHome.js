@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate} from "react-router-dom";
+import './OfficeHome.css'
 
 function OfficeHome() {
   const navigate = useNavigate();
@@ -10,8 +11,8 @@ function OfficeHome() {
 
   return (
     <div>
-      <p>this is home page for office admin</p>
-      <button onClick={handleClick}  className='btn btn-success'>Add teacher</button>
+      <p className='hi'>this is home page for office admin</p>
+      <button  onClick={handleClick}  className='hi btn btn-success'>Add teacher</button>
     </div>
   )
 }

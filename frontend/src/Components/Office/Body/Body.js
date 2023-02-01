@@ -50,7 +50,7 @@ function Body() {
             <div className='border-login ' >
 
               <div className="d-flex flex-row align-items-center justify-content-center">
-                <h1 className="hi mb-5 mt-3">Login</h1>
+                <h1 className="mb-5 mt-3">Login</h1>
 
               </div>
               

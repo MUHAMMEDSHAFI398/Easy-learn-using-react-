@@ -24,7 +24,7 @@ function Sidebar() {
         <Logo/>
           <CDBSidebarMenu >
 
-            <NavLink exact to="/" activeclassname="activeClicked">
+            <NavLink exact to="/office/home" activeclassname="activeClicked">
               <CDBSidebarMenuItem style={{color:'black'}} icon="home">Dashboard</CDBSidebarMenuItem>
             </NavLink>
 
@@ -32,7 +32,7 @@ function Sidebar() {
               <CDBSidebarMenuItem style={{color:'black'}} icon="table">Batches</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink exact to="/profile" activeclassname="activeClicked">
+            <NavLink exact to="/office/teachers" activeclassname="activeClicked">
               <CDBSidebarMenuItem style={{color:'black'}} icon="user">Teachers</CDBSidebarMenuItem>
             </NavLink>
 
