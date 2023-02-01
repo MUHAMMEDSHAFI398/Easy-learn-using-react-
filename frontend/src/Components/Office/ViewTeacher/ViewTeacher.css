@@ -1,0 +1,27 @@
+.parent{
+    margin-left: 350px;
+    width: fit-content;
+    block-size: fit-content;
+}
+.buttonTop{
+    display: flex;
+    margin-top: 100px;
+}
+.button{
+    border-radius: 13px;
+    border: 1px solid green;
+    background-color: green;
+    color: white;
+    width: 150px;
+    height: 40px;
+}
+.parentTable{
+    margin-left: 350px; 
+    margin-top: 80px;
+}
+.block-button{
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    border: none;
+}

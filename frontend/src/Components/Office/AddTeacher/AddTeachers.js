@@ -4,7 +4,7 @@ import './AddTeacher.css'
 function AddTeachers() {
     return (
         <div>
-            <div className="container border-body  ">
+            <div className="container border-body parent ">
                 <div className=" d-flex align-items-center justify-content-center">
                     <h5 className="text-decoration-underline mt-3">Add teacher</h5>
                 </div>
