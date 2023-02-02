@@ -1,26 +1,38 @@
-import React from 'react'
+import React,{useState} from 'react'
 import './AddTeacher.css'
+import { useNavigate } from "react-router-dom";
+import axios from '../../../axios'
+
 
 function AddTeachers() {
+    const initialVlaues = {
+        name: "", phone: "", email: "", date_of_birth: "", gender: "",
+        salary: "", qualification: "", experiance: "", remarks: "",
+        house_name: "", place: "", post: "", district: "", state: ""
+    };
+    const [formValues, setFormValues] = useState(initialVlaues);
     return (
         <div>
             <div className="container border-body parent ">
                 <div className=" d-flex align-items-center justify-content-center">
-                    <h5 className="text-decoration-underline mt-3">Add teacher</h5>
+                    <h5 className="text-decoration-underline ">Add teacher</h5>
                 </div>
-                <form className="mt-3 mb-3" action="" method="post">
+                <form className=" mb-3" action="" method="post">
                     <div className="d-flex flex-wrap justify-content-between">
 
                         <div className="d-flex flex-column">
-                            <input className="input-tag mt-3" required placeholder='Name' name="couponName" type="text" />
+                            <label className='ms-4 mt-3'>Name</label>
+                            <input name="name" className="input-tag " required id='name' type="text" />
                         </div>
 
                         <div class="d-flex flex-column">
-                            <input name="discount" required placeholder='Phone' className="input-tag mt-3" type="text" />
+                            <label className='ms-4 mt-3'>Phone</label>
+                            <input name="phone" required className="input-tag " type="text" />
                         </div>
 
                         <div class="d-flex flex-column">
-                            <input name="maxLimit" required placeholder='Email' className="input-tag mt-3" type="text" />
+                            <label className='ms-4 mt-3'>Email</label>
+                            <input name="email" required className="input-tag " type="text" />
                         </div>
 
 
@@ -28,60 +40,72 @@ function AddTeachers() {
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <input className="input-tag mt-3" required placeholder='Date of Birth' name="couponName" type="text" />
+                            <label className='ms-4 mt-3'>Date of birth</label>
+                            <input name="date_of_birth" className="input-tag " required type="text" />
                         </div>
 
                         <div className="d-flex flex-column">
-                            <input name="discount" required placeholder='Gender' className="input-tag mt-3" type="text" />
+                            <label className='ms-4 mt-3'>Gender</label>
+                            <input name="gender" required className="input-tag " type="number" />
                         </div>
 
                         <div className="d-flex flex-column">
-                            <input name="maxLimit" required placeholder='Salary' className="input-tag mt-3" type="text" />
-                        </div>
-
-                    </div>
-                    <div className="d-flex flex-wrap justify-content-between mt-4">
-
-                        <div className="d-flex flex-column">
-                            <input className="input-tag mt-3" required placeholder='Qualification' name="couponName" type="text" />
-                        </div>
-
-                        <div className="d-flex flex-column">
-                            <input name="discount" required placeholder='Experiance' className="input-tag mt-3" type="text" />
-                        </div>
-
-                        <div className="d-flex flex-column">
-                            <input name="maxLimit" required placeholder='Remarks' className="input-tag mt-3" type="text" />
+                            <label className='ms-4 mt-3'>Salary</label>
+                            <input name="salary" required className="input-tag " type="text" />
                         </div>
 
                     </div>
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <input className="input-tag mt-3" required placeholder='House name' name="couponName" type="text" />
+                            <label className='ms-4 mt-3'>Qualification</label>
+                            <input name="qualification" className="input-tag " required type="text" />
                         </div>
 
                         <div className="d-flex flex-column">
-                            <input name="discount" required placeholder='Place' className="input-tag mt-3" type="text" />
+                            <label className='ms-4 mt-3'>Experiance</label>
+                            <input name="experiance" required className="input-tag " type="number" />
                         </div>
 
                         <div className="d-flex flex-column">
-                            <input name="maxLimit" required placeholder='Post' className="input-tag mt-3" type="text" />
+                            <label className='ms-4 mt-3'>Remarks</label>
+                            <input name="remarks" required className="input-tag " type="text" />
                         </div>
 
                     </div>
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <input className="input-tag mt-3" required placeholder='Pincode' name="couponName" type="text" />
+                            <label className='ms-4 mt-3'>House name</label>
+                            <input name="house_name" className="input-tag " required type="text" />
                         </div>
 
                         <div className="d-flex flex-column">
-                            <input name="discount" required placeholder='District' className="input-tag mt-3" type="text" />
+                            <label className='ms-4 mt-3'>Place</label>
+                            <input name="place" required className="input-tag " type="text" />
                         </div>
 
                         <div className="d-flex flex-column">
-                            <input name="maxLimit" required placeholder='State' className="input-tag mt-3" type="text" />
+                            <label className='ms-4 mt-3'>Post</label>
+                            <input name="post" required className="input-tag " type="text" />
+                        </div>
+
+                    </div>
+                    <div className="d-flex flex-wrap justify-content-between mt-4">
+
+                        <div className="d-flex flex-column">
+                            <label className='ms-4 mt-3'>Pincode</label>
+                            <input name="pin" className="input-tag " required type="number" />
+                        </div>
+
+                        <div className="d-flex flex-column">
+                            <label className='ms-4 mt-3'>District</label>
+                            <input name="district" required className="input-tag " type="text" />
+                        </div>
+
+                        <div className="d-flex flex-column">
+                            <label className='ms-4 mt-3'>State</label>
+                            <input name="state" required className="input-tag " type="text" />
                         </div>
 
                     </div>

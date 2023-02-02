@@ -1,15 +1,18 @@
 import React from 'react'
 import './ViewTeacher.css'
-import { NavLink } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function ViewTeachers() {
+ 
   return (
     <div>
 
       <div className='parent'>
         <div className='buttonTop' >
-          <button className='button'>Leave applications</button>
-          <button className='button ms-4'>Add teacher</button>
+          <button className='buttonDiv'>Leave applications</button>
+          <Link to="/office/add-teacher">
+          <button className='buttonDiv ms-4'>Add teacher</button>
+          </Link>
         </div>
         <div class="table-responsive">
           <table className="table-responsive table table-bordered table-striped mt-5">
@@ -39,8 +42,9 @@ function ViewTeachers() {
                 <td>@mdo</td>
                 <td><button className='block-button'>Block</button></td>
                 <td>
-                  <NavLink exact to="/office/each-teacher" target="_blank" activeclassname="activeClicked">
-                    <i className="ms-4 fa fa-chevron-circle-right"></i></NavLink>
+                  <Link to="/office/each-teacher">
+                    <i  className="i-tags ms-4 fa fa-chevron-circle-right"></i>
+                </Link>
                 </td>
               </tr>
               <tr>
@@ -53,8 +57,9 @@ function ViewTeachers() {
                 <td>@mdo</td>
                 <td><button className='block-button'>Block</button></td>
                 <td>
-                  <NavLink exact to="/office/each-teacher" target="_blank" activeclassname="activeClicked">
-                    <i className="ms-4 fa fa-chevron-circle-right"></i></NavLink>
+                <Link to="/office/each-teacher">
+                    <i  className="i-tags ms-4 fa fa-chevron-circle-right"></i>
+                </Link>
                 </td>
               </tr>
               <tr>
@@ -67,8 +72,9 @@ function ViewTeachers() {
                 <td>Otto</td>
                 <td><button className='block-button'>Block</button></td>
                 <td>
-                  <NavLink exact to="/office/each-teacher" target="_blank" activeclassname="activeClicked">
-                    <i className="ms-4 fa fa-chevron-circle-right"></i></NavLink>
+                <Link to="/office/each-teacher">
+                    <i  className="i-tags ms-4 fa fa-chevron-circle-right"></i>
+                </Link>
                 </td>
               </tr>
             </tbody>
