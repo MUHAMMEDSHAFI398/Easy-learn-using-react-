@@ -95,6 +95,9 @@ const teacherSchema = new Schema(
     //     type:String
     //   }
     // }]
+    isBlocked:{
+      default:false
+    }
   },
   { timestamps: true }
 );

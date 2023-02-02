@@ -29,6 +29,30 @@ function ViewTeachers() {
        }
     })
   }
+  const handleBlock = (id) => {
+    
+    axios.get(`/office/block-teacher/${id}`).then(()=>{
+      axios.get(`/office/teachers`).then((response) => {
+        if (response.data.status) {
+          setTeachers(response.data.teachers);
+        }else{
+          console.log(response.data)
+        }
+      })
+    })
+  }
+  const handleUnBlock = (id) => {
+    
+    axios.get(`/office/unblock-teacher/${id}`).then(()=>{
+      axios.get(`/office/teachers`).then((response) => {
+        if (response.data.status) {
+          setTeachers(response.data.teachers);
+        }else{
+          console.log(response.data)
+        }
+      })
+    })
+  }
   
   return (
     <div>
@@ -71,7 +95,12 @@ function ViewTeachers() {
                   <td>{obj.salary}</td>
                   <td>{obj.qualification}</td>
                   <td>{obj.experience}</td>
-                  <td><button className='block-button'>Block</button></td>
+                  <td>
+                    { obj.isBlocked === false ?
+                      <button onClick={() => handleBlock(obj._id)} className='block-button'>Block</button> :
+                      <button onClick={() => handleUnBlock(obj._id)} className='unblock-button'>Un block</button>
+                    }
+                  </td>
                   <td>
                     <i onClick={() => handleClick(obj._id)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
                   </td>

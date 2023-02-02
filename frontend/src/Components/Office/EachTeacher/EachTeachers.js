@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './EachTeacher.css';
-import { useLocation,useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import axios from '../../../axios'
 
 import {
@@ -11,7 +11,6 @@ import {
   MDBCardText,
   MDBCardBody,
   MDBCardImage,
-  MDBBtn,
   MDBIcon,
   MDBListGroup,
   MDBListGroupItem
@@ -19,8 +18,8 @@ import {
 
 
 function EachTeachers() {
-  
-  const navigate=useNavigate()
+
+  const navigate = useNavigate()
   const location = useLocation();
   const initialvalues = { experience: "", salary: "" }
   const [formValues, setFormValues] = useState(initialvalues);
@@ -35,26 +34,56 @@ function EachTeachers() {
     event.preventDefault();
 
     axios.patch(`/office/edit-teacher/${location.state.teacher._id}`, {
-       
-        salary: formValues.salary,
-        experience: formValues.experience,   
 
-    }).then((response) => {
-      axios.get(`/office/get-teacher/${location.state.teacher._id}`).then((response)=>{
-        if(response.data.status){
-          navigate('/office/each-teacher',{
-           state:{
-             teacher:response.data.teacher
-           }
+      salary: formValues.salary,
+      experience: formValues.experience,
+
+    }).then(() => {
+      axios.get(`/office/get-teacher/${location.state.teacher._id}`).then((response) => {
+        if (response.data.status) {
+          navigate('/office/each-teacher', {
+            state: {
+              teacher: response.data.teacher
+            }
           });
         }
-     })
+      })
 
     }).catch((error) => {
-        console.log(error);
+      console.log(error);
 
     })
-}
+  }
+   
+  const handleBlock = (e) => {
+    e.preventDefault();
+    axios.get(`/office/block-teacher/${location.state.teacher._id}`).then(()=>{
+      axios.get(`/office/get-teacher/${location.state.teacher._id}`).then((response) => {
+        if (response.data.status) {
+          navigate('/office/each-teacher', {
+            state: {
+              teacher: response.data.teacher
+            }
+          });
+        }
+      })
+    })
+  }
+
+  const handleUnBlock = (e) => {
+    e.preventDefault();
+    axios.get(`/office/unblock-teacher/${location.state.teacher._id}`).then(()=>{
+      axios.get(`/office/get-teacher/${location.state.teacher._id}`).then((response) => {
+        if (response.data.status) {
+          navigate('/office/each-teacher', {
+            state: {
+              teacher: response.data.teacher
+            }
+          });
+        }
+      })
+    })
+  }
 
 
 
@@ -81,7 +110,12 @@ function EachTeachers() {
                       <p className="text-muted mb-1">{location.state.teacher.name}</p>
                       <p className="text-muted mb-4">unique id</p>
                       <div className="d-flex justify-content-center mb-2">
-                        <MDBBtn  className='btn btn-danger'>Block</MDBBtn>
+                        {
+                          location.state.teacher.isBlocked === false ?
+                          <button onClick={handleBlock} className='btn btn-danger'>Block</button> : 
+                          <button onClick={handleUnBlock} className='btn btn-success'>Un block</button>
+                        }
+                        
 
                       </div>
                     </MDBCardBody>
@@ -205,7 +239,7 @@ function EachTeachers() {
 
                         <div className="d-flex flex-column">
 
-                          <input onChange={onChangeHandle} name="experience" required  placeholder='Experience' className="inputdiv mt-4 rounded-3" type="text" />
+                          <input onChange={onChangeHandle} name="experience" required placeholder='Experience' className="inputdiv mt-4 rounded-3" type="text" />
                         </div>
 
                         <button className="submitButton btn btn-success mt-4" type="submit">Submit</button>

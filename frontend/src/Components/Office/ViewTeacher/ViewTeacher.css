@@ -21,6 +21,12 @@
     border-radius: 10px;
     border: none;
 }
+.unblock-button{
+    background-color: green;
+    color: white;
+    border-radius: 10px;
+    border: none;
+}
 .i-tags{
     cursor: pointer;
 }

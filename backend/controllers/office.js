@@ -85,12 +85,11 @@ module.exports = {
             {
                 experience: data.experience,
                 salary: data.salary
-
             },
-             {
-                runValidators:true
-             }
-
+            {  
+                new:true,
+                runValidators:true            
+            }
         
         ).then((teacher) => {
             res.json({
@@ -98,5 +97,44 @@ module.exports = {
                 teacher: teacher
             })
         })
+    },
+    blockTeacher:(req,res)=>{
+        const id = req.params.id
+        teacher.findByIdAndUpdate(
+            {_id:id},
+            {
+                isBlocked:true 
+            },
+            {  
+                new:true,
+                runValidators:true            
+            }
+        ).then((teacher)=>{
+            console.log(teacher);
+            res.json({
+                status: true,
+                teacher: teacher
+            })
+        })
+    },
+    unBlockTeacher:(req,res)=>{
+        const id = req.params.id
+        teacher.findByIdAndUpdate(
+            {_id:id},
+            {
+                isBlocked:false 
+            },
+            {  
+                new:true,
+                runValidators:true            
+            }
+        ).then((teacher)=>{
+            console.log(teacher);
+            res.json({
+                status: true,
+                teacher: teacher
+            })
+        })
     }
+
 }
