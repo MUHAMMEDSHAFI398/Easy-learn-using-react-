@@ -39,7 +39,7 @@ function EachTeachers() {
                       <p className="text-muted mb-1">Teacher name</p>
                       <p className="text-muted mb-4">Teacher id</p>
                       <div className="d-flex justify-content-center mb-2">
-                        <MDBBtn>Block</MDBBtn>
+                        <MDBBtn className='btn btn-danger'>Block</MDBBtn>
 
                       </div>
                     </MDBCardBody>

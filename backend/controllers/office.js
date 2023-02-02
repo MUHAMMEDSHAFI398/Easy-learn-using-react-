@@ -1,11 +1,12 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const teacher = require('../models/teacher')
 dotenv.config();
 
 
 module.exports = {
     login: (req, res) => {
-    console.log('reached')
+
         const email = req.body.email;
         const password = req.body.password;
 
@@ -34,5 +35,48 @@ module.exports = {
             errors = "Incorrect email or password";
             return res.status(400).json(errors);
         }
+    },
+    addTeacher: async (req, res) => {
+
+        const data = req.body
+        teacher.create({
+            name: data.name,
+            phone: data.phone,
+            email: data.email,
+            date_of_birth: data.date_of_birth,
+            gender: data.gender,
+            salary: data.salary,
+            qualification: data.qualification,
+            experiance: data.experiance,
+            remarks: data.remarks,
+            address: {
+                house_name: data.house_name,
+                place: data.place,
+                post: data.post,
+                pin: data.pin,
+                district: data.district,
+                state: data.state
+            }
+
+        }).then(() => res.json({ success: true }))
+
+    },
+    getTeachers:(req,res)=>{
+        teacher.find().then((teachers)=>{
+            res.json({
+                status:true,
+                teachers:teachers
+            })
+        })
+    },
+    getTeacher:(req,res)=>{
+        const id=req.params.id
+        console.log(id)
+        teacher.findOne({_id:id}).then((teacher)=>{
+            res.json({
+                status:true,
+                teacher:teacher
+            })
+        })
     }
 }

@@ -8,45 +8,46 @@ function AddTeachers() {
     const initialVlaues = {
         name: "", phone: "", email: "", date_of_birth: "", gender: "",
         salary: "", qualification: "", experiance: "", remarks: "",
-        house_name: "", place: "", post: "", district: "", state: ""
+        house_name: "", place: "", post: "",pin:"", district: "", state: ""
     };
     const [formValues, setFormValues] = useState(initialVlaues);
-    console.log(formValues);
     const navigate = useNavigate();
+
 
     const onChangeHandle = (e) => {
         const { name, value } = e.target;
         
         setFormValues({ ...formValues, [name]: value });
+     
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-    
-        axios.post('/office/add-teacher',{
+        axios.post('/office/add-eacher', {
 
-            name:formValues.name,
-            phone:formValues.phome,
+            name: formValues.name,
+            phone: formValues.phone,
             email: formValues.email,
-            date_of_birth:formValues.date_of_birth,
-            gender:formValues.gender,
-            salary:formValues.salary,
-            qualification:formValues.qualification,
-            experiance:formValues.experiance,
-            remarks:formValues.remarks,
-            house_name:formValues.house_name,
-            place:formValues.place,
-            post:formValues.post,
-            district:formValues.district,
-            state:formValues.state
+            date_of_birth: formValues.date_of_birth,
+            gender: formValues.gender,
+            salary: formValues.salary,
+            qualification: formValues.qualification,
+            experiance: formValues.experiance,
+            remarks: formValues.remarks,
+            house_name: formValues.house_name,
+            place: formValues.place,
+            post: formValues.post,
+            pin:formValues.pin,
+            district: formValues.district,
+            state: formValues.state
 
-        }).then((response)=>{
+        }).then((response) => {
             console.log(response.data);
             navigate('/office/teachers');
-    
-        }).catch((error)=>{
-            console.log(error); 
-            
+
+        }).catch((error) => {
+            console.log(error);
+
         })
     }
 
@@ -54,11 +55,11 @@ function AddTeachers() {
 
     return (
         <div>
-            <div className="container border-body parent ">
+            <div className="container border-body  ">
                 <div className=" d-flex align-items-center justify-content-center">
                     <h5 className="text-decoration-underline ">Add teacher</h5>
                 </div>
-                <form className=" mb-3" action="" method="post">
+                <form className=" mb-3" onSubmit={handleSubmit}>
                     <div className="d-flex flex-wrap justify-content-between">
 
                         <div className="d-flex flex-column">
@@ -75,13 +76,13 @@ function AddTeachers() {
 
                         <div class="d-flex flex-column">
                             <label className='ms-4 mt-3'>Phone</label>
-                            <input 
-                             value={formValues.phone}
-                             onChange={onChangeHandle}
-                            name="phone" 
-                            required className="input-tag " 
-                            type="number" 
-                        />
+                            <input
+                                value={formValues.phone}
+                                onChange={onChangeHandle}
+                                name="phone"
+                                required className="input-tag "
+                                type="number"
+                            />
                         </div>
 
                         <div class="d-flex flex-column">
@@ -91,7 +92,7 @@ function AddTeachers() {
                                 onChange={onChangeHandle}
                                 name="email" required
                                 className="input-tag "
-                                type="text" 
+                                type="text"
                             />
                         </div>
 
@@ -254,6 +255,13 @@ function AddTeachers() {
                                 className="input-tag form-control"
                                 type="file" id="formFile"
                             />
+                        </div>
+
+                    </div>
+                    <div className="d-flex flex-wrap justify-content-center mt-2">
+
+                        <div className="d-flex flex-column">
+                            <button  className='btn btn-success rounded-3' type='submit'>Submit</button>
                         </div>
 
                     </div>

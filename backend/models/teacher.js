@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const teacherSchema = new Schema(
   {
-    registerId: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      uppercase: true,
-      immutable: true,
-    },
+    // registerId: {
+    //   type: String,
+    //   required: true,
+    //   unique: true,
+    //   trim: true,
+    //   uppercase: true,
+    //   immutable: true,
+    // },
     name: {
       type: String,
       required: true,
@@ -82,11 +82,11 @@ const teacherSchema = new Schema(
     remarks: {
       type: String,
     },
-    password: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    // password: {
+    //   type: String,
+    //   required: true,
+    //   trim: true,
+    // },
   },
   { timestamps: true }
 );
