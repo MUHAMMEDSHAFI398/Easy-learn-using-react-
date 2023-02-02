@@ -1,5 +1,7 @@
-import React from 'react'
-import './EachTeacher.css'
+import React, { useState } from 'react';
+import './EachTeacher.css';
+import { useLocation,useNavigate } from "react-router-dom"
+import axios from '../../../axios'
 
 import {
   MDBCol,
@@ -17,6 +19,46 @@ import {
 
 
 function EachTeachers() {
+  
+  const navigate=useNavigate()
+  const location = useLocation();
+  const initialvalues = { experience: "", salary: "" }
+  const [formValues, setFormValues] = useState(initialvalues);
+
+  const onChangeHandle = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    axios.patch(`/office/edit-teacher/${location.state.teacher._id}`, {
+       
+        salary: formValues.salary,
+        experience: formValues.experience,   
+
+    }).then((response) => {
+      axios.get(`/office/get-teacher/${location.state.teacher._id}`).then((response)=>{
+        if(response.data.status){
+          navigate('/office/each-teacher',{
+           state:{
+             teacher:response.data.teacher
+           }
+          });
+        }
+     })
+
+    }).catch((error) => {
+        console.log(error);
+
+    })
+}
+
+
+
+
   return (
     <div>
       <div className='container parent'>
@@ -36,10 +78,10 @@ function EachTeachers() {
                         className="rounded-circle"
                         style={{ width: '150px' }}
                         fluid />
-                      <p className="text-muted mb-1">Teacher name</p>
-                      <p className="text-muted mb-4">Teacher id</p>
+                      <p className="text-muted mb-1">{location.state.teacher.name}</p>
+                      <p className="text-muted mb-4">unique id</p>
                       <div className="d-flex justify-content-center mb-2">
-                        <MDBBtn className='btn btn-danger'>Block</MDBBtn>
+                        <MDBBtn  className='btn btn-danger'>Block</MDBBtn>
 
                       </div>
                     </MDBCardBody>
@@ -53,15 +95,15 @@ function EachTeachers() {
                     <MDBCardBody className="p-0">
                       <MDBListGroup flush className="rounded-3">
                         <MDBListGroupItem className="d-flex justify-content-center align-items-center p-3">
-                          <MDBCardText><h5>Quick contact</h5></MDBCardText>
+                          <MDBCardText><h5>Contack information</h5></MDBCardText>
                         </MDBListGroupItem>
                         <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                           <MDBIcon fas icon="envelope" style={{ color: '#55acee' }} />
-                          <MDBCardText>mdbootstrap</MDBCardText>
+                          <MDBCardText>{location.state.teacher.phone}</MDBCardText>
                         </MDBListGroupItem>
                         <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                           <MDBIcon fas icon="phone-alt" style={{ color: '#55acee' }} />
-                          <MDBCardText>@mdbootstrap</MDBCardText>
+                          <MDBCardText>{location.state.teacher.email}</MDBCardText>
                         </MDBListGroupItem>
 
                       </MDBListGroup>
@@ -79,7 +121,7 @@ function EachTeachers() {
                           <MDBCardText>Batch</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted">Johnatan Smith</MDBCardText>
+                          <MDBCardText className="text-muted">ELBT001</MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />
@@ -88,7 +130,7 @@ function EachTeachers() {
                           <MDBCardText>Date of birth</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted">example@example.com</MDBCardText>
+                          <MDBCardText className="text-muted">{location.state.teacher.date_of_birth}</MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />
@@ -97,7 +139,7 @@ function EachTeachers() {
                           <MDBCardText>Gender</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted">(097) 234-5678</MDBCardText>
+                          <MDBCardText className="text-muted">{location.state.teacher.gender}</MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />
@@ -106,7 +148,7 @@ function EachTeachers() {
                           <MDBCardText>Quallification</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted">(098) 765-4321</MDBCardText>
+                          <MDBCardText className="text-muted">{location.state.teacher.qualification}</MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />
@@ -115,7 +157,7 @@ function EachTeachers() {
                           <MDBCardText>Experiance</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted">Bay Area, San Francisco, CA</MDBCardText>
+                          <MDBCardText className="text-muted">{location.state.teacher.experience}</MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />
@@ -124,7 +166,7 @@ function EachTeachers() {
                           <MDBCardText>Salary</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted">example@example.com</MDBCardText>
+                          <MDBCardText className="text-muted">{location.state.teacher.salary}</MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />
@@ -133,7 +175,13 @@ function EachTeachers() {
                           <MDBCardText>Address</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted">example@example.com</MDBCardText>
+                          <MDBCardText className="text-muted">
+                            {location.state.teacher.address.house_name},
+                            {location.state.teacher.address.place},
+                            {location.state.teacher.address.post},
+                            {location.state.teacher.address.pin},
+                            {location.state.teacher.address.district}
+                          </MDBCardText>
                         </MDBCol>
                       </MDBRow>
                     </MDBCardBody>
@@ -147,17 +195,17 @@ function EachTeachers() {
                       <h5 className="text-decoration-underline">Edit teacher details</h5>
                     </div>
 
-                    <form className="mt-3 mb-3" action="/admin/addCoupon" method="post">
+                    <form className="mt-3 mb-3" onSubmit={handleSubmit}>
                       <div className="d-flex flex-wrap justify-content-between">
 
                         <div className="d-flex flex-column">
 
-                          <input className="inputdiv rounded-3" placeholder='Salary' required name="couponName" type="text" />
+                          <input onChange={onChangeHandle} className="inputdiv rounded-3" placeholder='Salary' required name="salary" type="text" />
                         </div>
 
                         <div className="d-flex flex-column">
 
-                          <input name="discount" required placeholder='Experiance' className="inputdiv mt-4 rounded-3" type="text" />
+                          <input onChange={onChangeHandle} name="experience" required  placeholder='Experience' className="inputdiv mt-4 rounded-3" type="text" />
                         </div>
 
                         <button className="submitButton btn btn-success mt-4" type="submit">Submit</button>

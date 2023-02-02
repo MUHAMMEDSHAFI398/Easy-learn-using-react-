@@ -47,7 +47,7 @@ module.exports = {
             gender: data.gender,
             salary: data.salary,
             qualification: data.qualification,
-            experiance: data.experiance,
+            experience: data.experience,
             remarks: data.remarks,
             address: {
                 house_name: data.house_name,
@@ -61,21 +61,41 @@ module.exports = {
         }).then(() => res.json({ success: true }))
 
     },
-    getTeachers:(req,res)=>{
-        teacher.find().then((teachers)=>{
+    getTeachers: (req, res) => {
+        teacher.find().then((teachers) => {
             res.json({
-                status:true,
-                teachers:teachers
+                status: true,
+                teachers: teachers
             })
         })
     },
-    getTeacher:(req,res)=>{
-        const id=req.params.id
-        console.log(id)
-        teacher.findOne({_id:id}).then((teacher)=>{
+    getTeacher: (req, res) => {
+        const id = req.params.id
+        teacher.findOne({ _id: id }).then((teacher) => {
             res.json({
-                status:true,
-                teacher:teacher
+                status: true,
+                teacher: teacher
+            })
+        })
+    },
+    editTeacher: (req, res) => {
+        const data = req.body
+        const id = req.params.id
+        teacher.findByIdAndUpdate(id,
+            {
+                experience: data.experience,
+                salary: data.salary
+
+            },
+             {
+                runValidators:true
+             }
+
+        
+        ).then((teacher) => {
+            res.json({
+                status: true,
+                teacher: teacher
             })
         })
     }

@@ -87,6 +87,14 @@ const teacherSchema = new Schema(
     //   required: true,
     //   trim: true,
     // },
+    // image:[{
+    //   url:{
+    //     type:String
+    //   },
+    //   filename:{
+    //     type:String
+    //   }
+    // }]
   },
   { timestamps: true }
 );

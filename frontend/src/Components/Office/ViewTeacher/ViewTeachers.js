@@ -21,7 +21,11 @@ function ViewTeachers() {
   const handleClick=async(id)=>{
     axios.get(`/office/get-teacher/${id}`).then((response)=>{
        if(response.data.status){
-         navigate('/office/each-teacher');
+         navigate('/office/each-teacher',{
+          state:{
+            teacher:response.data.teacher
+          }
+         });
        }
     })
   }

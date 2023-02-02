@@ -7,7 +7,7 @@ import axios from '../../../axios'
 function AddTeachers() {
     const initialVlaues = {
         name: "", phone: "", email: "", date_of_birth: "", gender: "",
-        salary: "", qualification: "", experiance: "", remarks: "",
+        salary: "", qualification: "", experience: "", remarks: "",
         house_name: "", place: "", post: "",pin:"", district: "", state: ""
     };
     const [formValues, setFormValues] = useState(initialVlaues);
@@ -23,7 +23,7 @@ function AddTeachers() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('/office/add-eacher', {
+        axios.post('/office/add-teacher', {
 
             name: formValues.name,
             phone: formValues.phone,
@@ -32,7 +32,7 @@ function AddTeachers() {
             gender: formValues.gender,
             salary: formValues.salary,
             qualification: formValues.qualification,
-            experiance: formValues.experiance,
+            experience: formValues.experience,
             remarks: formValues.remarks,
             house_name: formValues.house_name,
             place: formValues.place,
@@ -40,7 +40,7 @@ function AddTeachers() {
             pin:formValues.pin,
             district: formValues.district,
             state: formValues.state
-
+            
         }).then((response) => {
             console.log(response.data);
             navigate('/office/teachers');
@@ -150,9 +150,9 @@ function AddTeachers() {
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Experiance</label>
                             <input
-                                value={formValues.experiance}
+                                value={formValues.experience}
                                 onChange={onChangeHandle}
-                                name="experiance"
+                                name="experience"
                                 required className="input-tag "
                                 type="number"
                             />
@@ -252,6 +252,7 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <input
+                               name='image'
                                 className="input-tag form-control"
                                 type="file" id="formFile"
                             />
