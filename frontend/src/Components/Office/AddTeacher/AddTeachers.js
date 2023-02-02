@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import './AddTeacher.css'
 import { useNavigate } from "react-router-dom";
 import axios from '../../../axios'
@@ -11,6 +11,47 @@ function AddTeachers() {
         house_name: "", place: "", post: "", district: "", state: ""
     };
     const [formValues, setFormValues] = useState(initialVlaues);
+    console.log(formValues);
+    const navigate = useNavigate();
+
+    const onChangeHandle = (e) => {
+        const { name, value } = e.target;
+        
+        setFormValues({ ...formValues, [name]: value });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+    
+        axios.post('/office/add-teacher',{
+
+            name:formValues.name,
+            phone:formValues.phome,
+            email: formValues.email,
+            date_of_birth:formValues.date_of_birth,
+            gender:formValues.gender,
+            salary:formValues.salary,
+            qualification:formValues.qualification,
+            experiance:formValues.experiance,
+            remarks:formValues.remarks,
+            house_name:formValues.house_name,
+            place:formValues.place,
+            post:formValues.post,
+            district:formValues.district,
+            state:formValues.state
+
+        }).then((response)=>{
+            console.log(response.data);
+            navigate('/office/teachers');
+    
+        }).catch((error)=>{
+            console.log(error); 
+            
+        })
+    }
+
+
+
     return (
         <div>
             <div className="container border-body parent ">
@@ -22,17 +63,36 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Name</label>
-                            <input name="name" className="input-tag " required id='name' type="text" />
+                            <input
+                                value={formValues.name}
+                                onChange={onChangeHandle}
+                                name="name"
+                                className="input-tag "
+                                required id='name'
+                                type="text"
+                            />
                         </div>
 
                         <div class="d-flex flex-column">
                             <label className='ms-4 mt-3'>Phone</label>
-                            <input name="phone" required className="input-tag " type="text" />
+                            <input 
+                             value={formValues.phone}
+                             onChange={onChangeHandle}
+                            name="phone" 
+                            required className="input-tag " 
+                            type="number" 
+                        />
                         </div>
 
                         <div class="d-flex flex-column">
                             <label className='ms-4 mt-3'>Email</label>
-                            <input name="email" required className="input-tag " type="text" />
+                            <input
+                                value={formValues.email}
+                                onChange={onChangeHandle}
+                                name="email" required
+                                className="input-tag "
+                                type="text" 
+                            />
                         </div>
 
 
@@ -41,17 +101,35 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Date of birth</label>
-                            <input name="date_of_birth" className="input-tag " required type="text" />
+                            <input
+                                value={formValues.date_of_birth}
+                                onChange={onChangeHandle}
+                                name="date_of_birth"
+                                className="input-tag "
+                                required type="date"
+                            />
                         </div>
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Gender</label>
-                            <input name="gender" required className="input-tag " type="number" />
+                            <input
+                                value={formValues.gender}
+                                onChange={onChangeHandle}
+                                name="gender"
+                                required className="input-tag "
+                                type="text"
+                            />
                         </div>
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Salary</label>
-                            <input name="salary" required className="input-tag " type="text" />
+                            <input
+                                value={formValues.salary}
+                                onChange={onChangeHandle}
+                                name="salary"
+                                required className="input-tag "
+                                type="number"
+                            />
                         </div>
 
                     </div>
@@ -59,17 +137,35 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Qualification</label>
-                            <input name="qualification" className="input-tag " required type="text" />
+                            <input
+                                value={formValues.qualification}
+                                onChange={onChangeHandle}
+                                name="qualification"
+                                className="input-tag "
+                                required type="text"
+                            />
                         </div>
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Experiance</label>
-                            <input name="experiance" required className="input-tag " type="number" />
+                            <input
+                                value={formValues.experiance}
+                                onChange={onChangeHandle}
+                                name="experiance"
+                                required className="input-tag "
+                                type="number"
+                            />
                         </div>
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Remarks</label>
-                            <input name="remarks" required className="input-tag " type="text" />
+                            <input
+                                value={formValues.remarks}
+                                onChange={onChangeHandle}
+                                name="remarks"
+                                required className="input-tag "
+                                type="text"
+                            />
                         </div>
 
                     </div>
@@ -77,17 +173,37 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>House name</label>
-                            <input name="house_name" className="input-tag " required type="text" />
+                            <input
+                                value={formValues.house_name}
+                                onChange={onChangeHandle}
+                                name="house_name"
+                                className="input-tag "
+                                required type="text"
+                            />
                         </div>
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Place</label>
-                            <input name="place" required className="input-tag " type="text" />
+                            <input
+                                value={formValues.place}
+                                onChange={onChangeHandle}
+                                name="place"
+                                required
+                                className="input-tag "
+                                type="text"
+                            />
                         </div>
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Post</label>
-                            <input name="post" required className="input-tag " type="text" />
+                            <input
+                                value={formValues.post}
+                                onChange={onChangeHandle}
+                                name="post"
+                                required
+                                className="input-tag "
+                                type="text"
+                            />
                         </div>
 
                     </div>
@@ -95,17 +211,35 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Pincode</label>
-                            <input name="pin" className="input-tag " required type="number" />
+                            <input
+                                value={formValues.pin}
+                                onChange={onChangeHandle}
+                                name="pin"
+                                className="input-tag "
+                                required type="number"
+                            />
                         </div>
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>District</label>
-                            <input name="district" required className="input-tag " type="text" />
+                            <input
+                                value={formValues.district}
+                                onChange={onChangeHandle}
+                                name="district" required
+                                className="input-tag "
+                                type="text"
+                            />
                         </div>
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>State</label>
-                            <input name="state" required className="input-tag " type="text" />
+                            <input
+                                value={formValues.state}
+                                onChange={onChangeHandle}
+                                name="state"
+                                required className="input-tag "
+                                type="text"
+                            />
                         </div>
 
                     </div>
@@ -116,7 +250,10 @@ function AddTeachers() {
                     <div className="d-flex flex-wrap justify-content-center mt-2">
 
                         <div className="d-flex flex-column">
-                            <input className="input-tag form-control" type="file" id="formFile" />
+                            <input
+                                className="input-tag form-control"
+                                type="file" id="formFile"
+                            />
                         </div>
 
                     </div>
