@@ -96,7 +96,7 @@ const teacherSchema = new Schema(
     //   }
     // }]
     isBlocked:{
-      default:false
+      type:Boolean
     }
   },
   { timestamps: true }

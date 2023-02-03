@@ -49,6 +49,7 @@ module.exports = {
             qualification: data.qualification,
             experience: data.experience,
             remarks: data.remarks,
+            isBlocked:false,
             address: {
                 house_name: data.house_name,
                 place: data.place,
@@ -58,11 +59,15 @@ module.exports = {
                 state: data.state
             }
 
-        }).then(() => res.json({ success: true }))
+        }).then((teacher) => {
+            console.log(teacher);
+            res.json({ success: true })
+        })
 
     },
     getTeachers: (req, res) => {
         teacher.find().then((teachers) => {
+            
             res.json({
                 status: true,
                 teachers: teachers
