@@ -22,8 +22,11 @@ function EachTeachers() {
   const navigate = useNavigate()
   const location = useLocation();
   const initialvalues = { experience: "", salary: "" }
+  // const previosValues={experience: location.state.teacher.experience, salary:location.state.teacher.salary}
   const [formValues, setFormValues] = useState(initialvalues);
-
+  const [teacherBlock,setTeacherBlock]=useState(location.state.teacher.isBlocked)
+  // const [editteacher,setEditTeacher]=useState(previosValues)
+  console.log(teacherBlock)
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
@@ -39,6 +42,7 @@ function EachTeachers() {
       experience: formValues.experience,
 
     }).then(() => {
+      // setEditTeacher({salary: formValues.salary,experience: formValues.experience})
       axios.get(`/office/get-teacher/${location.state.teacher._id}`).then((response) => {
         if (response.data.status) {
           navigate('/office/each-teacher', {
@@ -46,6 +50,7 @@ function EachTeachers() {
               teacher: response.data.teacher
             }
           });
+          console.log(response.data)
         }
       })
 
@@ -58,30 +63,16 @@ function EachTeachers() {
   const handleBlock = (e) => {
     e.preventDefault();
     axios.get(`/office/block-teacher/${location.state.teacher._id}`).then(()=>{
-      axios.get(`/office/get-teacher/${location.state.teacher._id}`).then((response) => {
-        if (response.data.status) {
-          navigate('/office/each-teacher', {
-            state: {
-              teacher: response.data.teacher
-            }
-          });
-        }
-      })
+      setTeacherBlock(true)
     })
+    
   }
 
   const handleUnBlock = (e) => {
     e.preventDefault();
     axios.get(`/office/unblock-teacher/${location.state.teacher._id}`).then(()=>{
-      axios.get(`/office/get-teacher/${location.state.teacher._id}`).then((response) => {
-        if (response.data.status) {
-          navigate('/office/each-teacher', {
-            state: {
-              teacher: response.data.teacher
-            }
-          });
-        }
-      })
+      setTeacherBlock(false)
+      console.log(teacherBlock)
     })
   }
 
@@ -111,7 +102,7 @@ function EachTeachers() {
                       <p className="text-muted mb-4">unique id</p>
                       <div className="d-flex justify-content-center mb-2">
                         {
-                          location.state.teacher.isBlocked === false ?
+                          teacherBlock === false ?
                           <button onClick={handleBlock} className='btn btn-danger'>Block</button> : 
                           <button onClick={handleUnBlock} className='btn btn-success'>Un block</button>
                         }

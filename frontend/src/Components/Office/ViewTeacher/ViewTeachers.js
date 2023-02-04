@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './ViewTeacher.css'
 import axios from '../../../axios'
-import { Link ,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function ViewTeachers() {
   const [teachers, setTeachers] = useState([]);
@@ -15,45 +15,46 @@ function ViewTeachers() {
         console.log(response);
       }
     })
-  }, [teachers])
-  
+  }, [])
 
-  const handleClick=async(id)=>{
-    axios.get(`/office/get-teacher/${id}`).then((response)=>{
-       if(response.data.status){
-         navigate('/office/each-teacher',{
-          state:{
-            teacher:response.data.teacher
+
+  const handleClick = async (id) => {
+    axios.get(`/office/get-teacher/${id}`).then((response) => {
+      if (response.data.status) {
+        navigate('/office/each-teacher', {
+          state: {
+            teacher: response.data.teacher
           }
-         });
-       }
+        });
+      }
     })
   }
   const handleBlock = (id) => {
-    
-    axios.get(`/office/block-teacher/${id}`).then(()=>{
-      axios.get(`/office/teachers`).then((response) => {
-        if (response.data.status) {
-          setTeachers(response.data.teachers);
-        }else{
-          console.log(response.data)
+
+    axios.get(`/office/block-teacher/${id}`).then(() => {
+      const setTeacher = teachers.filter((value) => {
+        if (value._id === id) {
+          value.isBlocked = true
         }
+        return value;
       })
+      setTeachers(setTeacher);
     })
   }
+
   const handleUnBlock = (id) => {
-    
-    axios.get(`/office/unblock-teacher/${id}`).then(()=>{
-      axios.get(`/office/teachers`).then((response) => {
-        if (response.data.status) {
-          setTeachers(response.data.teachers);
-        }else{
-          console.log(response.data)
+
+    axios.get(`/office/unblock-teacher/${id}`).then(() => {
+      const setTeacher = teachers.filter((value) => {
+        if (value._id === id) {
+          value.isBlocked = false
         }
+        return value;
       })
+      setTeachers(setTeacher);
     })
   }
-  
+
   return (
     <div>
 
@@ -83,33 +84,33 @@ function ViewTeachers() {
             </thead>
 
             <tbody>
-              {  
-              teachers.map((obj,index)=>{
-                
-                return(
-                  <tr key={index}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{obj.name}</td>
-                  <td>{obj.phone}</td>
-                  <td>batch</td>
-                  <td>{obj.salary}</td>
-                  <td>{obj.qualification}</td>
-                  <td>{obj.experience}</td>
-                  <td>
-                    { obj.isBlocked === false ?
-                      <button onClick={() => handleBlock(obj._id)} className='block-button'>Block</button> :
-                      <button onClick={() => handleUnBlock(obj._id)} className='unblock-button'>Un block</button>
-                    }
-                  </td>
-                  <td>
-                    <i onClick={() => handleClick(obj._id)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
-                  </td>
-                </tr>  
-                )
-                
-              })
-            
-              }        
+              {
+                teachers.map((obj, index) => {
+
+                  return (
+                    <tr key={index}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{obj.name}</td>
+                      <td>{obj.phone}</td>
+                      <td>batch</td>
+                      <td>{obj.salary}</td>
+                      <td>{obj.qualification}</td>
+                      <td>{obj.experience}</td>
+                      <td>
+                        {obj.isBlocked === false ?
+                          <button onClick={() => handleBlock(obj._id)} className='block-button'>Block</button> :
+                          <button onClick={() => handleUnBlock(obj._id)} className='unblock-button'>Un block</button>
+                        }
+                      </td>
+                      <td>
+                        <i onClick={() => handleClick(obj._id)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
+                      </td>
+                    </tr>
+                  )
+
+                })
+
+              }
             </tbody>
           </table>
         </div>
