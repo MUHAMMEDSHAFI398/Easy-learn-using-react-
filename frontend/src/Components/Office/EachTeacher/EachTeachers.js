@@ -13,7 +13,9 @@ import {
   MDBCardImage,
   MDBIcon,
   MDBListGroup,
-  MDBListGroupItem
+  MDBListGroupItem,
+  
+  
 } from 'mdb-react-ui-kit';
 
 
@@ -93,7 +95,7 @@ function EachTeachers() {
                   <div className='borderDiv'>
                     <MDBCardBody className="text-center">
                       <MDBCardImage
-                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                        src={location.state.teacher.image[0].url}
                         alt="avatar"
                         className="rounded-circle"
                         style={{ width: '150px' }}
@@ -212,6 +214,7 @@ function EachTeachers() {
                     </MDBCardBody>
                   </div>
                 </MDBCard>
+                
 
                 <MDBRow>
 

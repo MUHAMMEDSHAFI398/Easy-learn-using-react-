@@ -34,11 +34,16 @@ module.exports = {
         } else {
             errors = "Incorrect email or password";
             return res.status(400).json(errors);
-        }
+        } 
     },
     addTeacher: async (req, res) => {
 
-        const data = req.body
+        const data = req.body 
+        console.log(data)
+        const image = {
+            url :req.file.path,
+            filename : req.file.filename   
+          }
         teacher.create({
             name: data.name,
             phone: data.phone,
@@ -50,12 +55,13 @@ module.exports = {
             experience: data.experience,
             remarks: data.remarks,
             isBlocked:false,
+            image:image, 
             address: {
                 house_name: data.house_name,
                 place: data.place,
                 post: data.post,
                 pin: data.pin,
-                district: data.district,
+                district: data.district,  
                 state: data.state
             }
 

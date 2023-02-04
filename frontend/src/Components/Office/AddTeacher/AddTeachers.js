@@ -8,7 +8,7 @@ function AddTeachers() {
     const initialVlaues = {
         name: "", phone: "", email: "", date_of_birth: "", gender: "",
         salary: "", qualification: "", experience: "", remarks: "",
-        house_name: "", place: "", post: "",pin:"", district: "", state: ""
+        house_name: "", place: "", post: "", pin: "", district: "", state: "", file: null
     };
     const [formValues, setFormValues] = useState(initialVlaues);
     const navigate = useNavigate();
@@ -16,32 +16,48 @@ function AddTeachers() {
 
     const onChangeHandle = (e) => {
         const { name, value } = e.target;
-        
         setFormValues({ ...formValues, [name]: value });
-     
+
+    };
+    const handleFileChange = event => {
+        setFormValues({
+            ...formValues,
+            file: event.target.files[0]
+        });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        axios.post('/office/add-teacher', {
 
-            name: formValues.name,
-            phone: formValues.phone,
-            email: formValues.email,
-            date_of_birth: formValues.date_of_birth,
-            gender: formValues.gender,
-            salary: formValues.salary,
-            qualification: formValues.qualification,
-            experience: formValues.experience,
-            remarks: formValues.remarks,
-            house_name: formValues.house_name,
-            place: formValues.place,
-            post: formValues.post,
-            pin:formValues.pin,
-            district: formValues.district,
-            state: formValues.state
-            
-        }).then((response) => {
+    const handleSubmit = (event) => {
+
+        event.preventDefault();
+
+        const data = new FormData();
+
+        data.append("name", formValues.name);
+        data.append("phone", formValues.phone);
+        data.append("email", formValues.email);
+        data.append("date_of_birth", formValues.date_of_birth);
+        data.append("gender", formValues.gender);
+        data.append("salary", formValues.salary);
+        data.append("qualification", formValues.qualification);
+        data.append("experience", formValues.experience);
+        data.append("remarks", formValues.remarks);
+        data.append("house_name", formValues.house_name);
+        data.append("place", formValues.place);
+        data.append("post", formValues.post);
+        data.append("pin", formValues.pin);
+        data.append("district", formValues.district);
+        data.append("state", formValues.state);
+        data.append("file", formValues.file);
+
+
+        axios.post('/office/add-teacher', data,
+        {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        ).then((response) => {
             console.log(response.data);
             navigate('/office/teachers');
 
@@ -252,7 +268,9 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <input
-                               name='image'
+                                
+                                name='file'
+                                onChange={handleFileChange}
                                 className="input-tag form-control"
                                 type="file" id="formFile"
                             />
@@ -262,7 +280,7 @@ function AddTeachers() {
                     <div className="d-flex flex-wrap justify-content-center mt-2">
 
                         <div className="d-flex flex-column">
-                            <button  className='btn btn-success rounded-3' type='submit'>Submit</button>
+                            <button className='btn btn-success rounded-3' type='submit'>Submit</button>
                         </div>
 
                     </div>

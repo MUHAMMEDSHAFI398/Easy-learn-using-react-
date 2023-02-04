@@ -7,11 +7,11 @@ const teacherRouter =require('./routes/teacher');
 const dbconnect = require("./config/databaseConnection");
 const dotenv = require("dotenv");
 const cors = require("cors");
+// const fileUpload = require("express-fileupload");
 
 dbconnect.dbconnect();
 dotenv.config()
-
-
+// app.use(fileUpload());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
