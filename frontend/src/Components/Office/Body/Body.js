@@ -25,7 +25,8 @@ function Body() {
         password: formValues.password,
 
     }).then((response)=>{
-        console.log(response.data);
+        const jwtToken = response.data.token
+        localStorage.setItem("token", jwtToken);
         navigate('/office/home');
 
     }).catch((error)=>{

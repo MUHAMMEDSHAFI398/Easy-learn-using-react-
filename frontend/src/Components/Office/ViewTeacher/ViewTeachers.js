@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 function ViewTeachers() {
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
+  // const token = localStorage.getItem("token");
+  
 
   useEffect(() => {
     axios.get('/office/teachers').then((response) => {
