@@ -70,7 +70,8 @@ function ViewTeachers() {
             <thead>
 
               <tr>
-                <th scope="col">Teacher id</th>
+                <th scope="col">SL NO</th>
+                <th scope="col">Register id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Contact</th>
                 <th scope="col">Batch</th>
@@ -90,6 +91,7 @@ function ViewTeachers() {
                   return (
                     <tr key={index}>
                       <th scope="row">{index + 1}</th>
+                      <td>{obj.registerId}</td>
                       <td>{obj.name}</td>
                       <td>{obj.phone}</td>
                       <td>batch</td>
@@ -123,3 +125,7 @@ function ViewTeachers() {
 }
 
 export default ViewTeachers
+
+
+
+

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const teacher = require('../models/teacher')
+const helpers = require('../helpers/helpers')
 dotenv.config();
 
 
@@ -34,34 +35,39 @@ module.exports = {
         } else {
             errors = "Incorrect email or password";
             return res.status(400).json(errors);
-        } 
+        }
     },
     addTeacher: async (req, res) => {
 
-        const data = req.body 
-        console.log(data)
+        const data = req.body
+        const registerId = await helpers.uniqueCodeGenerator('teacher')
+        const date = new Date(data.date_of_birth);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const readableDate = date.toLocaleDateString('en-US', options);
         const image = {
-            url :req.file.path,
-            filename : req.file.filename   
-          }
+            url: req.file.path,
+            filename: req.file.filename
+        }
+
         teacher.create({
+            registerId: registerId,
             name: data.name,
             phone: data.phone,
             email: data.email,
-            date_of_birth: data.date_of_birth,
+            date_of_birth: readableDate,
             gender: data.gender,
             salary: data.salary,
             qualification: data.qualification,
             experience: data.experience,
             remarks: data.remarks,
-            isBlocked:false,
-            image:image, 
+            isBlocked: false,
+            image: image,
             address: {
                 house_name: data.house_name,
                 place: data.place,
                 post: data.post,
                 pin: data.pin,
-                district: data.district,  
+                district: data.district,
                 state: data.state
             }
 
@@ -73,7 +79,7 @@ module.exports = {
     },
     getTeachers: (req, res) => {
         teacher.find().then((teachers) => {
-            
+
             res.json({
                 status: true,
                 teachers: teachers
@@ -97,11 +103,11 @@ module.exports = {
                 experience: data.experience,
                 salary: data.salary
             },
-            {  
-                new:true,
-                runValidators:true            
+            {
+                new: true,
+                runValidators: true
             }
-        
+
         ).then((teacher) => {
             res.json({
                 status: true,
@@ -109,18 +115,18 @@ module.exports = {
             })
         })
     },
-    blockTeacher:(req,res)=>{
+    blockTeacher: (req, res) => {
         const id = req.params.id
         teacher.findByIdAndUpdate(
-            {_id:id},
+            { _id: id },
             {
-                isBlocked:true 
+                isBlocked: true
             },
-            {  
-                new:true,
-                runValidators:true            
+            {
+                new: true,
+                runValidators: true
             }
-        ).then((teacher)=>{
+        ).then((teacher) => {
             console.log(teacher);
             res.json({
                 status: true,
@@ -128,18 +134,18 @@ module.exports = {
             })
         })
     },
-    unBlockTeacher:(req,res)=>{
+    unBlockTeacher: (req, res) => {
         const id = req.params.id
         teacher.findByIdAndUpdate(
-            {_id:id},
+            { _id: id },
             {
-                isBlocked:false 
+                isBlocked: false
             },
-            {  
-                new:true,
-                runValidators:true            
+            {
+                new: true,
+                runValidators: true
             }
-        ).then((teacher)=>{
+        ).then((teacher) => {
             console.log(teacher);
             res.json({
                 status: true,
