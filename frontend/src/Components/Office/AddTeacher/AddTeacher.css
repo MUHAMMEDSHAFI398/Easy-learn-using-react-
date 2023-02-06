@@ -16,11 +16,9 @@ body{
     margin-left: 20px;    
 }
 .border-body{
-    margin-left: 60px;
     border-radius: 25px;
     border: 1px solid black;
     margin-top: 50px;
-    margin-left: 350px;
     width: fit-content;
     block-size: fit-content;
     margin-bottom: 50px;

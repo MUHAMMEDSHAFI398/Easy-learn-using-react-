@@ -6,11 +6,7 @@ body{
     background-color: rgb(244, 243, 242);
    
  }
-.parent{
-    margin-left: 350px;
-    width: fit-content;
-    block-size: fit-content;
-}
+
 
 .gradient-custom-2 {
     /* fallback for old browsers */
@@ -30,10 +26,19 @@ body{
    
         
 }
+
 .borderDiv{
     border: 1px solid black;
     background-color: white;
     border-radius: 8px;
+
+    
+}
+.editTeacherDiv{
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 8px;
+    margin-left: 13px;
 }
 .submitButton{
     height: 40px;
@@ -41,4 +46,3 @@ body{
     border-radius: 10px;
 }
 
-/* rgb(244, 243, 242) */

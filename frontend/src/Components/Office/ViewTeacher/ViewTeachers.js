@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 function ViewTeachers() {
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
-  // const token = localStorage.getItem("token");
-  
+  const token = localStorage.getItem("token");
+  // ,{token:token}
 
   useEffect(() => {
     axios.get('/office/teachers').then((response) => {
@@ -17,7 +17,7 @@ function ViewTeachers() {
         console.log(response);
       }
     })
-  }, [])
+  },[])
 
 
   const handleClick = async (id) => {
@@ -58,16 +58,16 @@ function ViewTeachers() {
   }
 
   return (
-    <div>
+    <div className='container' >
 
-      <div className='parent'>
+      <div className='container'>
         <div className='buttonTop' >
           <button className='buttonDiv'>Leave applications</button>
           <Link to="/office/add-teacher">
             <button className='buttonDiv ms-4'>Add teacher</button>
           </Link>
         </div>
-        <div class="table-responsive">
+        <div className="table-responsive">
           <table className="table-responsive table table-bordered table-striped mt-5">
             <thead>
 

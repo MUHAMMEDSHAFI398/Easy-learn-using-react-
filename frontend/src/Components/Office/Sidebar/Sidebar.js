@@ -12,7 +12,7 @@ import { NavLink } from 'react-router-dom';
 
 function Sidebar() {
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'scroll initial',position:'fixed' }}>
+    <div style={{ display: 'flex', minHeight:"100vh"}}>
       <CDBSidebar textColor="#fff" style={{backgroundColor:'rgb(206, 206, 205)',color:'black'}} >
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
           <a href="/" className="text-decoration-none" style={{ color: 'inherit' }}>
@@ -28,7 +28,7 @@ function Sidebar() {
               <CDBSidebarMenuItem style={{color:'black'}} icon="home">Dashboard</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink exact to="/tables" activeclassname="activeClicked">
+            <NavLink exact to="/office/batches" activeclassname="activeClicked">
               <CDBSidebarMenuItem style={{color:'black'}} icon="table">Batches</CDBSidebarMenuItem>
             </NavLink>
 
@@ -36,7 +36,7 @@ function Sidebar() {
               <CDBSidebarMenuItem style={{color:'black'}} icon="user">Teachers</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink exact to="/analytics" activeclassname="activeClicked">
+            <NavLink exact to="/office/view-students" activeclassname="activeClicked">
               <CDBSidebarMenuItem style={{color:'black'}} icon="users">Students</CDBSidebarMenuItem>
             </NavLink>
 

@@ -83,7 +83,7 @@ function EachTeachers() {
 
   return (
     <div>
-      <div className='container parent'>
+      <div className='container'>
         <section style={{ backgroundColor: 'rgb(244, 243, 242)' }}>
           <MDBContainer className="py-5">
 

@@ -5,6 +5,7 @@ const multer  = require('multer')
 const { storage } = require('../config/cloudinary')
 const upload = multer({storage})
 const verifyToken = require('../middlewares/middlewares')
+// ,verifyToken.verifyTokenAdmin
 
 officeRouter.post('/login',officeController.login)
 

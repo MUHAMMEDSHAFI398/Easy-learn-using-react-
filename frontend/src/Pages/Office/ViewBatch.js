@@ -1,14 +1,14 @@
 import React from 'react'
-import EachTeachers from '../../Components/Office/EachTeacher/EachTeachers'
 import Sidebar from '../../Components/Office/Sidebar/Sidebar'
+import ViewBatches from '../../Components/Office/ViewBatch/ViewBatches'
 
-function EachTeacher() {
+function ViewBatch() {
   return (
     <div className='d-flex'>
       <Sidebar/>
-      <EachTeachers/>
+      <ViewBatches/>
     </div>
   )
 }
 
-export default EachTeacher
+export default ViewBatch

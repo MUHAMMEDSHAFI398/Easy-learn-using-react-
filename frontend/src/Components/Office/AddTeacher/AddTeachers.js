@@ -70,7 +70,7 @@ function AddTeachers() {
 
 
     return (
-        <div>
+        <div className='container'>
             <div className="container border-body  ">
                 <div className=" d-flex align-items-center justify-content-center">
                     <h5 className="text-decoration-underline ">Add teacher</h5>
