@@ -50,7 +50,7 @@ function AddTeachers() {
         data.append("state", formValues.state);
         data.append("file", formValues.file);
 
-
+console.log(data)
         axios.post('/office/add-teacher', data,
         {
             headers: {
