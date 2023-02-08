@@ -55,7 +55,7 @@ module.exports = {
             name: data.name,
             phone: data.phone,
             email: data.email,
-            date_of_birth: readableDate,
+            date_of_birth: data.date_of_birth,
             gender: data.gender,
             salary: data.salary,
             qualification: data.qualification,
@@ -79,7 +79,6 @@ module.exports = {
     },
     getTeachers: (req, res) => {
         teacher.find().then((teachers) => {
-
             res.json({
                 status: true,
                 teachers: teachers
@@ -156,10 +155,6 @@ module.exports = {
 
         const data = req.body  
         const registerId = await helpers.uniqueCodeGenerator('batch')
-        // console.log(registerId)
-        // const date = new Date(data.startDate);
-        // const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        // const readableDate = date.toLocaleDateString('en-US', options);
         batch.create({
             registerId:registerId,
             startDate:data.startDate,
@@ -174,9 +169,7 @@ module.exports = {
         })
     },
     getBatches:(req,res)=>{
-        console.log('hi');
         batch.find().then((batches)=>{
-            console.log(batches)
             res.json({
                 status:true,
                 batches:batches

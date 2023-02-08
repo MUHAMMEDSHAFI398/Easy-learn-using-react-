@@ -14,7 +14,7 @@ import {
   MDBIcon,
   MDBListGroup,
   MDBListGroupItem,
-  
+
 } from 'mdb-react-ui-kit';
 
 
@@ -27,13 +27,18 @@ function EachTeachers() {
   const [formValues, setFormValues] = useState(initialvalues);
   const [teacherBlock,setTeacherBlock]=useState(location.state.teacher.isBlocked)
   // const [editteacher,setEditTeacher]=useState(previosValues)
-  console.log(teacherBlock)
+
+  const date_of_birth=location.state.teacher.date_of_birth
+  const birthDate=new Date(date_of_birth);
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const readableDate = birthDate.toLocaleDateString('en-US', options);
+
+
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
 
   };
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -100,7 +105,7 @@ function EachTeachers() {
                         style={{ width: '150px' }}
                         fluid />
                       <p className="text-muted mb-1">{location.state.teacher.name}</p>
-                      <p className="text-muted mb-4">unique id</p>
+                      <p className="text-muted mb-4">{location.state.teacher.registerId}</p>
                       <div className="d-flex justify-content-center mb-2">
                         {
                           teacherBlock === false ?
@@ -147,7 +152,7 @@ function EachTeachers() {
                           <MDBCardText>Batch</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted">ELBT001</MDBCardText>
+                          <MDBCardText className="text-muted"></MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />
@@ -156,7 +161,7 @@ function EachTeachers() {
                           <MDBCardText>Date of birth</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted">{location.state.teacher.date_of_birth}</MDBCardText>
+                          <MDBCardText className="text-muted">{readableDate}</MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />

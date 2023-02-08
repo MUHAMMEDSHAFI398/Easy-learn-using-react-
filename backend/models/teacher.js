@@ -27,7 +27,7 @@ const teacherSchema = new Schema(
       unique: true,
     },
     date_of_birth: {
-      type: String,
+      type: Date,
       required: true
     },
     gender: {

@@ -11,7 +11,8 @@ function ViewBatches() {
   useEffect(()=>{
     axios.get('/office/batches').then((response) => {
       if (response.data.status) {
-        setBatches(response.data.batches);    
+        setBatches(response.data.batches); 
+           
       } else {
         console.log(response);
       }
@@ -50,7 +51,7 @@ function ViewBatches() {
           width: 100,
         },
         {
-          label: 'Status',
+          label: 'Number of seats',
           field: 'status',
           sort: 'disabled',
           width: 150,
@@ -63,12 +64,15 @@ function ViewBatches() {
         },
       ],     
       rows:batches.map((batch)=>{
+        let startDate=new Date(batch.startDate);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const readableDate = startDate.toLocaleDateString('en-US', options);
         return {
           registerId: batch.registerId,
           headOfTheBatch: batch.headOfTheBatch,
-          startDate: batch.startDate,
-          duration: batch.duration,
-          status: batch.status,
+          startDate: readableDate,
+          duration: `${batch.duration} month`,
+          status: batch.numberOfSeat,
           view: <i className="i-tags ms-4 fa fa-chevron-circle-right"></i>,
           clickEvent: () => testClickEvent(1),
         }
