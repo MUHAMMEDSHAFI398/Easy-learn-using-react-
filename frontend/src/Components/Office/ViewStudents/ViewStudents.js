@@ -201,7 +201,9 @@ function ViewStudents() {
       };
     return (
         <div className='container'>
+          <Link to='/office/add-student'>
         <button className='AddButton'>Add student</button>
+          </Link>
       <div className='container mt-4'>
       <CDBContainer>
       <div className='container main-div'>

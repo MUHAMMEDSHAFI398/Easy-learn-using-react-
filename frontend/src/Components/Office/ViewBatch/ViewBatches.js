@@ -18,9 +18,9 @@ function ViewBatches() {
       }
     })
   },[])
-  function testClickEvent(param) {
-    alert('Row Click Event');
-  }
+  // function testClickEvent(param) {
+  //   alert('Row Click Event');
+  // }
 
   const data = () => {
     return {
@@ -69,12 +69,13 @@ function ViewBatches() {
         const readableDate = startDate.toLocaleDateString('en-US', options);
         return {
           registerId: batch.registerId,
-          headOfTheBatch: batch.headOfTheBatch,
+          headOfTheBatch: batch.teacher_data[0].name,
           startDate: readableDate,
           duration: `${batch.duration} month`,
           status: batch.numberOfSeat,
-          view: <i className="i-tags ms-4 fa fa-chevron-circle-right"></i>,
-          clickEvent: () => testClickEvent(1),
+          view: <Link to='/office/each-batch'><i className="i-tags ms-4 fa fa-chevron-circle-right"></i></Link>
+               
+          // clickEvent: () => testClickEvent(1),
         }
       })
     };

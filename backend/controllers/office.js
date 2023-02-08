@@ -151,28 +151,47 @@ module.exports = {
         })
     },
 
-    addBatch:async(req,res)=>{
+    addBatch: async (req, res) => {
 
-        const data = req.body  
-        const registerId = await helpers.uniqueCodeGenerator('batch')
+        const data = req.body
+        const batchId = await helpers.uniqueCodeGenerator('batch')
+        await teacher.updateOne(
+
+            { registerId: data.headOfTheBatch },
+            {
+                $set: {
+                    myBatch: batchId
+                }
+            }
+        )
+
         batch.create({
-            registerId:registerId,
-            startDate:data.startDate,
-            duration:data.duration,
-            fee:data.fee,
-            numberOfSeat:data.numberOfSeat,
-            headOfTheBatch:data.headOfTheBatch,
-            remarks:data.remarks,
-            subjects:data.subjectValues
-        }).then(()=>{
-            res.json({status:true})
+            registerId: batchId,
+            startDate: data.startDate,
+            duration: data.duration,
+            fee: data.fee,
+            numberOfSeat: data.numberOfSeat,
+            headOfTheBatch: data.headOfTheBatch,
+            remarks: data.remarks,
+            subjects: data.subjectValues
+        }).then(() => {
+            res.json({ status: true })
         })
     },
-    getBatches:(req,res)=>{
-        batch.find().then((batches)=>{
+    getBatches: (req, res) => {
+        batch.aggregate([
+            {
+                $lookup: {
+                    from: "teachers",
+                    localField: "headOfTheBatch",
+                    foreignField: "registerId",
+                    as: "teacher_data"
+                }
+            }
+        ]).then((batches) => {
             res.json({
-                status:true,
-                batches:batches
+                status: true,
+                batches: batches
             })
         })
     }

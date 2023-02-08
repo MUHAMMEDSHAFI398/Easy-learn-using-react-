@@ -10,6 +10,7 @@ import ViewStudent from "./Pages/Office/ViewStudent";
 import AddStudent from "./Pages/Office/AddStudent";
 import ViewBatch from "./Pages/Office/ViewBatch";
 import AddBatach from "./Pages/Office/AddBatach";
+import EachBatch from "./Pages/Office/EachBatch";
 
 
 
@@ -27,6 +28,8 @@ function App() {
           <Route exact path="/office/add-student" element={<AddStudent/>} ></Route>
           <Route exact path="/office/batches" element={<ViewBatch/>} ></Route>
           <Route exact path="/office/add-batch" element={<AddBatach/>} ></Route>
+          <Route exact path="/office/each-batch" element={<EachBatch/>} ></Route>
+
         </Routes>
       </Router>
     </div>

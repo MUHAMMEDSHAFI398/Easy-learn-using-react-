@@ -84,6 +84,9 @@ const teacherSchema = new Schema(
     remarks: {
       type: String,
     },
+    myBatch:{
+      type:String
+    },
     // password: {
     //   type: String,
     //   required: true,

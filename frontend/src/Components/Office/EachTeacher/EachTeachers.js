@@ -152,7 +152,9 @@ function EachTeachers() {
                           <MDBCardText>Batch</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted">jjj</MDBCardText>
+                          <MDBCardText className="text-muted">
+                            {location.state.teacher.myBatch ? location.state.teacher.myBatch : 'Batch not Assigned'}
+                          </MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />

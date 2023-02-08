@@ -131,7 +131,7 @@ function AddBatches() {
                 {
                   teachers.map((obj)=>{
                     return(
-                      <option value={obj.name}>{obj.name}</option>
+                      <option value={obj.registerId}>{obj.name} ({obj.registerId})</option>
                     )
                   })
                 }
