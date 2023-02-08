@@ -152,7 +152,7 @@ function EachTeachers() {
                           <MDBCardText>Batch</MDBCardText>
                         </MDBCol>
                         <MDBCol sm="9">
-                          <MDBCardText className="text-muted"></MDBCardText>
+                          <MDBCardText className="text-muted">jjj</MDBCardText>
                         </MDBCol>
                       </MDBRow>
                       <hr />
