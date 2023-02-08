@@ -21,5 +21,11 @@ officeRouter.get('/block-teacher/:id',officeController.blockTeacher)
 
 officeRouter.get('/unblock-teacher/:id',officeController.unBlockTeacher)
 
+officeRouter.get('/batches',officeController.getBatches)
+
+officeRouter.post('/add-batch',officeController.addBatch)
+
+
+
 
 module.exports=officeRouter

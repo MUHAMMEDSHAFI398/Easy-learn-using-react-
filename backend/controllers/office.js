@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const teacher = require('../models/teacher')
+const batch = require('../models/batch');
 const helpers = require('../helpers/helpers')
 dotenv.config();
 
@@ -71,8 +72,7 @@ module.exports = {
                 state: data.state
             }
 
-        }).then((teacher) => {
-            console.log(teacher);
+        }).then(() => {
             res.json({ success: true })
         })
 
@@ -127,7 +127,6 @@ module.exports = {
                 runValidators: true
             }
         ).then((teacher) => {
-            console.log(teacher);
             res.json({
                 status: true,
                 teacher: teacher
@@ -146,10 +145,41 @@ module.exports = {
                 runValidators: true
             }
         ).then((teacher) => {
-            console.log(teacher);
             res.json({
                 status: true,
                 teacher: teacher
+            })
+        })
+    },
+
+    addBatch:async(req,res)=>{
+
+        const data = req.body  
+        const registerId = await helpers.uniqueCodeGenerator('batch')
+        // console.log(registerId)
+        // const date = new Date(data.startDate);
+        // const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        // const readableDate = date.toLocaleDateString('en-US', options);
+        batch.create({
+            registerId:registerId,
+            startDate:data.startDate,
+            duration:data.duration,
+            fee:data.fee,
+            numberOfSeat:data.numberOfSeat,
+            headOfTheBatch:data.headOfTheBatch,
+            remarks:data.remarks,
+            subjects:data.subjectValues
+        }).then(()=>{
+            res.json({status:true})
+        })
+    },
+    getBatches:(req,res)=>{
+        console.log('hi');
+        batch.find().then((batches)=>{
+            console.log(batches)
+            res.json({
+                status:true,
+                batches:batches
             })
         })
     }

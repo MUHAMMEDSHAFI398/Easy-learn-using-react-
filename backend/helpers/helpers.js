@@ -1,5 +1,5 @@
 const teacher = require('../models/teacher');
-
+const batch = require('../models/batch');
 
 const uniqueCodeGenerator = (data) => {
     try {
@@ -11,6 +11,9 @@ const uniqueCodeGenerator = (data) => {
             if (data === 'teacher') {
                 collectionName = teacher;
                 firstCode = 'ELTR';
+            }else if(data === 'batch'){
+                collectionName = batch;
+                firstCode = 'ELBT'
             }
             collectionName.countDocuments({}).then((count) => {
                 console.log(count)
@@ -23,16 +26,16 @@ const uniqueCodeGenerator = (data) => {
                 }
 
                 const uniqueCode = `${firstCode}${slno}`
-              
-
+                console.log(uniqueCode);
                 resolve(uniqueCode);
+
             }).catch((err) => {
                 reject(err);
             })
 
         })
     } catch (err) {
-        console.log('hiiii')
+        console.log(err)
     }
 
 };

@@ -7,6 +7,9 @@ const teacherRouter =require('./routes/teacher');
 const dbconnect = require("./config/databaseConnection");
 const dotenv = require("dotenv");
 const cors = require("cors");
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.json());
+
 // const fileUpload = require("express-fileupload");
 
 dbconnect.dbconnect();

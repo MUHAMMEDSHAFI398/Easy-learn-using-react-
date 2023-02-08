@@ -1,8 +1,22 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import './ViewBatch.css'
 import {  CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
 import { Link } from 'react-router-dom';
+import axios from '../../../axios';
+
+
 function ViewBatches() {
+  const[batches,setBatches]=useState([])
+  console.log(batches)
+  useEffect(()=>{
+    axios.get('/office/batches').then((response) => {
+      if (response.data.status) {
+        setBatches(response.data.batches);    
+      } else {
+        console.log(response);
+      }
+    })
+  },[])
   function testClickEvent(param) {
     alert('Row Click Event');
   }
@@ -11,8 +25,8 @@ function ViewBatches() {
     return {
       columns: [
         {
-          label: 'Name',
-          field: 'name',
+          label: 'Register id',
+          field: 'registerId',
           width: 80,
           attributes: {
             'aria-controls': 'DataTable',
@@ -20,81 +34,45 @@ function ViewBatches() {
           },
         },
         {
-          label: 'Position',
-          field: 'position',
+          label: 'Head of the batch',
+          field: 'headOfTheBatch',
           width: 200,
         },
         {
-          label: 'Office',
-          field: 'office',
+          label: 'Start date',
+          field: 'startDate',
           width: 200,
         },
         {
-          label: 'Age',
-          field: 'age',
+          label: 'Duration',
+          field: 'duration',
           sort: 'asc',
           width: 100,
         },
         {
-          label: 'Start date',
-          field: 'date',
+          label: 'Status',
+          field: 'status',
           sort: 'disabled',
           width: 150,
         },
         {
-          label: 'Salary',
-          field: 'salary',
+          label: 'View',
+          field: 'view',
           sort: 'disabled',
           width: 100,
         },
-      ],
-      rows: [
-        {
-          name: 'Tiger',
-          position: 'System Architect',
-          office: 'Edinburgh',
-          age: '61',
-          date: '2011/04/25',
-          salary: '$320',
+      ],     
+      rows:batches.map((batch)=>{
+        return {
+          registerId: batch.registerId,
+          headOfTheBatch: batch.headOfTheBatch,
+          startDate: batch.startDate,
+          duration: batch.duration,
+          status: batch.status,
+          view: <i className="i-tags ms-4 fa fa-chevron-circle-right"></i>,
           clickEvent: () => testClickEvent(1),
-        },
-        {
-          name: 'Garret',
-          position: 'Accountant',
-          office: 'Tokyo',
-          age: '63',
-          date: '2011/07/25',
-          salary: '$170',
-        },
-        {
-          name: 'Asht',
-          position: 'Junior Technical Author',
-          office: 'San Francisco',
-          age: '66',
-          date: '2009/01/12',
-          salary: '$86',
-        },
-        {
-          name: 'Cedr',
-          position: 'Senior Javascript Developer',
-          office: 'Edinburgh',
-          age: '22',
-          date: '2012/03/29',
-          salary: '$433',
-        },
-        {
-          name: 'Air',
-          position: 'Accountant',
-          office: 'Tokyo',
-          age: '33',
-          date: '2008/11/28',
-          salary: '$162',
-        },
-       
-       
-       
-       
-      ],
+        }
+      })
     };
   }; 
   return (

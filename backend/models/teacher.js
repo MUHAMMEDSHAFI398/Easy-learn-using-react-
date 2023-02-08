@@ -8,7 +8,7 @@ const teacherSchema = new Schema(
       unique: true,
       trim: true,
       uppercase: true,
-      immutable: true,
+
     },
     name: {
       type: String,
