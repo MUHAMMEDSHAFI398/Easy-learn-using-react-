@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const teacher = require('../models/teacher')
 const batch = require('../models/batch');
 const helpers = require('../helpers/helpers')
+const mongoose = require('mongoose');
 dotenv.config();
 
 
@@ -42,9 +43,6 @@ module.exports = {
 
         const data = req.body
         const registerId = await helpers.uniqueCodeGenerator('teacher')
-        const date = new Date(data.date_of_birth);
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const readableDate = date.toLocaleDateString('en-US', options);
         const image = {
             url: req.file.path,
             filename: req.file.filename
@@ -87,6 +85,7 @@ module.exports = {
     },
     getTeacher: (req, res) => {
         const id = req.params.id
+       
         teacher.findOne({ _id: id }).then((teacher) => {
             res.json({
                 status: true,
@@ -194,6 +193,31 @@ module.exports = {
                 batches: batches
             })
         })
+    },
+    getBatch:(req,res)=>{
+        const id = req.params.id
+        const objectId = mongoose.Types.ObjectId(id);
+        batch.aggregate([
+            {
+                $match:{
+                    _id: objectId
+                }
+            },
+            {
+                $lookup: {
+                    from: "teachers",
+                    localField: "headOfTheBatch",
+                    foreignField: "registerId",
+                    as: "teacher_data"
+                }
+            }
+        ]).then((batch) => {
+      
+            res.json({
+                status: true,
+                batch: batch
+            })
+        }) 
     }
 
 }

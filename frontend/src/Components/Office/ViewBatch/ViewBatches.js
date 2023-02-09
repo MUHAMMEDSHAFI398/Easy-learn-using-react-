@@ -1,13 +1,15 @@
 import React,{useEffect,useState} from 'react'
 import './ViewBatch.css'
 import {  CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import axios from '../../../axios';
 
 
 function ViewBatches() {
-  const[batches,setBatches]=useState([])
-  console.log(batches)
+
+  const[batches,setBatches]=useState([]);
+  const navigate=useNavigate();
+
   useEffect(()=>{
     axios.get('/office/batches').then((response) => {
       if (response.data.status) {
@@ -18,6 +20,19 @@ function ViewBatches() {
       }
     })
   },[])
+
+  const handleClick = async (id) => {
+    axios.get(`/office/get-batch/${id}`).then((response) => {
+      if (response.data.status) {
+        console.log(response.data)
+        navigate('/office/each-batch', {
+          state: {
+            batch: response.data.batch
+          }
+        });
+      }
+    })
+  }
   // function testClickEvent(param) {
   //   alert('Row Click Event');
   // }
@@ -25,6 +40,11 @@ function ViewBatches() {
   const data = () => {
     return {
       columns: [
+        {
+          label: 'SL NO',
+          field: 'slno',
+          width: 50,
+        },
         {
           label: 'Register id',
           field: 'registerId',
@@ -56,34 +76,39 @@ function ViewBatches() {
           sort: 'disabled',
           width: 150,
         },
+        
         {
           label: 'View',
           field: 'view',
           sort: 'disabled',
           width: 100,
         },
-      ],     
-      rows:batches.map((batch)=>{
+      ],  
+       
+      rows:batches.map((batch ,index)=>{
         let startDate=new Date(batch.startDate);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const readableDate = startDate.toLocaleDateString('en-US', options);
+      
         return {
+          slno:index+1,
           registerId: batch.registerId,
           headOfTheBatch: batch.teacher_data[0].name,
           startDate: readableDate,
           duration: `${batch.duration} month`,
           status: batch.numberOfSeat,
-          view: <Link to='/office/each-batch'><i className="i-tags ms-4 fa fa-chevron-circle-right"></i></Link>
+          view: <i onClick={() => handleClick(batch._id)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
                
           // clickEvent: () => testClickEvent(1),
         }
+       
       })
     };
   }; 
   return (
     <div className='container'>
       <Link to='/office/add-batch'>
-        <button className='AddButton'>Add batches</button>
+        <button  className='AddButton'>Add batches</button>
       </Link>
       <div className='container mt-4'>
       <CDBContainer>

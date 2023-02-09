@@ -71,7 +71,7 @@ function AddTeachers() {
 
     return (
         <div className='container'>
-            <div className="container border-body  ">
+            <div className="container border-body">
                 <div className=" d-flex align-items-center justify-content-center">
                     <h5 className="text-decoration-underline ">Add teacher</h5>
                 </div>

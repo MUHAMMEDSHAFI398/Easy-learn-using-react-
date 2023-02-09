@@ -25,6 +25,9 @@ officeRouter.get('/batches',officeController.getBatches)
 
 officeRouter.post('/add-batch',officeController.addBatch)
 
+officeRouter.get('/get-batch/:id',officeController.getBatch)
+
+
 
 
 
