@@ -27,6 +27,9 @@ officeRouter.post('/add-batch',officeController.addBatch)
 
 officeRouter.get('/get-batch/:id',officeController.getBatch)
 
+officeRouter.get('/get-edit-batch/:id',officeController.getEditBatch)
+
+
 
 
 

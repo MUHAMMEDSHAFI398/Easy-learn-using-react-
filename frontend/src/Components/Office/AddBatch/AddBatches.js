@@ -126,8 +126,8 @@ function AddBatches() {
                 className="input-tag"
                 name='headOfTheBatch'
                 id=""
-              >
-                
+              > 
+                <option selected disabled value=''></option>       
                 {
                   teachers.map((obj)=>{
                     return(
@@ -172,7 +172,7 @@ function AddBatches() {
                   type="text" placeholder='Teacher'
                   id='subject'
                 >
-                  <option selected value=''>Teacher</option>
+                  <option selected disabled value=''>Teacher</option>
                  {
                   teachers.map((obj)=>{
                     return(

@@ -218,6 +218,32 @@ module.exports = {
                 batch: batch
             })
         }) 
+    },
+    getEditBatch:(req,res)=>{
+
+        const id =req.params.id
+        const objectId = mongoose.Types.ObjectId(id);
+        batch.aggregate([
+            {
+                $match:{
+                    _id:objectId
+                }
+            },
+            {
+                $lookup: {
+                    from: "teachers",
+                    localField: "headOfTheBatch",
+                    foreignField: "registerId",
+                    as: "teacher_data"
+                }
+            }
+        ]).then((batchData)=>{
+            console.log(batchData);
+            res.json({
+                status:true,
+                batchData:batchData
+            })
+        })
     }
 
 }

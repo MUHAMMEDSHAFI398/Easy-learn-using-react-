@@ -1,27 +1,31 @@
 import React from 'react';
 import './EachBatch.css';
-import {Link,useLocation} from "react-router-dom"
+import {useNavigate,useLocation} from "react-router-dom"
 
 function EachBatches() {
    
   // const navigate = useNavigate()
   const location = useLocation();
+  const navigate=useNavigate()
   const startDate=location.state.batch[0].startDate
   const DateStart=new Date(startDate);
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const readableStartDate = DateStart.toLocaleDateString('en-US', options);
- 
-
-
+  const batchId=location.state.batch[0]._id
+  
+  const handleClick=()=>{
+    navigate('/office/edit-batch',{
+      state:{
+        id:batchId
+      }
+    })
+  }
 
   return (
     <div className='container'>
-      <Link to={{
-          pathname: '/office/edit-batch',
-          state: { id: location.state.batch[0]._id }
-        }}>
-      <button className='EditButton'>Edit Batch deatails</button>
-      </Link>
+      
+      <button onClick={handleClick} className='EditButton'>Edit Batch deatails</button>
+      
       <div className="container mt-4">
         <div className="d-flex flex-wrap justify-content-between">
 
