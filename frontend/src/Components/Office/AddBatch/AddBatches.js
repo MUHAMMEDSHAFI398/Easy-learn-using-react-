@@ -15,10 +15,15 @@ function AddBatches() {
   const [subjectValues, setSubjectValues] = useState([])
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
 
   useEffect(() => {
-    axios.get('/office/teachers').then((response) => {
+    axios.get('/office/teachers',{
+      headers: {      
+        Authorization:token
+      },
+    }).then((response) => {
       if (response.data.status) {
         setTeachers(response.data.teachers);
       } else {
@@ -49,7 +54,11 @@ function AddBatches() {
   
     const data = {
       ...formValues,
-      subjectValues
+      subjectValues,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization:token
+      },
     }
     axios.post('/office/add-batch',data).then((response)=>{
       if(response.data.status){

@@ -32,6 +32,7 @@ function EachTeachers() {
   const birthDate=new Date(date_of_birth);
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const readableDate = birthDate.toLocaleDateString('en-US', options);
+  const token = localStorage.getItem("token");
 
 
   const onChangeHandle = (e) => {
@@ -43,13 +44,19 @@ function EachTeachers() {
     event.preventDefault();
 
     axios.patch(`/office/edit-teacher/${location.state.teacher._id}`, {
-
+      headers: {
+        Authorization:token
+      },
       salary: formValues.salary,
       experience: formValues.experience,
 
     }).then(() => {
       // setEditTeacher({salary: formValues.salary,experience: formValues.experience})
-      axios.get(`/office/get-teacher/${location.state.teacher._id}`).then((response) => {
+      axios.get(`/office/get-teacher/${location.state.teacher._id}`,{
+        headers: {      
+          Authorization:token
+        },
+      }).then((response) => {
         if (response.data.status) {
           navigate('/office/each-teacher', {
             state: {
@@ -68,7 +75,11 @@ function EachTeachers() {
    
   const handleBlock = (e) => {
     e.preventDefault();
-    axios.get(`/office/block-teacher/${location.state.teacher._id}`).then(()=>{
+    axios.get(`/office/block-teacher/${location.state.teacher._id}`,{
+      headers: {      
+        Authorization:token
+      },
+    }).then(()=>{
       setTeacherBlock(true)
     })
     
@@ -76,7 +87,11 @@ function EachTeachers() {
 
   const handleUnBlock = (e) => {
     e.preventDefault();
-    axios.get(`/office/unblock-teacher/${location.state.teacher._id}`).then(()=>{
+    axios.get(`/office/unblock-teacher/${location.state.teacher._id}`,{
+      headers: {      
+        Authorization:token
+      },
+    }).then(()=>{
       setTeacherBlock(false)
       console.log(teacherBlock)
     })

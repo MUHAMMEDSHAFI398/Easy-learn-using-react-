@@ -7,10 +7,14 @@ function ViewTeachers() {
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  // ,{token:token}
+ 
 
   useEffect(() => {
-    axios.get('/office/teachers').then((response) => {
+    axios.get('/office/teachers',{
+      headers: {      
+        Authorization:token
+      },
+    }).then((response) => {
       if (response.data.status) {
         setTeachers(response.data.teachers);
       } else {
@@ -21,7 +25,11 @@ function ViewTeachers() {
 
 
   const handleClick = async (id) => {
-    axios.get(`/office/get-teacher/${id}`).then((response) => {
+    axios.get(`/office/get-teacher/${id}`,{
+      headers: {      
+        Authorization:token
+      },
+    }).then((response) => {
       if (response.data.status) {
         navigate('/office/each-teacher', {
           state: {
@@ -33,7 +41,11 @@ function ViewTeachers() {
   }
   const handleBlock = (id) => {
 
-    axios.get(`/office/block-teacher/${id}`).then(() => {
+    axios.get(`/office/block-teacher/${id}`,{
+      headers: {      
+        Authorization:token
+      },
+    }).then(() => {
       const setTeacher = teachers.filter((value) => {
         if (value._id === id) {
           value.isBlocked = true
@@ -46,7 +58,11 @@ function ViewTeachers() {
 
   const handleUnBlock = (id) => {
 
-    axios.get(`/office/unblock-teacher/${id}`).then(() => {
+    axios.get(`/office/unblock-teacher/${id}`,{
+      headers: {      
+        Authorization:token
+      },
+    }).then(() => {
       const setTeacher = teachers.filter((value) => {
         if (value._id === id) {
           value.isBlocked = false

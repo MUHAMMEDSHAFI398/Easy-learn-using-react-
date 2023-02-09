@@ -5,29 +5,29 @@ const multer  = require('multer')
 const { storage } = require('../config/cloudinary')
 const upload = multer({storage})
 const verifyToken = require('../middlewares/middlewares')
-// ,verifyToken.verifyTokenAdmin
+
 
 officeRouter.post('/login',officeController.login)
 
-officeRouter.post('/add-teacher',upload.single('file'),officeController.addTeacher)
+officeRouter.post('/add-teacher',verifyToken.verifyTokenAdmin,upload.single('file'),officeController.addTeacher)
 
-officeRouter.get('/teachers',officeController.getTeachers)
+officeRouter.get('/teachers',verifyToken.verifyTokenAdmin,officeController.getTeachers)
 
-officeRouter.get('/get-teacher/:id',officeController.getTeacher)
+officeRouter.get('/get-teacher/:id',verifyToken.verifyTokenAdmin,officeController.getTeacher)
 
-officeRouter.patch('/edit-teacher/:id',officeController.editTeacher)
+officeRouter.patch('/edit-teacher/:id',verifyToken.verifyTokenAdmin,officeController.editTeacher)
 
-officeRouter.get('/block-teacher/:id',officeController.blockTeacher)
+officeRouter.get('/block-teacher/:id',verifyToken.verifyTokenAdmin,officeController.blockTeacher)
 
-officeRouter.get('/unblock-teacher/:id',officeController.unBlockTeacher)
+officeRouter.get('/unblock-teacher/:id',verifyToken.verifyTokenAdmin,officeController.unBlockTeacher)
 
-officeRouter.get('/batches',officeController.getBatches)
+officeRouter.get('/batches',verifyToken.verifyTokenAdmin,officeController.getBatches)
 
-officeRouter.post('/add-batch',officeController.addBatch)
+officeRouter.post('/add-batch',verifyToken.verifyTokenAdmin,officeController.addBatch)
 
-officeRouter.get('/get-batch/:id',officeController.getBatch)
+officeRouter.get('/get-batch/:id',verifyToken.verifyTokenAdmin,officeController.getBatch)
 
-officeRouter.get('/get-edit-batch/:id',officeController.getEditBatch)
+officeRouter.get('/get-edit-batch/:id',verifyToken.verifyTokenAdmin,officeController.getEditBatch)
 
 
 

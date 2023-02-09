@@ -1,6 +1,6 @@
 import React from 'react'
 import './ViewStudents.css'
-import { CDBCard, CDBCardBody, CDBDataTable, CDBRow, CDBCol, CDBContainer } from 'cdbreact';
+import {  CDBCardBody, CDBDataTable,  CDBContainer } from 'cdbreact';
 import { Link} from "react-router-dom";
 
 function ViewStudents() {

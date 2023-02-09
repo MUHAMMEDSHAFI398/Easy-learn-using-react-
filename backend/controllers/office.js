@@ -4,6 +4,7 @@ const teacher = require('../models/teacher')
 const batch = require('../models/batch');
 const helpers = require('../helpers/helpers')
 const mongoose = require('mongoose');
+const verifyAdmin = require('../middlewares/middlewares')
 dotenv.config();
 
 
@@ -76,6 +77,8 @@ module.exports = {
 
     },
     getTeachers: (req, res) => {
+        const token = req.headers.authorization;
+        console.log(token)
         teacher.find().then((teachers) => {
             res.json({
                 status: true,

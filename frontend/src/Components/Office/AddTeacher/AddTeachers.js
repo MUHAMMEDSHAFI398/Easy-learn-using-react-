@@ -12,6 +12,7 @@ function AddTeachers() {
     };
     const [formValues, setFormValues] = useState(initialVlaues);
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
 
 
     const onChangeHandle = (e) => {
@@ -55,6 +56,7 @@ function AddTeachers() {
         {
             headers: {
               "Content-Type": "multipart/form-data",
+              Authorization:token
             },
           }
         ).then((response) => {
