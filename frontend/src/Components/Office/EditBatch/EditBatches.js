@@ -22,7 +22,7 @@ function EditBatches() {
  
       setBatchData(response.data.batchData)
     })
-  },[])
+  },[token,batchId])
   console.log(batchData)
 
   return (

@@ -43,7 +43,7 @@ function Body() {
         <MDBRow>
 
           <MDBCol col='10' md='6'>
-            <img className='image' src="images/girl-1.png" alt="" />
+            <img className='image' src="/images/girl-1.png" alt="" />
           </MDBCol>
 
           <MDBCol col='4' md='6'>

@@ -33,12 +33,12 @@ const studentSchema = new Schema(
       type: String,
       required: true,
     },
-    parent_name: {
+    parentName: {
       type: String,
-      required: true,
+      required: true, 
       trim: true,
     },
-    parent_phone: {
+    parentPhone: {
       type: Number,
       required: true,
     },
@@ -103,4 +103,5 @@ const studentSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Student", studentSchema);
+const student = mongoose.model("student", studentSchema);
+module.exports=student

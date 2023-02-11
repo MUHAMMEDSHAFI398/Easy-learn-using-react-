@@ -23,11 +23,14 @@ officeRouter.get('/unblock-teacher/:id',verifyToken.verifyTokenAdmin,officeContr
 
 officeRouter.get('/batches',verifyToken.verifyTokenAdmin,officeController.getBatches)
 
-officeRouter.post('/add-batch',verifyToken.verifyTokenAdmin,officeController.addBatch)
+officeRouter.post('/add-batch',officeController.addBatch)
 
 officeRouter.get('/get-batch/:id',verifyToken.verifyTokenAdmin,officeController.getBatch)
 
 officeRouter.get('/get-edit-batch/:id',verifyToken.verifyTokenAdmin,officeController.getEditBatch)
+
+officeRouter.post('/add-student',verifyToken.verifyTokenAdmin,upload.single('file'),officeController.addStudent) 
+
 
 
 

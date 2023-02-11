@@ -1,5 +1,6 @@
 const teacher = require('../models/teacher');
 const batch = require('../models/batch');
+const student = require('../models/student')
 
 const uniqueCodeGenerator = (data) => {
     try {
@@ -14,6 +15,9 @@ const uniqueCodeGenerator = (data) => {
             }else if(data === 'batch'){
                 collectionName = batch;
                 firstCode = 'ELBT'
+            }else if(data === 'student'){
+                collectionName = student;
+                firstCode = 'ELST'
             }
             collectionName.countDocuments({}).then((count) => {
                 console.log(count)

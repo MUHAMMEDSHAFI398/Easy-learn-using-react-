@@ -3,7 +3,7 @@ import OfficeHome from '../../Components/Office/OfficeHome/OfficeHome';
 import Sidebar from '../../Components/Office/Sidebar/Sidebar';
 
 
-function OfficHome() {
+function Home() {
   return (
     <div className='d-flex'>
       <Sidebar/>
@@ -12,4 +12,4 @@ function OfficHome() {
   )
 }
 
-export default OfficHome
+export default Home

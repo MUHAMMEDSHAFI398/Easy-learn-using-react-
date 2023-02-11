@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const teacher = require('../models/teacher')
 const batch = require('../models/batch');
+const student = require('../models/student')
 const helpers = require('../helpers/helpers')
 const mongoose = require('mongoose');
 const verifyAdmin = require('../middlewares/middlewares')
@@ -246,6 +247,41 @@ module.exports = {
                 status:true,
                 batchData:batchData
             })
+        })
+    },
+    addStudent:async(req,res)=>{
+        const data = req.body
+        console.log(data)
+        const registerId = await helpers.uniqueCodeGenerator('student')
+        const image = {
+            url: req.file.path,
+            filename: req.file.filename
+        }
+        student.create({
+            registerId: registerId,
+            name: data.name,
+            phone: data.phone,
+            email: data.email,
+            dateOfBirth: data.dateOfBirth,
+            gender: data.gender,
+            parentName: data.parentName,
+            parentPhone: data.parentPhone,
+            education: data.education,
+            institute: data.institute,
+            batch:data.batch,
+            isBlocked: false,
+            image: image,
+            address: {
+                house_name: data.house_name,
+                place: data.place,
+                post: data.post,
+                pin: data.pin,
+                district: data.district,
+                state: data.state
+            }
+
+        }).then(() => {
+            res.json({ success: true })
         })
     }
 

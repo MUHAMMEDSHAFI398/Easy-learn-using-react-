@@ -30,7 +30,7 @@ function AddBatches() {
         console.log(response);
       }
     })
-  },[])
+  },[token])
 
   const onChangeHandle = (e) => {
     e.preventDefault();
@@ -52,15 +52,14 @@ function AddBatches() {
   const handleSubmit = (e)=>{
     e.preventDefault();
   
-    const data = {
-      ...formValues,
-      subjectValues,
+    axios.post('/office/add-batch',{
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization:token
       },
-    }
-    axios.post('/office/add-batch',data).then((response)=>{
+      ...formValues,
+      subjectValues,
+    }).then((response)=>{
       if(response.data.status){
         navigate('/office/batches')
       }else{
