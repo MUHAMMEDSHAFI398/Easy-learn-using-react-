@@ -31,6 +31,7 @@ officeRouter.get('/get-edit-batch/:id',verifyToken.verifyTokenAdmin,officeContro
 
 officeRouter.post('/add-student',verifyToken.verifyTokenAdmin,upload.single('file'),officeController.addStudent) 
 
+officeRouter.patch('/edit-batch',officeController.patchEditBatch) 
 
 
 

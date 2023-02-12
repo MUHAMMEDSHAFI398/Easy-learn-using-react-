@@ -5,7 +5,6 @@ const batch = require('../models/batch');
 const student = require('../models/student')
 const helpers = require('../helpers/helpers')
 const mongoose = require('mongoose');
-const verifyAdmin = require('../middlewares/middlewares')
 dotenv.config();
 
 
@@ -23,7 +22,7 @@ module.exports = {
                 payload,
                 "secret",
                 {
-                    expiresIn: 3600,
+                    expiresIn: 36000,
                 },
                 (err, token) => {
                     if (err) console.error("There is some error in token", err);
@@ -89,7 +88,7 @@ module.exports = {
     },
     getTeacher: (req, res) => {
         const id = req.params.id
-       
+
         teacher.findOne({ _id: id }).then((teacher) => {
             res.json({
                 status: true,
@@ -198,12 +197,12 @@ module.exports = {
             })
         })
     },
-    getBatch:(req,res)=>{
+    getBatch: (req, res) => {
         const id = req.params.id
         const objectId = mongoose.Types.ObjectId(id);
         batch.aggregate([
             {
-                $match:{
+                $match: {
                     _id: objectId
                 }
             },
@@ -216,40 +215,73 @@ module.exports = {
                 }
             }
         ]).then((batch) => {
-      
+
             res.json({
                 status: true,
                 batch: batch
             })
-        }) 
-    },
-    getEditBatch:(req,res)=>{
-
-        const id =req.params.id
-        const objectId = mongoose.Types.ObjectId(id);
-        batch.aggregate([
-            {
-                $match:{
-                    _id:objectId
-                }
-            },
-            {
-                $lookup: {
-                    from: "teachers",
-                    localField: "headOfTheBatch",
-                    foreignField: "registerId",
-                    as: "teacher_data"
-                }
-            }
-        ]).then((batchData)=>{
-            console.log(batchData);
-            res.json({
-                status:true,
-                batchData:batchData
-            })
         })
     },
-    addStudent:async(req,res)=>{
+    getEditBatch: async (req, res) => {
+
+        const id = req.params.id
+        const objectId = mongoose.Types.ObjectId(id);
+
+        try {
+            const batchData = await batch.aggregate([
+                {
+                    $match: {
+                        _id: objectId
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "teachers",
+                        localField: "headOfTheBatch",
+                        foreignField: "registerId",
+                        as: "teacher_data"
+                    }
+                }, 
+                {
+                    $project: {
+                        numberOfSeat: 1,
+                        remarks: 1,
+                        subjects: 1,
+                        headOfTheBatch: { $arrayElemAt: ["$teacher_data.name", 0] }
+                    }
+                }
+            ])
+            const teachers = await teacher.aggregate([
+                {
+                    $match: {}
+                },
+                {
+                    $project: {
+                        name: 1,
+                        registerId:1
+                    }
+                }
+            ])
+            console.log(batchData);
+            res.json({
+                status: true,
+                batchData: batchData,
+                teachers: teachers
+            })
+            
+
+        } catch (err) {
+            console.log(err) 
+        }
+
+
+
+    },
+    patchEditBatch:async(req,res)=>{
+      console.log(req.body)
+      res.json({status:true})
+    },
+    addStudent: async (req, res) => {
         const data = req.body
         console.log(data)
         const registerId = await helpers.uniqueCodeGenerator('student')
@@ -268,7 +300,7 @@ module.exports = {
             parentPhone: data.parentPhone,
             education: data.education,
             institute: data.institute,
-            batch:data.batch,
+            batch: data.batch,
             isBlocked: false,
             image: image,
             address: {

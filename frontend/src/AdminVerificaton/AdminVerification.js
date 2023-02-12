@@ -5,7 +5,7 @@ export default function AdminVerification({children}) {
     const navigate = useNavigate();
 useEffect(()=>{
     if(localStorage.getItem('token')){   
-         navigate('/office/home')
+         navigate('/office/home')      
     }else{
          navigate('/office')
     }
