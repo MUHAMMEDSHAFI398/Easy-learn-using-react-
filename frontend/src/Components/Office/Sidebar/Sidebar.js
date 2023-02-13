@@ -16,7 +16,7 @@ function Sidebar() {
   
   const navigate = useNavigate()
   const handleLogout =()=>{
-    localStorage.removeItem("token")
+    localStorage.removeItem("officeToken")
     message.success("Logout successfully")
     navigate('/office')
   }

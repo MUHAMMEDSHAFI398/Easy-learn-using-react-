@@ -12,7 +12,7 @@ function AddTeachers() {
     };
     const [formValues, setFormValues] = useState(initialVlaues);
     const navigate = useNavigate();
-    const token = localStorage.getItem("token");
+    const officeToken = localStorage.getItem("officeToken");
 
 
     const onChangeHandle = (e) => {
@@ -56,7 +56,7 @@ function AddTeachers() {
         {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization:token
+              Authorization:officeToken
             },
           }
         ).then((response) => {

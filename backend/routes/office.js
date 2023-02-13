@@ -22,8 +22,8 @@ officeRouter.get('/block-teacher/:id',verifyToken.verifyTokenAdmin,officeControl
 officeRouter.get('/unblock-teacher/:id',verifyToken.verifyTokenAdmin,officeController.unBlockTeacher)
 
 officeRouter.get('/batches',verifyToken.verifyTokenAdmin,officeController.getBatches)
-
-officeRouter.post('/add-batch',officeController.addBatch)
+ 
+officeRouter.post('/add-batch',verifyToken.verifyTokenAdmin,officeController.addBatch)
 
 officeRouter.get('/get-batch/:id',verifyToken.verifyTokenAdmin,officeController.getBatch)
 
@@ -31,7 +31,11 @@ officeRouter.get('/get-edit-batch/:id',verifyToken.verifyTokenAdmin,officeContro
 
 officeRouter.post('/add-student',verifyToken.verifyTokenAdmin,upload.single('file'),officeController.addStudent) 
 
-officeRouter.patch('/edit-batch',officeController.patchEditBatch) 
+officeRouter.patch('/edit-batch/:id',verifyToken.verifyTokenAdmin,officeController.patchEditBatch)
+
+officeRouter.get('/students',verifyToken.verifyTokenAdmin,officeController.getStudents)
+
+officeRouter.patch('/block-teacher/:id',verifyToken.verifyTokenAdmin,officeController.blockStudent)
 
 
 

@@ -26,7 +26,7 @@ function Body() {
 
     }).then((response)=>{
         const jwtToken = response.data.token
-        localStorage.setItem("token", jwtToken);
+        localStorage.setItem("officeToken", jwtToken);
         navigate('/office/home');
 
     }).catch((error)=>{

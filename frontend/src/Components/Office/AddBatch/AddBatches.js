@@ -15,13 +15,13 @@ function AddBatches() {
   const [subjectValues, setSubjectValues] = useState([])
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const officeToken = localStorage.getItem("officeToken");
 
 
   useEffect(() => {
     axios.get('/office/teachers',{
       headers: {      
-        Authorization:token
+        Authorization:officeToken
       },
     }).then((response) => {
       if (response.data.status) {
@@ -30,7 +30,7 @@ function AddBatches() {
         console.log(response);
       }
     })
-  },[token])
+  },[officeToken])
 
   const onChangeHandle = (e) => {
     e.preventDefault();
@@ -48,17 +48,18 @@ function AddBatches() {
     e.preventDefault();
     setSubjectValues([...subjectValues, subjectValue]);
   }
+ 
 
   const handleSubmit = (e)=>{
     e.preventDefault();
-  
+    
     axios.post('/office/add-batch',{
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization:token
-      },
       ...formValues,
       subjectValues,
+    },{
+      headers: {      
+        Authorization:officeToken
+      },
     }).then((response)=>{
       if(response.data.status){
         navigate('/office/batches')
@@ -135,7 +136,7 @@ function AddBatches() {
                 name='headOfTheBatch'
                 id=""
               > 
-                <option selected disabled value=''></option>       
+                <option defaultValue disabled value=''></option>       
                 {
                   teachers.map((obj)=>{
                     return(
@@ -180,7 +181,7 @@ function AddBatches() {
                   type="text" placeholder='Teacher'
                   id='subject'
                 >
-                  <option selected disabled value=''>Teacher</option>
+                  <option defaultValue disabled value=''>Teacher</option>
                  {
                   teachers.map((obj)=>{
                     return(

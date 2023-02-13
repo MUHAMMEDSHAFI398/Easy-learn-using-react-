@@ -6,13 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 function ViewTeachers() {
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const officeToken = localStorage.getItem("officeToken");
  
 
   useEffect(() => {
     axios.get('/office/teachers',{
       headers: {      
-        Authorization:token
+        Authorization:officeToken
       },
     }).then((response) => {
       if (response.data.status) {
@@ -27,7 +27,7 @@ function ViewTeachers() {
   const handleClick = async (id) => {
     axios.get(`/office/get-teacher/${id}`,{
       headers: {      
-        Authorization:token
+        Authorization:officeToken
       },
     }).then((response) => {
       if (response.data.status) {
@@ -43,7 +43,7 @@ function ViewTeachers() {
 
     axios.get(`/office/block-teacher/${id}`,{
       headers: {      
-        Authorization:token
+        Authorization:officeToken
       },
     }).then(() => {
       const setTeacher = teachers.filter((value) => {
@@ -60,7 +60,7 @@ function ViewTeachers() {
 
     axios.get(`/office/unblock-teacher/${id}`,{
       headers: {      
-        Authorization:token
+        Authorization:officeToken
       },
     }).then(() => {
       const setTeacher = teachers.filter((value) => {

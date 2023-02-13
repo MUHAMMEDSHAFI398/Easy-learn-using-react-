@@ -22,7 +22,7 @@ module.exports = {
                 payload,
                 "secret",
                 {
-                    expiresIn: 36000,
+                    expiresIn: 3600000,
                 },
                 (err, token) => {
                     if (err) console.error("There is some error in token", err);
@@ -77,8 +77,7 @@ module.exports = {
 
     },
     getTeachers: (req, res) => {
-        const token = req.headers.authorization;
-        console.log(token)
+
         teacher.find().then((teachers) => {
             res.json({
                 status: true,
@@ -241,12 +240,13 @@ module.exports = {
                         foreignField: "registerId",
                         as: "teacher_data"
                     }
-                }, 
+                },
                 {
                     $project: {
                         numberOfSeat: 1,
                         remarks: 1,
                         subjects: 1,
+                        batchHeadId: '$headOfTheBatch',
                         headOfTheBatch: { $arrayElemAt: ["$teacher_data.name", 0] }
                     }
                 }
@@ -258,32 +258,58 @@ module.exports = {
                 {
                     $project: {
                         name: 1,
-                        registerId:1
+                        registerId: 1
                     }
                 }
             ])
-            console.log(batchData);
+
             res.json({
                 status: true,
                 batchData: batchData,
                 teachers: teachers
             })
-            
+
 
         } catch (err) {
-            console.log(err) 
+            console.log(err)
         }
 
 
 
     },
-    patchEditBatch:async(req,res)=>{
-      console.log(req.body)
-      res.json({status:true})
+    patchEditBatch: async (req, res) => {
+        const id = req.params.id
+        const data = req.body
+        const batchData = await batch.findOne({ _id: id })
+        await teacher.updateOne(
+
+            { registerId: data.batchHeadId },
+            {
+                $set: {
+                    myBatch: batchData.registerId
+                }
+            }
+        )
+        try {
+            await batch.updateOne(
+                { _id: id },
+                {
+                    $set: {
+                        numberOfSeat: data.numberOfSeat,
+                        remarks: data.remarks,
+                        headOfTheBatch: data.head,
+                        subjects: data.subjectValues
+                    }
+                }
+            )
+            res.json({ status: true })
+        } catch (err) {
+            console.log(err)
+        }
     },
     addStudent: async (req, res) => {
         const data = req.body
-        console.log(data)
+
         const registerId = await helpers.uniqueCodeGenerator('student')
         const image = {
             url: req.file.path,
@@ -315,6 +341,31 @@ module.exports = {
         }).then(() => {
             res.json({ success: true })
         })
+    },
+    getStudents: async (req, res) => {
+        try {
+            const students = await student.find()
+            console.log(students)
+            res.json({
+                status: true,
+                students: students
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    },
+    blockStudent: async (req, res) => {
+
+        try {
+            const id = req.params.id;
+            await student.updateOne(
+                {_id:id},
+                {isBlocked:true}
+            )
+            res.json({status:true})
+        }catch(err){
+            console.log(err)
+        }
     }
 
 }

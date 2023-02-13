@@ -15,7 +15,7 @@ function AddStudents() {
 
   const [formValues, setFormValues] = useState(initialVlaues);
     const navigate = useNavigate();
-    const token = localStorage.getItem("token");
+    const officeToken = localStorage.getItem("officeToken");
 
     const onChangeHandle = (e) => {
         const { name, value } = e.target;
@@ -32,7 +32,7 @@ function AddStudents() {
   useEffect(() => {
     axios.get('/office/batches',{
       headers: {      
-        Authorization:token
+        Authorization:officeToken
       },
     }).then((response) => {
       if (response.data.status) {
@@ -73,7 +73,7 @@ function AddStudents() {
     {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization:token
+          Authorization:officeToken
         },
       }
     ).then((response) => {
@@ -213,7 +213,7 @@ function AddStudents() {
             name='batch' className="input-tag" 
             id="batch"
             >
-            <option selected disabled value=''>Batch</option>
+            <option defaultValue disabled value=''>Batch</option>
 
             {
                   batches.map((obj)=>{

@@ -8,21 +8,23 @@ function EditBatches() {
   const navigate = useNavigate('')
   const location = useLocation()
   const batchId = location.state.id
-  const [teachers, setTeachers] = useState([{ name: '' }])
+  const [teachers, setTeachers] = useState([{ name: '',registerId:'' }])
   const [batchData, setBatchData] = useState({
     numberOfSeat: "",
     remarks: "",
-    headOfTheBatch: ""
+    headOfTheBatch:"",
+    batchHeadId:""
   });
 
   const [subjectValues, setSubjectValues] = useState([{ subject: "", teacher: "" }])
-  const token = localStorage.getItem("token");
+  const officeToken = localStorage.getItem("officeToken");
+  
 
 
   useEffect(() => {
     axios.get(`/office/get-edit-batch/${batchId}`, {
       headers: {
-        Authorization: token
+        Authorization: officeToken
       },
     }).then((response) => {
 
@@ -31,26 +33,20 @@ function EditBatches() {
       const subjectValues = response.data.batchData[0].subjects
       setBatchData(batchData)
       setSubjectValues(subjectValues)
+      console.log({...batchData})
 
     })
-  }, [token, batchId])
+  }, [officeToken, batchId])
 
 
   const handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     setBatchData({ ...batchData, [name]: value });
+   
   };
 
 
-
-  //   const handleTeacherChange = (e, index) => {
-  //     const values = [...subjectValues];
-  //     console.log(e.target.value)
-  //     values[0].teacher = e.target.value;
-  //     setSubjectValues(values);
-  //     console.log(values)
-  // };
 
   const handleTeacherChange = (e, index) => {
     const values = [...subjectValues];
@@ -68,13 +64,17 @@ function EditBatches() {
   const handleSubmit = (e) => {
     
     e.preventDefault();
-    axios.patch('/office/edit-batch', {
+    axios.patch(`/office/edit-batch/${batchId}`, {
       subjectValues,
-      ...batchData
+      ...batchData,
       
+    },{
+      headers: {      
+        Authorization:officeToken
+      },
     }).then((response) => {
       if (response.data.status) {
-        navigate('/office/each-batch')
+        navigate('/office/batches')
       }
     })
 
@@ -107,16 +107,15 @@ function EditBatches() {
               <label className='ms-4 mt-3'>Head of the batch</label>
               <select
                 onChange={handleChange}
-                value={batchData.headOfTheBatch}
                 className="input-tag"
-                name='headOfTheBatch'
-                id="headOfTheBatch"
+                name='head'
+                id="head"
               >
-                <option selected value={batchData.headOfTheBatch}>{batchData.headOfTheBatch}</option>
+                <option value={batchData.batchHeadId}>{batchData.headOfTheBatch}</option>
                 {
-                  teachers.map((obj) => {
+                  teachers.map((obj,index) => {
                     return (
-                      <option value={obj.name}>{obj.name}</option>
+                      <option key={index} value={obj.registerId}>{obj.name} ({obj.registerId})</option>
                     )
                   })
                 }
@@ -161,7 +160,7 @@ function EditBatches() {
                         type="text" placeholder='Teacher'
                         id='subject'
                       >
-                        <option selected value={obj.teacher}>{obj.teacher}</option>
+                        <option defaultValue value={obj.teacher}>{obj.teacher}</option>
                         {
                           teachers.map((obj) => {
                             return (

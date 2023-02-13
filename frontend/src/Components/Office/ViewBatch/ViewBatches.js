@@ -9,13 +9,13 @@ function ViewBatches() {
 
   const[batches,setBatches]=useState([]);
   const navigate=useNavigate();
-  const token = localStorage.getItem("token");
+  const officeToken = localStorage.getItem("officeToken");
 
 
   useEffect(()=>{
     axios.get('/office/batches',{
       headers: {      
-        Authorization:token
+        Authorization:officeToken
       },
     }).then((response) => {
       if (response.data.status) {
@@ -30,7 +30,7 @@ function ViewBatches() {
   const handleClick = async (id) => {
     axios.get(`/office/get-batch/${id}`,{
       headers: {      
-        Authorization:token
+        Authorization:officeToken
       },
     }).then((response) => {
       if (response.data.status) {
