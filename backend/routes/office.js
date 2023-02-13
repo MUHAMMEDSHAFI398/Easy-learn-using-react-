@@ -17,9 +17,9 @@ officeRouter.get('/get-teacher/:id',verifyToken.verifyTokenAdmin,officeControlle
 
 officeRouter.patch('/edit-teacher/:id',verifyToken.verifyTokenAdmin,officeController.editTeacher)
 
-officeRouter.get('/block-teacher/:id',verifyToken.verifyTokenAdmin,officeController.blockTeacher)
+officeRouter.patch('/block-teacher/:id',verifyToken.verifyTokenAdmin,officeController.blockTeacher)
 
-officeRouter.get('/unblock-teacher/:id',verifyToken.verifyTokenAdmin,officeController.unBlockTeacher)
+officeRouter.patch('/unblock-teacher/:id',verifyToken.verifyTokenAdmin,officeController.unBlockTeacher)
 
 officeRouter.get('/batches',verifyToken.verifyTokenAdmin,officeController.getBatches)
  

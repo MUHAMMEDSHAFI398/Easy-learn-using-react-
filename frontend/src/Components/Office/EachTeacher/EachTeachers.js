@@ -76,7 +76,7 @@ function EachTeachers() {
    
   const handleBlock = (e) => {
     e.preventDefault();
-    axios.get(`/office/block-teacher/${location.state.teacher._id}`,{
+    axios.patch(`/office/block-teacher/${location.state.teacher._id}`,{}, {
       headers: {      
         Authorization:officeToken
       },
@@ -88,7 +88,7 @@ function EachTeachers() {
 
   const handleUnBlock = (e) => {
     e.preventDefault();
-    axios.get(`/office/unblock-teacher/${location.state.teacher._id}`,{
+    axios.patch(`/office/unblock-teacher/${location.state.teacher._id}`,{},{
       headers: {      
         Authorization:officeToken
       },

@@ -41,7 +41,7 @@ function ViewTeachers() {
   }
   const handleBlock = (id) => {
 
-    axios.get(`/office/block-teacher/${id}`,{
+    axios.patch(`/office/block-teacher/${id}`,{}, {
       headers: {      
         Authorization:officeToken
       },
@@ -58,7 +58,7 @@ function ViewTeachers() {
 
   const handleUnBlock = (id) => {
 
-    axios.get(`/office/unblock-teacher/${id}`,{
+    axios.patch(`/office/unblock-teacher/${id}`,{}, {
       headers: {      
         Authorization:officeToken
       },
