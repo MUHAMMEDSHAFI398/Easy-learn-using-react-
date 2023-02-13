@@ -345,7 +345,6 @@ module.exports = {
     getStudents: async (req, res) => {
         try {
             const students = await student.find()
-            console.log(students)
             res.json({
                 status: true,
                 students: students
@@ -361,6 +360,19 @@ module.exports = {
             await student.updateOne(
                 {_id:id},
                 {isBlocked:true}
+            )
+            res.json({status:true})
+        }catch(err){
+            console.log(err)
+        }
+    },
+    unBlockStudent: async (req,res)=>{
+        
+        try {
+            const id = req.params.id;
+            await student.updateOne(
+                {_id:id},
+                {isBlocked:false}
             )
             res.json({status:true})
         }catch(err){

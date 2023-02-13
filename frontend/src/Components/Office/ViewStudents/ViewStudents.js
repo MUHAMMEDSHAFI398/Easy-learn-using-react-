@@ -8,7 +8,7 @@ function ViewStudents() {
 
   const [students, setStudents] = useState([]);
   const officeToken = localStorage.getItem("officeToken");
-  
+
 
   useEffect(() => {
     axios.get('/office/students', {
@@ -25,20 +25,36 @@ function ViewStudents() {
     })
   }, [])
 
-  const handleBlock = (id) => {
+  const handleBlock = async (id) => {
 
-    axios.patch(`/office/block-student/${id}`,{
-      headers: {      
-        Authorization:officeToken
+    axios.patch(`/office/block-student/${id}`,{}, {
+      headers: {
+        Authorization: officeToken
       },
     }).then(() => {
-      const setStudents = students.filter((obj) => {
+      const setStudent = students.filter((obj) => {
         if (obj._id === id) {
           obj.isBlocked = true;
         }
         return obj;
       })
-      setStudents(setStudents);
+      setStudents(setStudent);
+    })
+  }
+  const handleUnBlock = async (id) => {
+
+    axios.patch(`/office/unblock-student/${id}`,{}, {
+      headers: {
+        Authorization: officeToken
+      },
+    }).then(() => {
+      const setStudent = students.filter((obj) => {
+        if (obj._id === id) {
+          obj.isBlocked = false;
+        }
+        return obj;
+      })
+      setStudents(setStudent);
     })
   }
 
@@ -96,18 +112,19 @@ function ViewStudents() {
         },
       ],
       rows: students.map((obj, index) => {
-       
+
         return {
           slno: index + 1,
           registerId: obj.registerId,
           name: obj.name,
           phone: obj.phone,
           batch: obj.batch,
-          paarentPhone:obj.parentPhone,
-          controlls: <button onClick={() => handleBlock(obj._id)} className='block-button'>Block</button>,
+          paarentPhone: obj.parentPhone,
+          controlls: obj.isBlocked === false ? <button onClick={() => handleBlock(obj._id)} className='block-button'>Block</button> :
+            <button onClick={() => handleUnBlock(obj._id)} className='unblock-button'>Un block</button>,
           view: <i className="i-tags ms-4 fa fa-chevron-circle-right"></i>
 
-       
+
         }
 
       })

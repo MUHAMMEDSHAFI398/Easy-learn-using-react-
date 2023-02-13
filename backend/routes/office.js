@@ -35,7 +35,9 @@ officeRouter.patch('/edit-batch/:id',verifyToken.verifyTokenAdmin,officeControll
 
 officeRouter.get('/students',verifyToken.verifyTokenAdmin,officeController.getStudents)
 
-officeRouter.patch('/block-teacher/:id',verifyToken.verifyTokenAdmin,officeController.blockStudent)
+officeRouter.patch('/block-student/:id',verifyToken.verifyTokenAdmin,officeController.blockStudent)
+
+officeRouter.patch('/unblock-student/:id',verifyToken.verifyTokenAdmin,officeController.unBlockStudent)
 
 
 
