@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './AddBatch.css'
 import axios from '../../../axios'
+import {message} from 'antd'
+
 function AddBatches() {
 
 
@@ -47,6 +49,7 @@ function AddBatches() {
   const addSubHandle = (e) => {
     e.preventDefault();
     setSubjectValues([...subjectValues, subjectValue]);
+    setSubjectValue(subjectInitiaValues);
   }
  
 
@@ -61,6 +64,7 @@ function AddBatches() {
         Authorization:officeToken
       },
     }).then((response)=>{
+      message.success('Successfully added new batch')
       if(response.data.status){
         navigate('/office/batches')
       }else{

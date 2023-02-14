@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './AddTeacher.css'
 import { useNavigate } from "react-router-dom";
 import axios from '../../../axios'
-
+import {message} from 'antd'
 
 function AddTeachers() {
     const initialVlaues = {
@@ -60,7 +60,7 @@ function AddTeachers() {
             },
           }
         ).then((response) => {
-            console.log(response.data);
+            message.success('Successfully added new teacher')
             navigate('/office/teachers');
 
         }).catch((error) => {

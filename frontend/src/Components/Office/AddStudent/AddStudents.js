@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react'
 import './AddStudent.css'
 import axios from '../../../axios'
 import { useNavigate } from 'react-router-dom';
+import { message } from 'antd';
 
 function AddStudents() {
 
@@ -76,8 +77,8 @@ function AddStudents() {
           Authorization:officeToken
         },
       }
-    ).then((response) => {
-        console.log(response.data);
+    ).then(() => {
+        message.success('Successfully added new student')
         navigate('/office/students');
 
     }).catch((error) => {

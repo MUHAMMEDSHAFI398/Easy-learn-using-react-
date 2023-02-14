@@ -3,7 +3,7 @@ import './EachTeacher.css';
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from '../../../axios'
 import Swal from 'sweetalert2'
-import {message} from 'antd'
+import { message } from 'antd'
 import {
   MDBCol,
   MDBContainer,
@@ -26,11 +26,11 @@ function EachTeachers() {
   const initialvalues = { experience: "", salary: "" }
   // const previosValues={experience: location.state.teacher.experience, salary:location.state.teacher.salary}
   const [formValues, setFormValues] = useState(initialvalues);
-  const [teacherBlock,setTeacherBlock]=useState(location.state.teacher.isBlocked)
+  const [teacherBlock, setTeacherBlock] = useState(location.state.teacher.isBlocked)
   // const [editteacher,setEditTeacher]=useState(previosValues)
 
-  const date_of_birth=location.state.teacher.date_of_birth
-  const birthDate=new Date(date_of_birth);
+  const date_of_birth = location.state.teacher.date_of_birth
+  const birthDate = new Date(date_of_birth);
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const readableDate = birthDate.toLocaleDateString('en-US', options);
   const officeToken = localStorage.getItem("officeToken");
@@ -48,15 +48,15 @@ function EachTeachers() {
       salary: formValues.salary,
       experience: formValues.experience,
 
-    },{
+    }, {
       headers: {
-        Authorization:officeToken
+        Authorization: officeToken
       },
     }).then(() => {
       // setEditTeacher({salary: formValues.salary,experience: formValues.experience})
-      axios.get(`/office/get-teacher/${location.state.teacher._id}`,{
-        headers: {      
-          Authorization:officeToken
+      axios.get(`/office/get-teacher/${location.state.teacher._id}`, {
+        headers: {
+          Authorization: officeToken
         },
       }).then((response) => {
         if (response.data.status) {
@@ -65,7 +65,7 @@ function EachTeachers() {
               teacher: response.data.teacher
             }
           });
-        
+          setFormValues(initialvalues)
         }
       })
 
@@ -74,11 +74,11 @@ function EachTeachers() {
 
     })
   }
-   
+
   const handleBlock = (e) => {
     e.preventDefault();
     Swal.fire({
-       
+
       text: "Are you sure you want to block this teacher?",
       icon: 'warning',
       showCancelButton: true,
@@ -87,25 +87,25 @@ function EachTeachers() {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.patch(`/office/block-teacher/${location.state.teacher._id}`,{}, {
-          headers: {      
-            Authorization:officeToken
+        axios.patch(`/office/block-teacher/${location.state.teacher._id}`, {}, {
+          headers: {
+            Authorization: officeToken
           },
-        }).then(()=>{
+        }).then(() => {
           message.success("This teacher has been blocked")
           setTeacherBlock(true)
         })
       }
     })
-    
-    
-    
+
+
+
   }
 
   const handleUnBlock = (e) => {
     e.preventDefault();
     Swal.fire({
-       
+
       text: "Are you sure you want to Unblock this teacher?",
       icon: 'warning',
       showCancelButton: true,
@@ -114,17 +114,17 @@ function EachTeachers() {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.patch(`/office/unblock-teacher/${location.state.teacher._id}`,{},{
-          headers: {      
-            Authorization:officeToken
+        axios.patch(`/office/unblock-teacher/${location.state.teacher._id}`, {}, {
+          headers: {
+            Authorization: officeToken
           },
-        }).then(()=>{
+        }).then(() => {
           message.success("This teacher has been Unblocked")
-          setTeacherBlock(false)      
+          setTeacherBlock(false)
         })
       }
     })
-   
+
   }
 
   return (
@@ -151,10 +151,10 @@ function EachTeachers() {
                       <div className="d-flex justify-content-center mb-2">
                         {
                           teacherBlock === false ?
-                          <button onClick={handleBlock} className='btn btn-danger'>Block</button> : 
-                          <button onClick={handleUnBlock} className='btn btn-success'>Un block</button>
+                            <button onClick={handleBlock} className='btn btn-danger'>Block</button> :
+                            <button onClick={handleUnBlock} className='btn btn-success'>Un block</button>
                         }
-                        
+
 
                       </div>
                     </MDBCardBody>
@@ -166,23 +166,25 @@ function EachTeachers() {
                 <MDBCard className="mb-4 mb-lg-0">
                   <div className='borderDiv'>
                     <MDBCardBody className="p-0">
-                      <MDBListGroup flush className="rounded-3">
+                 
                         <MDBListGroupItem className="d-flex justify-content-center align-items-center p-3">
-                          <MDBCardText><h5>Contack information</h5></MDBCardText>
+                          <h5 className='contact-inf'>Contact information</h5>
                         </MDBListGroupItem>
                         <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                           <MDBIcon fas icon="envelope" style={{ color: '#55acee' }} />
                           <MDBCardText>{location.state.teacher.phone}</MDBCardText>
                         </MDBListGroupItem>
+                        <hr className='mt-0 mb-1' />
                         <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
                           <MDBIcon fas icon="phone-alt" style={{ color: '#55acee' }} />
                           <MDBCardText>{location.state.teacher.email}</MDBCardText>
                         </MDBListGroupItem>
 
-                      </MDBListGroup>
                     </MDBCardBody>
                   </div>
                 </MDBCard>
+           
+
               </MDBCol>
               <MDBCol lg="8">
                 <MDBCard className="mb-4">
@@ -262,38 +264,52 @@ function EachTeachers() {
                     </MDBCardBody>
                   </div>
                 </MDBCard>
-                
 
-                <MDBRow>
 
-                  <div className="container mb-5 borderDiv  rounded-3 ">
-                    <div className=" d-flex align-items-center justify-content-center mt-3">
-                      <h5 className="text-decoration-underline">Edit teacher details</h5>
-                    </div>
 
-                    <form className="mt-3 mb-3" onSubmit={handleSubmit}>
-                      <div className="d-flex flex-wrap justify-content-between">
 
-                        <div className="d-flex flex-column">
-
-                          <input onChange={onChangeHandle} className="inputdiv rounded-3" placeholder='Salary' required name="salary" type="text" />
-                        </div>
-
-                        <div className="d-flex flex-column">
-
-                          <input onChange={onChangeHandle} name="experience" required placeholder='Experience' className="inputdiv mt-4 rounded-3" type="text" />
-                        </div>
-
-                        <button className="submitButton btn btn-success mt-4" type="submit">Submit</button>
-
-                      </div>
-
-                    </form>
-
+                <div className="container mb-5 borderDiv  rounded-3 ">
+                  <div className=" d-flex align-items-center justify-content-center mt-3">
+                    <h5 className="text-decoration-underline">Edit teacher details</h5>
                   </div>
 
+                  <form className="mt-3 mb-3" onSubmit={handleSubmit}>
+                    <div className="d-flex flex-wrap justify-content-between">
 
-                </MDBRow>
+                      <div className="d-flex flex-column">
+
+                        <input 
+                        value={formValues.salary}
+                        onChange={onChangeHandle} 
+                        className="inputdiv rounded-3" 
+                        placeholder='Salary' 
+                        required name="salary" 
+                        type="text" 
+                        />
+                      </div>
+
+                      <div className="d-flex flex-column">
+
+                        <input
+                        value={formValues.experience} 
+                        onChange={onChangeHandle} 
+                        name="experience" 
+                        required placeholder='Experience' 
+                        className="inputdiv mt-4 rounded-3" 
+                        type="text" 
+                        />
+                      </div>
+
+                      <button className="submitButton btn btn-success mt-4" type="submit">Submit</button>
+
+                    </div>
+
+                  </form>
+
+                </div>
+
+
+
               </MDBCol>
             </MDBRow>
           </MDBContainer>
