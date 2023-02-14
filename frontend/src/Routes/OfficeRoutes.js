@@ -12,6 +12,7 @@ import AddBatach from "../Pages/Office/AddBatach";
 import EachBatch from "../Pages/Office/EachBatch";
 import EditBatch from "../Pages/Office/EditBatch";
 import AdminVerification from "../AdminVerificaton/AdminVerification";
+import EachStudent from '../Pages/Office/EachStudent';
 
 const OfficeRoutes = () => (
     
@@ -38,6 +39,9 @@ const OfficeRoutes = () => (
         <Route path="/each-batch" element={<AdminVerification> <EachBatch /> </AdminVerification>} ></Route>
 
         <Route path="/edit-batch" element={<AdminVerification> <EditBatch /> </AdminVerification>} ></Route>
+
+        <Route path="/each-student" element={<AdminVerification> <EachStudent/> </AdminVerification>} ></Route>
+
 
     </Routes>
 );

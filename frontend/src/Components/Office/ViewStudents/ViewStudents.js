@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import {message} from 'antd'
 import './ViewStudents.css'
 import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from '../../../axios';
+import Swal from 'sweetalert2'
+
 
 function ViewStudents() {
 
   const [students, setStudents] = useState([]);
   const officeToken = localStorage.getItem("officeToken");
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios.get('/office/students', {
@@ -27,36 +30,89 @@ function ViewStudents() {
 
   const handleBlock = async (id) => {
 
-    axios.patch(`/office/block-student/${id}`,{}, {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then(() => {
-      const setStudent = students.filter((obj) => {
-        if (obj._id === id) {
-          obj.isBlocked = true;
-        }
-        return obj;
-      })
-      setStudents(setStudent);
+
+    Swal.fire({
+      text: "Are you sure you want to block this student?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'green',
+      cancelButtonColor: 'red',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.patch(`/office/block-student/${id}`, {}, {
+          headers: {
+            Authorization: officeToken
+          },
+        }).then(() => {
+          const setStudent = students.filter((obj) => {
+            if (obj._id === id) {
+              obj.isBlocked = true;
+            }
+            return obj;
+          })
+          message.success("The student has been blocked")
+          setStudents(setStudent);
+        })
+      }
+
     })
+
+
+
+
+
   }
   const handleUnBlock = async (id) => {
 
-    axios.patch(`/office/unblock-student/${id}`,{}, {
+    Swal.fire({
+
+      text: "Are you sure you want to Un block this student?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'green',
+      cancelButtonColor: 'red',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.patch(`/office/unblock-student/${id}`, {}, {
+          headers: {
+            Authorization: officeToken
+          },
+        }).then(() => {
+          const setStudent = students.filter((obj) => {
+            if (obj._id === id) {
+              obj.isBlocked = false;
+            }
+            return obj;
+          })
+          message.success("The student has been Un blocked")
+          setStudents(setStudent);
+        })
+      }
+    })
+
+
+
+  }
+
+  const handleClick = async (id) => {
+    axios.get(`/office/student/${id}`, {
       headers: {
         Authorization: officeToken
       },
-    }).then(() => {
-      const setStudent = students.filter((obj) => {
-        if (obj._id === id) {
-          obj.isBlocked = false;
-        }
-        return obj;
-      })
-      setStudents(setStudent);
+    }).then((response) => {
+      if (response.data.status) {
+
+        navigate('/office/each-student', {
+          state: {
+            studentData: response.data.studentData
+          }
+        });
+      }
     })
   }
+
 
   const data = () => {
     return {
@@ -120,9 +176,13 @@ function ViewStudents() {
           phone: obj.phone,
           batch: obj.batch,
           paarentPhone: obj.parentPhone,
-          controlls: obj.isBlocked === false ? <button onClick={() => handleBlock(obj._id)} className='block-button'>Block</button> :
-            <button onClick={() => handleUnBlock(obj._id)} className='unblock-button'>Un block</button>,
-          view: <i className="i-tags ms-4 fa fa-chevron-circle-right"></i>
+          controlls:
+            obj.isBlocked === false ?
+              <button onClick={() => handleBlock(obj._id)} className='block-button'>Block</button>
+              :
+              <button onClick={() => handleUnBlock(obj._id)} className='unblock-button'>Un block</button>,
+
+          view: <i onClick={() => handleClick(obj._id)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
 
 
         }

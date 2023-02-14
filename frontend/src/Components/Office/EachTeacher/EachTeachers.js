@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './EachTeacher.css';
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from '../../../axios'
-
+import Swal from 'sweetalert2'
+import {message} from 'antd'
 import {
   MDBCol,
   MDBContainer,
@@ -64,7 +65,7 @@ function EachTeachers() {
               teacher: response.data.teacher
             }
           });
-          console.log(response.data)
+        
         }
       })
 
@@ -76,30 +77,55 @@ function EachTeachers() {
    
   const handleBlock = (e) => {
     e.preventDefault();
-    axios.patch(`/office/block-teacher/${location.state.teacher._id}`,{}, {
-      headers: {      
-        Authorization:officeToken
-      },
-    }).then(()=>{
-      setTeacherBlock(true)
+    Swal.fire({
+       
+      text: "Are you sure you want to block this teacher?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'green',
+      cancelButtonColor: 'red',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.patch(`/office/block-teacher/${location.state.teacher._id}`,{}, {
+          headers: {      
+            Authorization:officeToken
+          },
+        }).then(()=>{
+          message.success("This teacher has been blocked")
+          setTeacherBlock(true)
+        })
+      }
     })
+    
+    
     
   }
 
   const handleUnBlock = (e) => {
     e.preventDefault();
-    axios.patch(`/office/unblock-teacher/${location.state.teacher._id}`,{},{
-      headers: {      
-        Authorization:officeToken
-      },
-    }).then(()=>{
-      setTeacherBlock(false)
-      console.log(teacherBlock)
+    Swal.fire({
+       
+      text: "Are you sure you want to Unblock this teacher?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'green',
+      cancelButtonColor: 'red',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.patch(`/office/unblock-teacher/${location.state.teacher._id}`,{},{
+          headers: {      
+            Authorization:officeToken
+          },
+        }).then(()=>{
+          message.success("This teacher has been Unblocked")
+          setTeacherBlock(false)      
+        })
+      }
     })
+   
   }
-
-
-
 
   return (
     <div>

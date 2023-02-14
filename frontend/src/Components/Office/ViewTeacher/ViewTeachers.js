@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import './ViewTeacher.css'
 import axios from '../../../axios'
 import { Link, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
+import {message} from 'antd'
 
 function ViewTeachers() {
   const [teachers, setTeachers] = useState([]);
@@ -40,37 +42,63 @@ function ViewTeachers() {
     })
   }
   const handleBlock = (id) => {
-
-    axios.patch(`/office/block-teacher/${id}`,{}, {
-      headers: {      
-        Authorization:officeToken
-      },
-    }).then(() => {
-      const setTeacher = teachers.filter((value) => {
-        if (value._id === id) {
-          value.isBlocked = true
-        }
-        return value;
-      })
-      setTeachers(setTeacher);
+    Swal.fire({
+       
+      text: "Are you sure you want to block this teacher?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'green',
+      cancelButtonColor: 'red',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.patch(`/office/block-teacher/${id}`,{}, {
+          headers: {      
+            Authorization:officeToken
+          },
+        }).then(() => {
+          const setTeacher = teachers.filter((value) => {
+            if (value._id === id) {
+              value.isBlocked = true
+            }
+            return value;
+          })
+          message.success("This teacher has been blocked")
+          setTeachers(setTeacher);
+        })
+      }
     })
+    
   }
 
   const handleUnBlock = (id) => {
-
-    axios.patch(`/office/unblock-teacher/${id}`,{}, {
-      headers: {      
-        Authorization:officeToken
-      },
-    }).then(() => {
-      const setTeacher = teachers.filter((value) => {
-        if (value._id === id) {
-          value.isBlocked = false
-        }
-        return value;
-      })
-      setTeachers(setTeacher);
+    Swal.fire({
+       
+      text: "Are you sure you want to Unblock this teacher?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'green',
+      cancelButtonColor: 'red',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.patch(`/office/unblock-teacher/${id}`,{}, {
+          headers: {      
+            Authorization:officeToken
+          },
+        }).then(() => {
+          const setTeacher = teachers.filter((value) => {
+            if (value._id === id) {
+              value.isBlocked = false
+            }
+            return value;
+          })
+          message.success("This teacher has been Unbloced")
+          setTeachers(setTeacher);
+        })
+      }
     })
+    
   }
 
   return (

@@ -358,24 +358,37 @@ module.exports = {
         try {
             const id = req.params.id;
             await student.updateOne(
-                {_id:id},
-                {isBlocked:true}
+                { _id: id },
+                { isBlocked: true }
             )
-            res.json({status:true})
-        }catch(err){
+            res.json({ status: true })
+        } catch (err) {
             console.log(err)
         }
     },
-    unBlockStudent: async (req,res)=>{
-        
+    unBlockStudent: async (req, res) => {
+
         try {
             const id = req.params.id;
             await student.updateOne(
-                {_id:id},
-                {isBlocked:false}
+                { _id: id },
+                { isBlocked: false }
             )
-            res.json({status:true})
-        }catch(err){
+            res.json({ status: true })
+        } catch (err) {
+            console.log(err)
+        }
+    },
+    getStudent: async (req, res) => {
+        try {
+            const id = req.params.id
+            console.log(id)
+            const studentData = await student.findOne({ _id: id })
+            res.json({
+                status: true,
+                studentData: studentData
+            })
+        } catch (err) {
             console.log(err)
         }
     }
