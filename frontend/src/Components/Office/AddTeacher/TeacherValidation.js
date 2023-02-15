@@ -1,5 +1,5 @@
 const validate = (values) => {
-  console.log(values.date_of_birth)
+  
 
     const errors = {};
 

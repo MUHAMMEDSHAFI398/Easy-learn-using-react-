@@ -12,6 +12,7 @@ function AddTeachers() {
         house_name: "", place: "", post: "", pin: "", district: "", state: "", file: null
     };
     const [formValues, setFormValues] = useState(initialVlaues);
+    const [imageURL, setImageURL] = useState(null);
     const [error, setErrors] = useState({});
     const navigate = useNavigate();
     const officeToken = localStorage.getItem("officeToken");
@@ -28,6 +29,8 @@ function AddTeachers() {
             ...formValues,
             file: event.target.files[0]
         });
+        const imageURL = URL.createObjectURL(event.target.files[0])
+        setImageURL(imageURL);
     };
 
 
@@ -89,7 +92,7 @@ function AddTeachers() {
                     <div className="d-flex flex-wrap justify-content-between">
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Name</label>
+                            <label className='ms-2 mt-3'>Name</label>
                             <input
                                 value={formValues.name}
                                 onChange={onChangeHandle}
@@ -98,7 +101,7 @@ function AddTeachers() {
                                 id='name'
                                 type="text"
                             />
-                            {error.name && (<p className="ms-4 text-danger">{error.name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.name && (<p className="ms-2 text-danger">{error.name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div class="d-flex flex-column">
@@ -110,11 +113,11 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="number"
                             />
-                            {error.phone && (<p className="ms-4 text-danger">{error.phone}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.phone && (<p className="ms-2 text-danger">{error.phone}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div class="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Email</label>
+                            <label className='ms-2 mt-3'>Email</label>
                             <input
                                 value={formValues.email}
                                 onChange={onChangeHandle}
@@ -122,7 +125,7 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.email && (<p className="ms-4 text-danger">{error.email}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.email && (<p className="ms-2 text-danger">{error.email}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
@@ -131,21 +134,20 @@ function AddTeachers() {
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Date of birth</label>
+                            <label className='ms-2 mt-3'>Date of birth</label>
                             <input
                                 value={formValues.date_of_birth}
                                 onChange={onChangeHandle}
                                 name="date_of_birth"
                                 className="input-tag "
-
                                 type="date"
                                 max={new Date().toISOString().split("T")[0]}
                             />
-                            {error.date_of_birth && (<p className="ms-4 text-danger">{error.date_of_birth}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.date_of_birth && (<p className="ms-3 text-danger">{error.date_of_birth}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Gender</label>
+                            <label className='ms-2 mt-3'>Gender</label>
 
                             <select
                                 name="gender"
@@ -161,12 +163,12 @@ function AddTeachers() {
                                 <option value="Female">Female</option>
                                 <option value="Other">Other</option>
                             </select>
-                            {error.gender && (<p className="ms-4 text-danger">{error.gender}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.gender && (<p className="ms-3 text-danger">{error.gender}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Salary</label>
+                            <label className='ms-2 mt-3'>Salary</label>
                             <input
                                 value={formValues.salary}
                                 onChange={onChangeHandle}
@@ -174,7 +176,7 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="number"
                             />
-                            {error.salary && (<p className="ms-4 text-danger">{error.salary}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.salary && (<p className="ms-3 text-danger">{error.salary}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
@@ -182,7 +184,7 @@ function AddTeachers() {
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Qualification</label>
+                            <label className='ms-2 mt-3'>Qualification</label>
                             <input
                                 value={formValues.qualification}
                                 onChange={onChangeHandle}
@@ -190,11 +192,11 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.qualification && (<p className="ms-4 text-danger">{error.qualification}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.qualification && (<p className="ms-3 text-danger">{error.qualification}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Experiance</label>
+                            <label className='ms-2 mt-3'>Experiance</label>
                             <input
                                 value={formValues.experience}
                                 onChange={onChangeHandle}
@@ -202,11 +204,11 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="number"
                             />
-                            {error.experience && (<p className="ms-4 text-danger">{error.experience}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.experience && (<p className="ms-3 text-danger">{error.experience}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Remarks</label>
+                            <label className='ms-2 mt-3'>Remarks</label>
                             <input
                                 value={formValues.remarks}
                                 onChange={onChangeHandle}
@@ -214,14 +216,14 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.remarks && (<p className="ms-4 text-danger">{error.remarks}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.remarks && (<p className="ms-3 text-danger">{error.remarks}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                     </div>
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>House name</label>
+                            <label className='ms-2 mt-3'>House name</label>
                             <input
                                 value={formValues.house_name}
                                 onChange={onChangeHandle}
@@ -229,12 +231,12 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.house_name && (<p className="ms-4 text-danger">{error.house_name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.house_name && (<p className="ms-3 text-danger">{error.house_name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Place</label>
+                            <label className='ms-2 mt-3'>Place</label>
                             <input
                                 value={formValues.place}
                                 onChange={onChangeHandle}
@@ -242,12 +244,12 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.place && (<p className="ms-4 text-danger">{error.place}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.place && (<p className="ms-3 text-danger">{error.place}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Post</label>
+                            <label className='ms-2 mt-3'>Post</label>
                             <input
                                 value={formValues.post}
                                 onChange={onChangeHandle}
@@ -255,7 +257,7 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.post && (<p className="ms-4 text-danger">{error.post}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.post && (<p className="ms-3 text-danger">{error.post}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
@@ -263,7 +265,7 @@ function AddTeachers() {
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Pincode</label>
+                            <label className='ms-2 mt-3'>Pincode</label>
                             <input
                                 value={formValues.pin}
                                 onChange={onChangeHandle}
@@ -271,12 +273,12 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="number"
                             />
-                            {error.pin && (<p className="ms-4 text-danger">{error.pin}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.pin && (<p className="ms-3 text-danger">{error.pin}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>District</label>
+                            <label className='ms-2 mt-3'>District</label>
                             <input
                                 value={formValues.district}
                                 onChange={onChangeHandle}
@@ -284,12 +286,12 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.district && (<p className="ms-4 text-danger">{error.district}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.district && (<p className="ms-3 text-danger">{error.district}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>State</label>
+                            <label className='ms-2 mt-3'>State</label>
                             <input
                                 value={formValues.state}
                                 onChange={onChangeHandle}
@@ -297,13 +299,15 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.state && (<p className="ms-4 text-danger">{error.state}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.state && (<p className="ms-3 text-danger">{error.state}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
                     </div>
                     <div className="d-flex flex-wrap justify-content-center mt-4">
-                        <div className='imagedisplay'></div>
+
+                        {imageURL && <img className='imagedisplay' src={imageURL} alt="couldn't get" />}
+
                     </div>
 
                     <div className="d-flex flex-wrap justify-content-center mt-2">

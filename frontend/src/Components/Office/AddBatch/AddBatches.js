@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './AddBatch.css'
 import axios from '../../../axios'
-import {message} from 'antd'
+import { message } from 'antd'
+import validate from './BatchValidation';
+import subjectValidate from './SubjectValidation'
+
 
 function AddBatches() {
 
@@ -13,6 +16,8 @@ function AddBatches() {
   const subjectInitiaValues = { subject: "", teacher: "" }
 
   const [formValues, setFormValues] = useState(initialVlaues);
+  const [error, setErrors] = useState({});
+  const [subErrors, setSubErrors] = useState({});
   const [subjectValue, setSubjectValue] = useState(subjectInitiaValues);
   const [subjectValues, setSubjectValues] = useState([])
   const [teachers, setTeachers] = useState([]);
@@ -21,9 +26,9 @@ function AddBatches() {
 
 
   useEffect(() => {
-    axios.get('/office/teachers',{
-      headers: {      
-        Authorization:officeToken
+    axios.get('/office/teachers', {
+      headers: {
+        Authorization: officeToken
       },
     }).then((response) => {
       if (response.data.status) {
@@ -32,45 +37,59 @@ function AddBatches() {
         console.log(response);
       }
     })
-  },[officeToken])
+  }, [officeToken])
 
   const onChangeHandle = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+    setErrors({ ...error, [name]: "" });
   };
 
   const handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     setSubjectValue({ ...subjectValue, [name]: value });
+    setSubErrors({ ...subErrors, [name]: "" });
   };
 
   const addSubHandle = (e) => {
     e.preventDefault();
-    setSubjectValues([...subjectValues, subjectValue]);
-    setSubjectValue(subjectInitiaValues);
-  }
- 
+    const subErrors = subjectValidate(subjectValue);
+    if (Object.keys(subErrors).length !== 0) {
+      setSubErrors(subErrors);
+    } else {
+      setSubjectValues([...subjectValues, subjectValue]);
+      setSubjectValue(subjectInitiaValues);
+    }
 
-  const handleSubmit = (e)=>{
+  }
+
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
-    axios.post('/office/add-batch',{
-      ...formValues,
-      subjectValues,
-    },{
-      headers: {      
-        Authorization:officeToken
-      },
-    }).then((response)=>{
-      message.success('Successfully added new batch')
-      if(response.data.status){
-        navigate('/office/batches')
-      }else{
-        console.log(response.data)
-      }
-    })
+    const errors = validate(formValues);
+
+    if (Object.keys(errors).length !== 0) {
+      setErrors(errors);
+    } else {
+      axios.post('/office/add-batch', {
+        ...formValues,
+        subjectValues,
+      }, {
+        headers: {
+          Authorization: officeToken
+        },
+      }).then((response) => {
+        message.success('Successfully added new batch')
+        if (response.data.status) {
+          navigate('/office/batches')
+        } else {
+          console.log(response.data)
+        }
+      })
+    }
+
   }
 
   return (
@@ -84,82 +103,88 @@ function AddBatches() {
           <div className="d-flex flex-wrap justify-content-between">
 
             <div className="d-flex flex-column">
-              <label className='ms-4 mt-3'>Starting date</label>
+              <label className='ms-2 mt-3'>Starting date</label>
               <input
                 value={formValues.startDate}
                 onChange={onChangeHandle}
                 name="startDate"
                 className="input-tag "
-                required type="date"
+                type="date"
               />
+              {error.startDate && (<p className="ms-2 text-danger">{error.startDate}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
             </div>
 
             <div class="d-flex flex-column">
-              <label className='ms-4 mt-3'>Duration in month</label>
+              <label className='ms-2 mt-3'>Duration in month</label>
               <input
                 value={formValues.duration}
                 onChange={onChangeHandle}
                 name="duration"
-                required className="input-tag "
-                type="number"
-              />
-            </div>
-
-            <div class="d-flex flex-column">
-              <label className='ms-4 mt-3'>Course fee</label>
-              <input
-                value={formValues.fee}
-                onChange={onChangeHandle}
-                name="fee" required
                 className="input-tag "
                 type="number"
               />
+              {error.duration && (<p className="ms-2 text-danger">{error.duration}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+            </div>
+
+            <div class="d-flex flex-column">
+              <label className='ms-2 mt-3'>Course fee</label>
+              <input
+                value={formValues.fee}
+                onChange={onChangeHandle}
+                name="fee"
+                className="input-tag "
+                type="number"
+              />
+              {error.fee && (<p className="ms-2 text-danger">{error.fee}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
             </div>
 
           </div>
           <div className="d-flex flex-wrap justify-content-between mt-4">
 
             <div class="d-flex flex-column">
-              <label className='ms-4 mt-3'>Number of seat</label>
+              <label className='ms-2 mt-3'>Number of seat</label>
               <input
                 value={formValues.numberOfSeat}
                 onChange={onChangeHandle}
-                name="numberOfSeat" required
+                name="numberOfSeat"
                 className="input-tag "
                 type="number"
               />
+              {error.numberOfSeat && (<p className="ms-2 text-danger">{error.startDate}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
             </div>
 
             <div className="d-flex flex-column">
-              <label className='ms-4 mt-3'>Head of the batch</label>
+              <label className='ms-2 mt-3'>Head of the batch</label>
               <select
-               
+
                 value={formValues.headOfTheBatch}
                 onChange={onChangeHandle}
                 className="input-tag"
                 name='headOfTheBatch'
                 id=""
-              > 
-                <option defaultValue disabled value=''></option>       
+              >
+                <option defaultValue disabled value=''></option>
                 {
-                  teachers.map((obj)=>{
-                    return(
+                  teachers.map((obj) => {
+                    return (
                       <option value={obj.registerId}>{obj.name} ({obj.registerId})</option>
                     )
                   })
                 }
               </select>
+              {error.headOfTheBatch && (<p className="ms-2 text-danger">{error.headOfTheBatch}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
             </div>
 
             <div className="d-flex flex-column">
-              <label className='ms-4 mt-3'>Remarks</label>
+              <label className='ms-2 mt-3'>Remarks</label>
               <input
                 value={formValues.remarks}
                 onChange={onChangeHandle}
                 name="remarks"
-                required className="input-tag "
+                className="input-tag "
                 type="text"
               />
+              {error.remarks && (<p className="ms-2 text-danger">{error.remarks}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
             </div>
 
           </div>
@@ -170,30 +195,38 @@ function AddBatches() {
                 <p className='p-tag'>Add subjects</p>
               </div>
               <div className='d-flex flex-wrap '>
-                <input
-                  className='ms-3 mb-3 mt-1 me-3 input-tag'
-                  value={subjectValue.subject}
-                  onChange={handleChange}
-                  name='subject' type="text"
-                  placeholder='Subject'
-                 
-                />
-                <select
-                  className='ms-3 mb-3 mt-1 me-3 input-tag'
-                  value={subjectValue.teacher}
-                  onChange={handleChange} name='teacher'
-                  type="text" placeholder='Teacher'
-                  id='subject'
-                >
-                  <option defaultValue disabled value=''>Teacher</option>
-                 {
-                  teachers.map((obj)=>{
-                    return(
-                      <option value={obj.name}>{obj.name}</option>
-                    )
-                  })
-                }
-                </select>
+                <div className="d-flex flex-column">
+                  <input
+                    className='ms-3 mb-3 mt-1 me-3 input-tag'
+                    value={subjectValue.subject}
+                    onChange={handleChange}
+                    name='subject' type="text"
+                    placeholder='Subject'
+
+                  />
+                  {subErrors.subject && (<p className="ms-4 text-danger">{subErrors.subject}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                </div>
+                <div className="d-flex flex-column">
+                  <select
+                    className='ms-3 mb-3 mt-1 me-3 input-tag'
+                    value={subjectValue.teacher}
+                    onChange={handleChange} name='teacher'
+                    type="text" placeholder='Teacher'
+                    id='subject'
+                  >
+                    <option defaultValue disabled value=''>Teacher</option>
+                    {
+                      teachers.map((obj) => {
+                        return (
+                          <option value={obj.name}>{obj.name}</option>
+                        )
+                      })
+                    }
+                  </select>
+                  {subErrors.teacher && (<p className="ms-4 text-danger">{subErrors.teacher}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
+                </div>
+
               </div>
               <div className='d-flex justify-content-center mt-1'>
                 <button

@@ -3,7 +3,7 @@ import './AddStudent.css'
 import axios from '../../../axios'
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
-
+import validate from './StudentValidation';
 function AddStudents() {
 
     const initialVlaues = {
@@ -13,21 +13,24 @@ function AddStudents() {
     };
 
     const [batches, setBatches] = useState([]);
-
     const [formValues, setFormValues] = useState(initialVlaues);
+    const [imageURL, setImageURL] = useState(null);
+    const [error, setErrors] = useState({});
     const navigate = useNavigate();
     const officeToken = localStorage.getItem("officeToken");
 
     const onChangeHandle = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
-
+        setErrors({ ...error, [name]: "" });
     };
     const handleFileChange = event => {
         setFormValues({
             ...formValues,
             file: event.target.files[0]
         });
+        const imageURL = URL.createObjectURL(event.target.files[0])
+        setImageURL(imageURL);
     };
 
     useEffect(() => {
@@ -70,21 +73,27 @@ function AddStudents() {
         data.append("file", formValues.file);
 
 
-        axios.post('/office/add-student', data,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    Authorization: officeToken
-                },
-            }
-        ).then(() => {
-            message.success('Successfully added new student')
-            navigate('/office/students');
+        const errors = validate(formValues);
+        if (Object.keys(errors).length !== 0) {
+            setErrors(errors);
+        } else {
+            axios.post('/office/add-student', data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: officeToken
+                    },
+                }
+            ).then(() => {
+                message.success('Successfully added new student')
+                navigate('/office/students');
 
-        }).catch((error) => {
-            console.log(error);
+            }).catch((error) => {
+                console.log(error);
 
-        })
+            })
+        }
+
     }
 
 
@@ -98,37 +107,40 @@ function AddStudents() {
                     <div className="d-flex flex-wrap justify-content-between">
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Name</label>
+                            <label className='ms-2 mt-3'>Name</label>
                             <input
                                 value={formValues.name}
                                 onChange={onChangeHandle}
                                 name="name"
                                 className="input-tag "
-                                required id='name'
+                                id='name'
                                 type="text"
                             />
+                            {error.name && (<p className="ms-2 text-danger">{error.name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div class="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Phone</label>
+                            <label className='ms-2 mt-3'>Phone</label>
                             <input
                                 value={formValues.phone}
                                 onChange={onChangeHandle}
                                 name="phone"
-                                required className="input-tag "
+                                className="input-tag "
                                 type="number"
                             />
+                            {error.phone && (<p className="ms-2 text-danger">{error.phone}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div class="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Email</label>
+                            <label className='ms-2 mt-3'>Email</label>
                             <input
                                 value={formValues.email}
                                 onChange={onChangeHandle}
-                                name="email" required
+                                name="email"
                                 className="input-tag "
                                 type="text"
                             />
+                            {error.email && (<p className="ms-2 text-danger">{error.email}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
 
@@ -136,78 +148,94 @@ function AddStudents() {
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Date of birth</label>
+                            <label className='ms-2 mt-3'>Date of birth</label>
                             <input
                                 value={formValues.dateOfBirth}
                                 onChange={onChangeHandle}
                                 name="dateOfBirth"
                                 className="input-tag "
-                                required type="date"
+                                type="date"
+                                max={new Date().toISOString().split("T")[0]}
                             />
+                            {error.dateOfBirth && (<p className="ms-2 text-danger">{error.dateOfBirth}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Gender</label>
-                            <input
+                            <label className='ms-2 mt-3'>Gender</label>
+                            <select
+                                name="gender"
+                                id="gender"
                                 value={formValues.gender}
                                 onChange={onChangeHandle}
-                                name="gender"
-                                required className="input-tag "
-                                type="text"
-                            />
+                                className="input-tag"
+                                type='text'
+
+                            >
+                                <option disabled value=""></option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            {error.gender && (<p className="ms-2 text-danger">{error.gender}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Parent name</label>
+                            <label className='ms-2 mt-3'>Parent name</label>
                             <input
                                 value={formValues.parentName}
                                 onChange={onChangeHandle}
                                 name="parentName"
-                                required className="input-tag "
+                                className="input-tag "
                                 type="text"
                             />
+                            {error.parentName && (<p className="ms-2 text-danger">{error.parentName}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
                     </div>
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Parent phone</label>
+                            <label className='ms-2 mt-3'>Parent phone</label>
                             <input
                                 value={formValues.parentPhone}
                                 onChange={onChangeHandle}
                                 name="parentPhone"
                                 className="input-tag "
-                                required type="number"
+                                type="number"
                             />
+                            {error.parentPhone && (<p className="ms-2 text-danger">{error.parentPhone}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Educaton</label>
+                            <label className='ms-2 mt-3'>Educaton</label>
                             <input
                                 value={formValues.education}
                                 onChange={onChangeHandle}
                                 name="education"
-                                required className="input-tag "
+                                className="input-tag "
                                 type="text"
                             />
+                            {error.education && (<p className="ms-2 text-danger">{error.education}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Last studied institute</label>
+                            <label className='ms-2 mt-3'>Last studied institute</label>
                             <input
                                 value={formValues.institute}
                                 onChange={onChangeHandle}
                                 name="institute"
-                                required className="input-tag "
+                                className="input-tag "
                                 type="text"
                             />
+                            {error.institute && (<p className="ms-2 text-danger">{error.institute}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                     </div>
                     <div className="d-flex flex-wrap justify-content-center mt-4">
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Batch</label>
+                            <label className='ms-2 mt-3'>Batch</label>
                             <select
                                 value={formValues.batch}
                                 onChange={onChangeHandle}
@@ -224,85 +252,90 @@ function AddStudents() {
                                     })
                                 }
                             </select>
+                            {error.batch && (<p className="ms-2 text-danger">{error.batch}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
                     </div>
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>House name</label>
+                            <label className='ms-2 mt-3'>House name</label>
                             <input
                                 value={formValues.house_name}
                                 onChange={onChangeHandle}
                                 name="house_name"
                                 className="input-tag "
-                                required type="text"
+                                type="text"
                             />
+                            {error.house_name && (<p className="ms-2 text-danger">{error.email}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Place</label>
+                            <label className='ms-2 mt-3'>Place</label>
                             <input
                                 value={formValues.place}
                                 onChange={onChangeHandle}
                                 name="place"
-                                required
                                 className="input-tag "
                                 type="text"
                             />
+                            {error.place && (<p className="ms-2 text-danger">{error.email}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Post</label>
+                            <label className='ms-2 mt-3'>Post</label>
                             <input
                                 value={formValues.post}
                                 onChange={onChangeHandle}
                                 name="post"
-                                required
                                 className="input-tag "
                                 type="text"
                             />
+                            {error.post && (<p className="ms-2 text-danger">{error.post}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                     </div>
                     <div className="d-flex flex-wrap justify-content-between mt-4">
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Pincode</label>
+                            <label className='ms-2 mt-3'>Pincode</label>
                             <input
                                 value={formValues.pin}
                                 onChange={onChangeHandle}
                                 name="pin"
                                 className="input-tag "
-                                required type="number"
+                                type="number"
                             />
+                            {error.pin && (<p className="ms-2 text-danger">{error.email}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>District</label>
+                            <label className='ms-2 mt-3'>District</label>
                             <input
                                 value={formValues.district}
                                 onChange={onChangeHandle}
-                                name="district" required
+                                name="district"
                                 className="input-tag "
                                 type="text"
                             />
+                            {error.district && (<p className="ms-2 text-danger">{error.district}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
-                            <label className='ms-4 mt-3'>State</label>
+                            <label className='ms-2 mt-3'>State</label>
                             <input
                                 value={formValues.state}
                                 onChange={onChangeHandle}
                                 name="state"
-                                required className="input-tag "
+                                className="input-tag "
                                 type="text"
                             />
+                            {error.state && (<p className="ms-2 text-danger">{error.state}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                     </div>
-                    <div className="d-flex flex-wrap justify-content-center mt-4">
-                        <div className='imagedisplay'></div>
+                    <div className="d-flex flex-wrap justify-content-center mt-4" >
+                        {imageURL && <img className='imagedisplay' src={imageURL} alt="couldn't get" />}
                     </div>
 
                     <div className="d-flex flex-wrap justify-content-center mt-2">
