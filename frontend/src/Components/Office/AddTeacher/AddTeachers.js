@@ -21,7 +21,7 @@ function AddTeachers() {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
         setErrors({ ...error, [name]: "" });
-      
+
     };
     const handleFileChange = event => {
         setFormValues({
@@ -95,10 +95,10 @@ function AddTeachers() {
                                 onChange={onChangeHandle}
                                 name="name"
                                 className="input-tag "
-                                required id='name'
+                                id='name'
                                 type="text"
                             />
-                            {error.name && (<p className="ms-4">{error.name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.name && (<p className="ms-4 text-danger">{error.name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div class="d-flex flex-column">
@@ -107,10 +107,10 @@ function AddTeachers() {
                                 value={formValues.phone}
                                 onChange={onChangeHandle}
                                 name="phone"
-                                required className="input-tag "
+                                className="input-tag "
                                 type="number"
                             />
-                             {error.phone && (<p className="ms-4">{error.phone}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.phone && (<p className="ms-4 text-danger">{error.phone}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div class="d-flex flex-column">
@@ -118,10 +118,12 @@ function AddTeachers() {
                             <input
                                 value={formValues.email}
                                 onChange={onChangeHandle}
-                                name="email" required
+                                name="email"
                                 className="input-tag "
                                 type="text"
                             />
+                            {error.email && (<p className="ms-4 text-danger">{error.email}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
 
@@ -135,19 +137,32 @@ function AddTeachers() {
                                 onChange={onChangeHandle}
                                 name="date_of_birth"
                                 className="input-tag "
-                                required type="date"
+
+                                type="date"
+                                max={new Date().toISOString().split("T")[0]}
                             />
+                            {error.date_of_birth && (<p className="ms-4 text-danger">{error.date_of_birth}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
                             <label className='ms-4 mt-3'>Gender</label>
-                            <input
+
+                            <select
+                                name="gender"
+                                id="gender"
                                 value={formValues.gender}
                                 onChange={onChangeHandle}
-                                name="gender"
-                                required className="input-tag "
-                                type="text"
-                            />
+                                className="input-tag"
+                                type='text'
+
+                            >
+                                <option disabled value=""></option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            {error.gender && (<p className="ms-4 text-danger">{error.gender}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
                         <div className="d-flex flex-column">
@@ -156,9 +171,11 @@ function AddTeachers() {
                                 value={formValues.salary}
                                 onChange={onChangeHandle}
                                 name="salary"
-                                required className="input-tag "
+                                className="input-tag "
                                 type="number"
                             />
+                            {error.salary && (<p className="ms-4 text-danger">{error.salary}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
                     </div>
@@ -171,8 +188,9 @@ function AddTeachers() {
                                 onChange={onChangeHandle}
                                 name="qualification"
                                 className="input-tag "
-                                required type="text"
+                                type="text"
                             />
+                            {error.qualification && (<p className="ms-4 text-danger">{error.qualification}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
@@ -181,9 +199,10 @@ function AddTeachers() {
                                 value={formValues.experience}
                                 onChange={onChangeHandle}
                                 name="experience"
-                                required className="input-tag "
+                                className="input-tag "
                                 type="number"
                             />
+                            {error.experience && (<p className="ms-4 text-danger">{error.experience}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
@@ -192,9 +211,10 @@ function AddTeachers() {
                                 value={formValues.remarks}
                                 onChange={onChangeHandle}
                                 name="remarks"
-                                required className="input-tag "
+                                className="input-tag "
                                 type="text"
                             />
+                            {error.remarks && (<p className="ms-4 text-danger">{error.remarks}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                     </div>
@@ -207,8 +227,10 @@ function AddTeachers() {
                                 onChange={onChangeHandle}
                                 name="house_name"
                                 className="input-tag "
-                                required type="text"
+                                type="text"
                             />
+                     {error.house_name && (<p className="ms-4 text-danger">{error.house_name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
                         <div className="d-flex flex-column">
@@ -217,10 +239,11 @@ function AddTeachers() {
                                 value={formValues.place}
                                 onChange={onChangeHandle}
                                 name="place"
-                                required
                                 className="input-tag "
                                 type="text"
                             />
+                {error.place && (<p className="ms-4 text-danger">{error.place}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
                         <div className="d-flex flex-column">
@@ -229,10 +252,11 @@ function AddTeachers() {
                                 value={formValues.post}
                                 onChange={onChangeHandle}
                                 name="post"
-                                required
                                 className="input-tag "
                                 type="text"
                             />
+               {error.post && (<p className="ms-4 text-danger">{error.post}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
                     </div>
@@ -245,8 +269,10 @@ function AddTeachers() {
                                 onChange={onChangeHandle}
                                 name="pin"
                                 className="input-tag "
-                                required type="number"
+                                type="number"
                             />
+                        {error.pin && (<p className="ms-4 text-danger">{error.pin}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
                         <div className="d-flex flex-column">
@@ -254,10 +280,12 @@ function AddTeachers() {
                             <input
                                 value={formValues.district}
                                 onChange={onChangeHandle}
-                                name="district" required
+                                name="district"
                                 className="input-tag "
                                 type="text"
                             />
+                        {error.district && (<p className="ms-4 text-danger">{error.district}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
                         <div className="d-flex flex-column">
@@ -266,9 +294,11 @@ function AddTeachers() {
                                 value={formValues.state}
                                 onChange={onChangeHandle}
                                 name="state"
-                                required className="input-tag "
+                                className="input-tag "
                                 type="text"
                             />
+         {error.state && (<p className="ms-4 text-danger">{error.state}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+
                         </div>
 
                     </div>
