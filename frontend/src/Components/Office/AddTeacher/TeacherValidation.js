@@ -86,7 +86,7 @@ const validate = (values) => {
     }else if (!isNaN(values.district)){
         errors.district = "Invalid entry"
     }
-
+     
     if(values.state === ""){
         errors.state = "State is required"
     }else if (!isNaN(values.state)){

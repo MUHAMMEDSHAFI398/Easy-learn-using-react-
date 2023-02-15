@@ -229,7 +229,7 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                     {error.house_name && (<p className="ms-4 text-danger">{error.house_name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.house_name && (<p className="ms-4 text-danger">{error.house_name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
@@ -242,7 +242,7 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                {error.place && (<p className="ms-4 text-danger">{error.place}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.place && (<p className="ms-4 text-danger">{error.place}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
@@ -255,7 +255,7 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-               {error.post && (<p className="ms-4 text-danger">{error.post}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.post && (<p className="ms-4 text-danger">{error.post}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
@@ -271,7 +271,7 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="number"
                             />
-                        {error.pin && (<p className="ms-4 text-danger">{error.pin}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.pin && (<p className="ms-4 text-danger">{error.pin}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
@@ -284,7 +284,7 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-                        {error.district && (<p className="ms-4 text-danger">{error.district}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.district && (<p className="ms-4 text-danger">{error.district}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
@@ -297,7 +297,7 @@ function AddTeachers() {
                                 className="input-tag "
                                 type="text"
                             />
-         {error.state && (<p className="ms-4 text-danger">{error.state}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.state && (<p className="ms-4 text-danger">{error.state}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
 
                         </div>
 
