@@ -20,4 +20,4 @@ const verifyTokenAdmin = (req, res, next) => {
 
 module.exports={
     verifyTokenAdmin
-}
+} 

@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import './AddTeacher.css'
 import { useNavigate } from "react-router-dom";
 import axios from '../../../axios'
-import {message} from 'antd'
+import { message } from 'antd'
+import validate from './TeacherValidation';
 
 function AddTeachers() {
     const initialVlaues = {
@@ -11,6 +12,7 @@ function AddTeachers() {
         house_name: "", place: "", post: "", pin: "", district: "", state: "", file: null
     };
     const [formValues, setFormValues] = useState(initialVlaues);
+    const [error, setErrors] = useState({});
     const navigate = useNavigate();
     const officeToken = localStorage.getItem("officeToken");
 
@@ -18,7 +20,8 @@ function AddTeachers() {
     const onChangeHandle = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
-
+        setErrors({ ...error, [name]: "" });
+      
     };
     const handleFileChange = event => {
         setFormValues({
@@ -51,22 +54,27 @@ function AddTeachers() {
         data.append("state", formValues.state);
         data.append("file", formValues.file);
 
+        const errors = validate(formValues);
+        if (Object.keys(errors).length !== 0) {
+            setErrors(errors);
+        } else {
+            axios.post('/office/add-teacher', data,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: officeToken
+                    },
+                }
+            ).then(() => {
+                message.success('Successfully added new teacher')
+                navigate('/office/teachers');
 
-        axios.post('/office/add-teacher', data,
-        {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization:officeToken
-            },
-          }
-        ).then((response) => {
-            message.success('Successfully added new teacher')
-            navigate('/office/teachers');
+            }).catch((error) => {
+                console.log(error);
 
-        }).catch((error) => {
-            console.log(error);
+            })
+        }
 
-        })
     }
 
 
@@ -90,6 +98,7 @@ function AddTeachers() {
                                 required id='name'
                                 type="text"
                             />
+                            {error.name && (<p className="ms-4">{error.name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div class="d-flex flex-column">
@@ -101,6 +110,7 @@ function AddTeachers() {
                                 required className="input-tag "
                                 type="number"
                             />
+                             {error.phone && (<p className="ms-4">{error.phone}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div class="d-flex flex-column">
@@ -270,7 +280,7 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <input
-                                
+
                                 name='file'
                                 onChange={handleFileChange}
                                 className="input-tag form-control"

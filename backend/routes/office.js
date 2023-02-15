@@ -38,9 +38,8 @@ officeRouter.get('/students',verifyToken.verifyTokenAdmin,officeController.getSt
 officeRouter.patch('/block-student/:id',verifyToken.verifyTokenAdmin,officeController.blockStudent)
 
 officeRouter.patch('/unblock-student/:id',verifyToken.verifyTokenAdmin,officeController.unBlockStudent)
-
+ 
 officeRouter.get('/student/:id',verifyToken.verifyTokenAdmin,officeController.getStudent)
-
 
 
 
