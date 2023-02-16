@@ -37,8 +37,8 @@ function ViewBatches() {
         navigate('/office/each-batch', {
           state: {
             batch: response.data.batch,
-            availableSeat:response.data.availableSeat,
-            students:response.data.students
+            availableSeat: response.data.availableSeat,
+            students: response.data.students
           }
         });
       }

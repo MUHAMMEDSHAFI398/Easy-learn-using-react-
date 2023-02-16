@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './EachBatch.css';
 import { useNavigate, useLocation } from "react-router-dom"
 import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
@@ -25,7 +25,7 @@ function EachBatches() {
   useEffect(() => {
     console.log(location.state.students)
     setStudents(location.state.students);
-    
+
   }, [])
 
   const data = () => {
@@ -92,11 +92,11 @@ function EachBatches() {
           paarentPhone: obj.parentPhone,
           controlls:
             obj.isBlocked === false ?
-              <button  className='block-button'>Block</button>
+              <button className='block-button'>Block</button>
               :
-              <button  className='unblock-button'>Un block</button>,
+              <button className='unblock-button'>Un block</button>,
 
-          view: <i  className="i-tags ms-4 fa fa-chevron-circle-right"></i>
+          view: <i className="i-tags ms-4 fa fa-chevron-circle-right"></i>
 
 
         }
