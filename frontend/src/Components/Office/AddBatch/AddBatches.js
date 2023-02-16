@@ -14,7 +14,7 @@ function AddBatches() {
     startDate: "", duration: "", fee: "", numberOfSeat: "", headOfTheBatch: "", remarks: ""
   };
   const subjectInitiaValues = { subject: "", teacher: "" }
-
+  
   const [formValues, setFormValues] = useState(initialVlaues);
   const [error, setErrors] = useState({});
   const [subErrors, setSubErrors] = useState({});
@@ -71,8 +71,11 @@ function AddBatches() {
     const errors = validate(formValues);
 
     if (Object.keys(errors).length !== 0) {
+
       setErrors(errors);
+
     } else {
+      
       axios.post('/office/add-batch', {
         ...formValues,
         subjectValues,
