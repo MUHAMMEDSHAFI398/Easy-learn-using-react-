@@ -36,7 +36,9 @@ function ViewBatches() {
       if (response.data.status) {
         navigate('/office/each-batch', {
           state: {
-            batch: response.data.batch
+            batch: response.data.batch,
+            availableSeat:response.data.availableSeat,
+            students:response.data.students
           }
         });
       }
@@ -104,7 +106,7 @@ function ViewBatches() {
           startDate: readableDate,
           duration: `${batch.duration} month`,
           status: batch.numberOfSeat,
-          view: <i onClick={() => handleClick(batch._id)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
+          view: <i onClick={() => handleClick(batch.registerId)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
 
 
         }

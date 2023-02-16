@@ -48,32 +48,37 @@ module.exports = {
             url: req.file.path,
             filename: req.file.filename
         }
+        try {
+            await teacher.create({
+                registerId: registerId,
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                date_of_birth: data.date_of_birth,
+                gender: data.gender,
+                salary: data.salary,
+                qualification: data.qualification,
+                experience: data.experience,
+                remarks: data.remarks,
+                isBlocked: false,
+                image: image,
+                address: {
+                    house_name: data.house_name,
+                    place: data.place,
+                    post: data.post,
+                    pin: data.pin,
+                    district: data.district,
+                    state: data.state
+                }
 
-        teacher.create({
-            registerId: registerId,
-            name: data.name,
-            phone: data.phone,
-            email: data.email,
-            date_of_birth: data.date_of_birth,
-            gender: data.gender,
-            salary: data.salary,
-            qualification: data.qualification,
-            experience: data.experience,
-            remarks: data.remarks,
-            isBlocked: false,
-            image: image,
-            address: {
-                house_name: data.house_name,
-                place: data.place,
-                post: data.post,
-                pin: data.pin,
-                district: data.district,
-                state: data.state
-            }
-
-        }).then(() => {
+            })
             res.json({ success: true })
-        })
+        } catch (err) {
+            console.log(err)
+        }
+
+
+
 
     },
     getTeachers: (req, res) => {
@@ -154,14 +159,14 @@ module.exports = {
     getAvaliableTeachers: async (req, res) => {
 
         try {
-            const teachers = await teacher.find({ myBatch:"" })
-          
+            const teachers = await teacher.find({ myBatch: "" })
+
             res.json({
-                status:true,
-                teachers:teachers
+                status: true,
+                teachers: teachers
             })
         } catch (err) {
-           
+
             console.log(err)
         }
     },
@@ -193,47 +198,64 @@ module.exports = {
             res.json({ status: true })
         })
     },
-    getBatches: (req, res) => {
-        batch.aggregate([
-            {
-                $lookup: {
-                    from: "teachers",
-                    localField: "headOfTheBatch",
-                    foreignField: "registerId",
-                    as: "teacher_data"
+    getBatches: async (req, res) => {
+        try {
+            const batchData = await batch.aggregate([
+                {
+                    $lookup: {
+                        from: "teachers",
+                        localField: "headOfTheBatch",
+                        foreignField: "registerId",
+                        as: "teacher_data"
+                    }
                 }
-            }
-        ]).then((batches) => {
+            ])
             res.json({
                 status: true,
-                batches: batches
+                batches: batchData
             })
-        })
+        } catch (err) {
+            console.log(err)
+        }
+
+
     },
-    getBatch: (req, res) => {
-        const id = req.params.id
-        const objectId = mongoose.Types.ObjectId(id);
-        batch.aggregate([
-            {
-                $match: {
-                    _id: objectId
+    getBatch: async (req, res) => {
+        const batchId = req.params.id
+
+        try {      
+            const batchStudents = await student.find({batch:batchId})
+            console.log(batchStudents)
+            const batchData = await batch.aggregate([
+                {
+                    $match: {
+                        registerId: batchId
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "teachers",
+                        localField: "headOfTheBatch",
+                        foreignField: "registerId",
+                        as: "teacher_data"
+                    }
                 }
-            },
-            {
-                $lookup: {
-                    from: "teachers",
-                    localField: "headOfTheBatch",
-                    foreignField: "registerId",
-                    as: "teacher_data"
-                }
-            }
-        ]).then((batch) => {
+            ])
+            const numberOfSeat = batchData[0].numberOfSeat
+            const batchFill = batchData[0].batchFill
+            const availableSeat = numberOfSeat - batchFill
 
             res.json({
                 status: true,
-                batch: batch
+                batch: batchData,
+                availableSeat: availableSeat,
+                students:batchStudents
             })
-        })
+
+        } catch (err) {
+            console.log(err)
+        }
+
     },
     getEditBatch: async (req, res) => {
 
@@ -296,24 +318,21 @@ module.exports = {
         const id = req.params.id
         const data = req.body
         const batchData = await batch.findOne({ _id: id })
-       
-    
-        if(batchData.headOfTheBatch !== data.batchHeadId){
-            try{
-                
-               const hi= await teacher.updateOne(
+
+        if (batchData.headOfTheBatch !== data.batchHeadId) {
+            try {
+                await teacher.updateOne(
                     {
-                        myBatch:batchData.registerId
+                        myBatch: batchData.registerId
                     },
                     {
-                        $set:{
-                            myBatch:""
+                        $set: {
+                            myBatch: ""
                         }
                     }
-                    
+
                 )
-                
-            }catch(err){
+            } catch (err) {
                 console.log(err)
             }
         }
@@ -378,33 +397,37 @@ module.exports = {
                 $inc: { batchFill: 1 }
             }
         )
+        try {
+            await student.create({
+                registerId: registerId,
+                name: data.name,
+                phone: data.phone,
+                email: data.email,
+                dateOfBirth: data.dateOfBirth,
+                gender: data.gender,
+                parentName: data.parentName,
+                parentPhone: data.parentPhone,
+                education: data.education,
+                institute: data.institute,
+                batch: data.batch,
+                isBlocked: false,
+                image: image,
+                address: {
+                    house_name: data.house_name,
+                    place: data.place,
+                    post: data.post,
+                    pin: data.pin,
+                    district: data.district,
+                    state: data.state
+                }
 
-        student.create({
-            registerId: registerId,
-            name: data.name,
-            phone: data.phone,
-            email: data.email,
-            dateOfBirth: data.dateOfBirth,
-            gender: data.gender,
-            parentName: data.parentName,
-            parentPhone: data.parentPhone,
-            education: data.education,
-            institute: data.institute,
-            batch: data.batch,
-            isBlocked: false,
-            image: image,
-            address: {
-                house_name: data.house_name,
-                place: data.place,
-                post: data.post,
-                pin: data.pin,
-                district: data.district,
-                state: data.state
-            }
-
-        }).then(() => {
+            })
             res.json({ success: true })
-        })
+        } catch (err) {
+            console.log(err)
+        }
+
+
     },
     getStudents: async (req, res) => {
         try {

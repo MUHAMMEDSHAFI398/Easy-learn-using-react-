@@ -1,10 +1,12 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import './EachBatch.css';
 import { useNavigate, useLocation } from "react-router-dom"
+import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
 
 function EachBatches() {
 
   // const navigate = useNavigate()
+  const [students, setStudents] = useState([]);
   const location = useLocation();
   const navigate = useNavigate()
   const startDate = location.state.batch[0].startDate
@@ -12,7 +14,7 @@ function EachBatches() {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const readableStartDate = DateStart.toLocaleDateString('en-US', options);
   const batchId = location.state.batch[0]._id
-
+  console.log(location.state.availableSeat)
   const handleClick = () => {
     navigate('/office/edit-batch', {
       state: {
@@ -20,6 +22,89 @@ function EachBatches() {
       }
     })
   }
+  useEffect(() => {
+    console.log(location.state.students)
+    setStudents(location.state.students);
+    
+  }, [])
+
+  const data = () => {
+    return {
+      columns: [
+        {
+          label: 'SL NO',
+          field: 'slno',
+          width: 60,
+        },
+        {
+          label: 'Register Id',
+          field: 'registerId',
+          width: 80,
+          attributes: {
+            'aria-controls': 'DataTable',
+            'aria-label': 'Name',
+          },
+        },
+        {
+          label: 'Name',
+          field: 'name',
+          width: 200,
+        },
+        {
+          label: 'Phone',
+          field: 'phone',
+          width: 130,
+        },
+        {
+          label: 'Batch',
+          field: 'batch',
+          sort: 'disabled',
+          width: 80,
+        },
+
+        {
+          label: 'Parent Contact',
+          field: 'paarentPhone',
+          sort: 'disabled',
+          width: 130,
+        },
+        {
+          label: 'Controlls',
+          field: 'controlls',
+          sort: 'disabled',
+          width: 100,
+        },
+        {
+          label: 'View',
+          field: 'view',
+          sort: 'disabled',
+          width: 80,
+        },
+      ],
+      rows: students.map((obj, index) => {
+
+        return {
+          slno: index + 1,
+          registerId: obj.registerId,
+          name: obj.name,
+          phone: obj.phone,
+          batch: obj.batch,
+          paarentPhone: obj.parentPhone,
+          controlls:
+            obj.isBlocked === false ?
+              <button  className='block-button'>Block</button>
+              :
+              <button  className='unblock-button'>Un block</button>,
+
+          view: <i  className="i-tags ms-4 fa fa-chevron-circle-right"></i>
+
+
+        }
+
+      })
+
+    };
+  };
 
   return (
     <div className='container'>
@@ -50,7 +135,7 @@ function EachBatches() {
           <div className='child'>
             <div className="d-flex flex-column align-items-center">
               <h5>Available seat</h5>
-              <h4>25%</h4>
+              <h4>{location.state.availableSeat}</h4>
             </div>
           </div>
 
@@ -74,7 +159,11 @@ function EachBatches() {
             </div>
             <div className='batch-deatails-child d-flex flex-column align-items-center'>
               <p><strong>Number of students</strong></p>
-              <p>0</p>
+              <p>{location.state.batch[0].batchFill}</p>
+            </div>
+            <div className='batch-deatails-child d-flex flex-column align-items-center'>
+              <p><strong>Total seat</strong></p>
+              <p>{location.state.batch[0].numberOfSeat}</p>
             </div>
             <div className='batch-deatails-child d-flex flex-column align-items-center'>
               <p><strong>Start date</strong></p>
@@ -111,7 +200,27 @@ function EachBatches() {
 
           </div>
         </div>
+      </div>
+      <div className='container mt-4'>
+        <CDBContainer>
+          <div className='container main-div'>
+            <div className='d-flex align-items-center justify-content-center'>
+              <h5 className='tableHeadding'>Students</h5>
+            </div>
+            <CDBCardBody>
+              <CDBDataTable
+                striped
+                bordered
+                hover
+                scrollX
+                data={data()}
+                materialSearch
+                entriesOptions={[5, 10, 15, 20, 25]}
 
+              />
+            </CDBCardBody>
+          </div>
+        </CDBContainer>
       </div>
     </div>
   )

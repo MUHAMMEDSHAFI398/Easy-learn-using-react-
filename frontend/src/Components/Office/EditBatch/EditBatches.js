@@ -209,6 +209,7 @@ function EditBatches() {
       </div>
     </div>
   )
+  
 }
 
 export default EditBatches
