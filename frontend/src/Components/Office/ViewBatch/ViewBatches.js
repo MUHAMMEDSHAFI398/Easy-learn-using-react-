@@ -1,40 +1,39 @@
-import React,{useEffect,useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import './ViewBatch.css'
-import {  CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
-import { Link,useNavigate } from 'react-router-dom';
+import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../../axios';
 
 
 function ViewBatches() {
 
-  const[batches,setBatches]=useState([]);
-  const navigate=useNavigate();
+  const [batches, setBatches] = useState([]);
+  const navigate = useNavigate();
   const officeToken = localStorage.getItem("officeToken");
 
 
-  useEffect(()=>{
-    axios.get('/office/batches',{
-      headers: {      
-        Authorization:officeToken
+  useEffect(() => {
+    axios.get('/office/batches', {
+      headers: {
+        Authorization: officeToken
       },
     }).then((response) => {
       if (response.data.status) {
-        setBatches(response.data.batches); 
-           
+        setBatches(response.data.batches);
+
       } else {
         console.log(response);
       }
     })
-  },[])
+  }, [])
 
   const handleClick = async (id) => {
-    axios.get(`/office/get-batch/${id}`,{
-      headers: {      
-        Authorization:officeToken
+    axios.get(`/office/get-batch/${id}`, {
+      headers: {
+        Authorization: officeToken
       },
     }).then((response) => {
       if (response.data.status) {
-        console.log(response.data)
         navigate('/office/each-batch', {
           state: {
             batch: response.data.batch
@@ -43,9 +42,7 @@ function ViewBatches() {
       }
     })
   }
-  // function testClickEvent(param) {
-  //   alert('Row Click Event');
-  // }
+
 
   const data = () => {
     return {
@@ -86,60 +83,60 @@ function ViewBatches() {
           sort: 'disabled',
           width: 150,
         },
-        
+
         {
           label: 'View',
           field: 'view',
           sort: 'disabled',
           width: 100,
         },
-      ],  
-       
-      rows:batches.map((batch ,index)=>{
-        let startDate=new Date(batch.startDate);
+      ],
+
+      rows: batches.map((batch, index) => {
+        let startDate = new Date(batch.startDate);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const readableDate = startDate.toLocaleDateString('en-US', options);
-      
+
         return {
-          slno:index+1,
+          slno: index + 1,
           registerId: batch.registerId,
           headOfTheBatch: batch.teacher_data[0].name,
           startDate: readableDate,
           duration: `${batch.duration} month`,
           status: batch.numberOfSeat,
           view: <i onClick={() => handleClick(batch._id)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
-               
-          // clickEvent: () => testClickEvent(1),
+
+
         }
-       
+
       })
     };
-  }; 
+  };
   return (
     <div className='container'>
       <Link to='/office/add-batch'>
-        <button  className='AddButton'>Add batches</button>
+        <button className='AddButton'>Add batches</button>
       </Link>
       <div className='container mt-4'>
-      <CDBContainer>
-      <div className='container main-div'>
-        <div className='d-flex align-items-center justify-content-center'>
-          <h5 className='tableHeadding'>Batches</h5>
-        </div>
-        <CDBCardBody>
-          <CDBDataTable 
-          striped 
-          bordered 
-          hover 
-          scrollX 
-          data={data()} 
-          materialSearch 
-          entriesOptions={[5, 10, 15, 20, 25]}
+        <CDBContainer>
+          <div className='container main-div'>
+            <div className='d-flex align-items-center justify-content-center'>
+              <h5 className='tableHeadding'>Batches</h5>
+            </div>
+            <CDBCardBody>
+              <CDBDataTable
+                striped
+                bordered
+                hover
+                scrollX
+                data={data()}
+                materialSearch
+                entriesOptions={[5, 10, 15, 20, 25]}
 
-          />
-        </CDBCardBody>
-      </div>
-    </CDBContainer>
+              />
+            </CDBCardBody>
+          </div>
+        </CDBContainer>
       </div>
     </div>
   )

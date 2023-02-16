@@ -2,23 +2,24 @@ import React, { useEffect, useState } from 'react'
 import './EditBatch.css'
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from '../../../axios'
+import validate from './Validation';
 
 function EditBatches() {
 
   const navigate = useNavigate('')
   const location = useLocation()
   const batchId = location.state.id
-  const [teachers, setTeachers] = useState([{ name: '',registerId:'' }])
+  const [teachers, setTeachers] = useState([{ name: '', registerId: '' }])
   const [batchData, setBatchData] = useState({
     numberOfSeat: "",
     remarks: "",
-    headOfTheBatch:"",
-    batchHeadId:""
+    headOfTheBatch: "",
+    batchHeadId: ""
   });
-
+  const [error, setErrors] = useState({});
   const [subjectValues, setSubjectValues] = useState([{ subject: "", teacher: "" }])
   const officeToken = localStorage.getItem("officeToken");
-  
+
 
 
   useEffect(() => {
@@ -33,7 +34,7 @@ function EditBatches() {
       const subjectValues = response.data.batchData[0].subjects
       setBatchData(batchData)
       setSubjectValues(subjectValues)
-      console.log({...batchData})
+
 
     })
   }, [officeToken, batchId])
@@ -43,7 +44,8 @@ function EditBatches() {
     e.preventDefault();
     const { name, value } = e.target;
     setBatchData({ ...batchData, [name]: value });
-   
+    setErrors({ ...error, [name]: "" });
+
   };
 
 
@@ -57,26 +59,31 @@ function EditBatches() {
       return subject;
     });
     setSubjectValues(updatedSubject);
-    
+
   };
- 
-  
+
+
   const handleSubmit = (e) => {
-    
     e.preventDefault();
-    axios.patch(`/office/edit-batch/${batchId}`, {
-      subjectValues,
-      ...batchData,
-      
-    },{
-      headers: {      
-        Authorization:officeToken
-      },
-    }).then((response) => {
-      if (response.data.status) {
-        navigate('/office/batches')
-      }
-    })
+    const errors = validate(batchData);
+    if (Object.keys(errors).length !== 0) {
+      setErrors(errors);
+    } else {
+      axios.patch(`/office/edit-batch/${batchId}`, {
+        subjectValues,
+        ...batchData,
+
+      }, {
+        headers: {
+          Authorization: officeToken
+        },
+      }).then((response) => {
+        if (response.data.status) {
+          navigate('/office/batches')
+        }
+      })
+    }
+
 
   }
 
@@ -93,43 +100,47 @@ function EditBatches() {
           <div className="d-flex flex-wrap justify-content-between mt-4">
 
             <div class="d-flex flex-column">
-              <label className='ms-4 mt-3'>Number of seat</label>
+              <label className='ms-2 mt-3'>Number of seat</label>
               <input
                 onChange={handleChange}
                 value={batchData.numberOfSeat}
-                name="numberOfSeat" required
+                name="numberOfSeat" 
                 className="input-tag "
                 type="number"
               />
+     {error.numberOfSeat && (<p className="ms-2 text-danger">{error.numberOfSeat}</p>)}
+
             </div>
 
             <div className="d-flex flex-column">
-              <label className='ms-4 mt-3'>Head of the batch</label>
+              <label className='ms-2 mt-3'>Head of the batch</label>
               <select
                 onChange={handleChange}
                 className="input-tag"
-                name='head'
-                id="head"
+                name='batchHeadId'
+                id="batchHeadId"
               >
                 <option value={batchData.batchHeadId}>{batchData.headOfTheBatch}</option>
                 {
-                  teachers.map((obj,index) => {
+                  teachers.map((obj, index) => {
                     return (
                       <option key={index} value={obj.registerId}>{obj.name} ({obj.registerId})</option>
                     )
                   })
                 }
               </select>
+              {error.headOfTheBatch && (<p className="ms-2 text-danger">{error.headOfTheBatch}</p>)}
+
 
             </div>
 
             <div className="d-flex flex-column">
-              <label className='ms-4 mt-3'>Remarks</label>
+              <label className='ms-2 mt-3'>Remarks</label>
               <input
                 onChange={handleChange}
                 value={batchData.remarks}
                 name="remarks"
-                required className="input-tag "
+               className="input-tag "
                 type="text"
               />
             </div>

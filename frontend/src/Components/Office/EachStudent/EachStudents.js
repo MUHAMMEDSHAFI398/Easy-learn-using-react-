@@ -1,72 +1,72 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { useLocation } from "react-router-dom"
 import './EachStudent.css'
 import axios from '../../../axios'
 import Swal from 'sweetalert2'
-import {message} from 'antd'
+import { message } from 'antd'
 
 function EachStudents() {
- 
+
 
     // const navigate = useNavigate()
     const location = useLocation();
     const birthDate = new Date(location.state.studentData.dateOfBirth);
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const readableDate = birthDate.toLocaleDateString('en-US', options);
-    const [studentBlock,setStudentBlock]=useState(location.state.studentData.isBlocked)
+    const [studentBlock, setStudentBlock] = useState(location.state.studentData.isBlocked)
     const officeToken = localStorage.getItem("officeToken");
 
-   const handleBlock =()=>{
-    Swal.fire({
-       
-        text: "Are you sure you want to block this student?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: 'green',
-        cancelButtonColor: 'red',
-        confirmButtonText: 'Yes'
-      }).then((result) => {
-        if (result.isConfirmed) {
-            axios.patch(`/office/block-student/${location.state.studentData._id}`, {}, {
-              headers: {
-                Authorization: officeToken
-              },
-            }).then(() => {           
-              setStudentBlock(true);
-              message.success("The student has been blocked")
-            })
-          }
-      })
-   }
+    const handleBlock = () => {
+        Swal.fire({
 
-   const handleUnBlock =()=>{
-    Swal.fire({
-       
-        text: "Are you sure you want to Unblock this student?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: 'green',
-        cancelButtonColor: 'red',
-        confirmButtonText: 'Yes'
-      }).then((result) => {
-        if (result.isConfirmed) {
-            axios.patch(`/office/unblock-student/${location.state.studentData._id}`, {}, {
-              headers: {
-                Authorization: officeToken
-              },
-            }).then(() => {           
-              setStudentBlock(false);
-              message.success("The student has been Unblocked")
-            })
-          }
-      })
-   }
+            text: "Are you sure you want to block this student?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: 'red',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.patch(`/office/block-student/${location.state.studentData._id}`, {}, {
+                    headers: {
+                        Authorization: officeToken
+                    },
+                }).then(() => {
+                    setStudentBlock(true);
+                    message.success("The student has been blocked")
+                })
+            }
+        })
+    }
+
+    const handleUnBlock = () => {
+        Swal.fire({
+
+            text: "Are you sure you want to Unblock this student?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: 'red',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.patch(`/office/unblock-student/${location.state.studentData._id}`, {}, {
+                    headers: {
+                        Authorization: officeToken
+                    },
+                }).then(() => {
+                    setStudentBlock(false);
+                    message.success("The student has been Unblocked")
+                })
+            }
+        })
+    }
 
     return (
         <div className='container'>
-            { studentBlock===false ?
-            <button onClick={handleBlock} className='std-block-btn'>Block</button> :
-            <button onClick={handleUnBlock} className='std-Unblock-btn'>Unblock</button>
+            {studentBlock === false ?
+                <button onClick={handleBlock} className='std-block-btn'>Block</button> :
+                <button onClick={handleUnBlock} className='std-Unblock-btn'>Unblock</button>
             }
 
             <div className="container mt-4">

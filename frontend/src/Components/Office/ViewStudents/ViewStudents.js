@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {message} from 'antd'
+import { message } from 'antd'
 import './ViewStudents.css'
 import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
 import { Link, useNavigate } from "react-router-dom";

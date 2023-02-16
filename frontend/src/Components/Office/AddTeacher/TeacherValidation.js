@@ -51,12 +51,6 @@ const validate = (values) => {
         errors.experience = "Invalid entry"
     }
 
-    if(values.remarks === ""){
-        errors.remarks = "Remark is required"
-    }else if (!isNaN(values.remarks)){
-        errors.remarks ="Invalid entry"
-    }
-
     if(values.house_name === ""){
         errors.house_name = "House name is required"
     }else if (!isNaN(values.house_name)){

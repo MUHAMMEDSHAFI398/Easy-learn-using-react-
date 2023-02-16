@@ -151,6 +151,20 @@ module.exports = {
             })
         })
     },
+    getAvaliableTeachers: async (req, res) => {
+
+        try {
+            const teachers = await teacher.find({ myBatch:"" })
+          
+            res.json({
+                status:true,
+                teachers:teachers
+            })
+        } catch (err) {
+           
+            console.log(err)
+        }
+    },
 
     addBatch: async (req, res) => {
 
@@ -278,15 +292,37 @@ module.exports = {
 
     },
     patchEditBatch: async (req, res) => {
+
         const id = req.params.id
         const data = req.body
         const batchData = await batch.findOne({ _id: id })
+       
+    
+        if(batchData.headOfTheBatch !== data.batchHeadId){
+            try{
+                
+               const hi= await teacher.updateOne(
+                    {
+                        myBatch:batchData.registerId
+                    },
+                    {
+                        $set:{
+                            myBatch:""
+                        }
+                    }
+                    
+                )
+                
+            }catch(err){
+                console.log(err)
+            }
+        }
         await teacher.updateOne(
 
             { registerId: data.batchHeadId },
             {
                 $set: {
-                    myBatch: batchData.registerId
+                    myBatch: batchData.registerId,
                 }
             }
         )
@@ -297,7 +333,7 @@ module.exports = {
                     $set: {
                         numberOfSeat: data.numberOfSeat,
                         remarks: data.remarks,
-                        headOfTheBatch: data.head,
+                        headOfTheBatch: data.batchHeadId,
                         subjects: data.subjectValues
                     }
                 }
@@ -307,6 +343,25 @@ module.exports = {
             console.log(err)
         }
     },
+    getAvailableBatch: async (req, res) => {
+
+        try {
+            const availableBatches = await batch.find(
+                {
+                    $expr: {
+                        $lt: ["$batchFill", "$numberOfSeat"]
+                    }
+                }
+            )
+            res.json({
+                status: true,
+                batches: availableBatches
+            })
+        } catch (err) {
+            console.log(err)
+        }
+
+    },
     addStudent: async (req, res) => {
         const data = req.body
 
@@ -315,6 +370,15 @@ module.exports = {
             url: req.file.path,
             filename: req.file.filename
         }
+        await batch.updateOne(
+            {
+                registerId: data.batch
+            },
+            {
+                $inc: { batchFill: 1 }
+            }
+        )
+
         student.create({
             registerId: registerId,
             name: data.name,
@@ -393,4 +457,4 @@ module.exports = {
         }
     }
 
-}
+} 

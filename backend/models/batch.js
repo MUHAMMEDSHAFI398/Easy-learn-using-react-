@@ -25,6 +25,10 @@ const batchSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    batchFill:{
+      type:Number,
+      default:0
+    },
     headOfTheBatch: {
       type: String,
       required: true,
@@ -41,11 +45,6 @@ const batchSchema = new mongoose.Schema(
           required: true,
           trim: true,
         },
-        // teacher_id: {
-        //   type: String,
-        //   trim: true,
-        //   uppercase: true,
-        // },
         teacher: {
           type: String,
           trim: true,

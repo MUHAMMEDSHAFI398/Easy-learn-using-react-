@@ -22,7 +22,7 @@ const validate = (values) => {
     }
 
     if (values.numberOfSeat === "") {
-        errors.numberOfSeat = "Number of seat phone is required"
+        errors.numberOfSeat = "Number of seat is required"
     } else if (isNaN(values.numberOfSeat)) {
         errors.numberOfSeat = "Invalid entry"
     }
@@ -33,11 +33,6 @@ const validate = (values) => {
         errors.headOfTheBatch = "Invalid entry"
     }
 
-    if (values.remarks === "") {
-        errors.remarks = "remarks is required"
-    } else if (!isNaN(values.remarks)) {
-        errors.remarks = "Invalid entry"
-    }
 
 
 

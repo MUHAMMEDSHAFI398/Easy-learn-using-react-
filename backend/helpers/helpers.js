@@ -8,7 +8,6 @@ const uniqueCodeGenerator = (data) => {
             let collectionName;
             let firstCode;
             let slno;
-            console.log('hi');
             if (data === 'teacher') {
                 collectionName = teacher;
                 firstCode = 'ELTR';
@@ -20,7 +19,6 @@ const uniqueCodeGenerator = (data) => {
                 firstCode = 'ELST'
             }
             collectionName.countDocuments({}).then((count) => {
-                console.log(count)
                 if (count < 9) {
                     slno = `00${count + 1}`;
                 } else if (count > 8 && count < 99) {
@@ -30,7 +28,6 @@ const uniqueCodeGenerator = (data) => {
                 }
 
                 const uniqueCode = `${firstCode}${slno}`
-                console.log(uniqueCode);
                 resolve(uniqueCode);
 
             }).catch((err) => {

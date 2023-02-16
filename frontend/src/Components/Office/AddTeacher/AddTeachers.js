@@ -210,13 +210,13 @@ function AddTeachers() {
                         <div className="d-flex flex-column">
                             <label className='ms-2 mt-3'>Remarks</label>
                             <input
+                                placeholder='optional'
                                 value={formValues.remarks}
                                 onChange={onChangeHandle}
                                 name="remarks"
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.remarks && (<p className="ms-3 text-danger">{error.remarks}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                     </div>

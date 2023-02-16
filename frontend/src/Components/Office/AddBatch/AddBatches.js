@@ -14,7 +14,7 @@ function AddBatches() {
     startDate: "", duration: "", fee: "", numberOfSeat: "", headOfTheBatch: "", remarks: ""
   };
   const subjectInitiaValues = { subject: "", teacher: "" }
-  
+
   const [formValues, setFormValues] = useState(initialVlaues);
   const [error, setErrors] = useState({});
   const [subErrors, setSubErrors] = useState({});
@@ -26,7 +26,7 @@ function AddBatches() {
 
 
   useEffect(() => {
-    axios.get('/office/teachers', {
+    axios.get('/office/available-teachers', {
       headers: {
         Authorization: officeToken
       },
@@ -69,13 +69,10 @@ function AddBatches() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate(formValues);
-
     if (Object.keys(errors).length !== 0) {
-
       setErrors(errors);
-
     } else {
-      
+
       axios.post('/office/add-batch', {
         ...formValues,
         subjectValues,
@@ -166,7 +163,7 @@ function AddBatches() {
                 name='headOfTheBatch'
                 id=""
               >
-                <option defaultValue disabled value=''></option>
+                <option defaultValue disabled value=''>Available teachers</option>
                 {
                   teachers.map((obj) => {
                     return (
@@ -181,13 +178,13 @@ function AddBatches() {
             <div className="d-flex flex-column">
               <label className='ms-2 mt-3'>Remarks</label>
               <input
+                placeholder='optional'
                 value={formValues.remarks}
                 onChange={onChangeHandle}
                 name="remarks"
                 className="input-tag "
                 type="text"
               />
-              {error.remarks && (<p className="ms-2 text-danger">{error.remarks}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
             </div>
 
           </div>

@@ -3,18 +3,18 @@ import './ViewTeacher.css'
 import axios from '../../../axios'
 import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
-import {message} from 'antd'
+import { message } from 'antd'
 
 function ViewTeachers() {
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
   const officeToken = localStorage.getItem("officeToken");
- 
+
 
   useEffect(() => {
-    axios.get('/office/teachers',{
-      headers: {      
-        Authorization:officeToken
+    axios.get('/office/teachers', {
+      headers: {
+        Authorization: officeToken
       },
     }).then((response) => {
       if (response.data.status) {
@@ -23,13 +23,13 @@ function ViewTeachers() {
         console.log(response);
       }
     })
-  },[])
+  }, [])
 
 
   const handleClick = async (id) => {
-    axios.get(`/office/get-teacher/${id}`,{
-      headers: {      
-        Authorization:officeToken
+    axios.get(`/office/get-teacher/${id}`, {
+      headers: {
+        Authorization: officeToken
       },
     }).then((response) => {
       if (response.data.status) {
@@ -43,7 +43,7 @@ function ViewTeachers() {
   }
   const handleBlock = (id) => {
     Swal.fire({
-       
+
       text: "Are you sure you want to block this teacher?",
       icon: 'warning',
       showCancelButton: true,
@@ -52,9 +52,9 @@ function ViewTeachers() {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.patch(`/office/block-teacher/${id}`,{}, {
-          headers: {      
-            Authorization:officeToken
+        axios.patch(`/office/block-teacher/${id}`, {}, {
+          headers: {
+            Authorization: officeToken
           },
         }).then(() => {
           const setTeacher = teachers.filter((value) => {
@@ -68,12 +68,12 @@ function ViewTeachers() {
         })
       }
     })
-    
+
   }
 
   const handleUnBlock = (id) => {
     Swal.fire({
-       
+
       text: "Are you sure you want to Unblock this teacher?",
       icon: 'warning',
       showCancelButton: true,
@@ -82,9 +82,9 @@ function ViewTeachers() {
       confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.patch(`/office/unblock-teacher/${id}`,{}, {
-          headers: {      
-            Authorization:officeToken
+        axios.patch(`/office/unblock-teacher/${id}`, {}, {
+          headers: {
+            Authorization: officeToken
           },
         }).then(() => {
           const setTeacher = teachers.filter((value) => {
@@ -98,7 +98,7 @@ function ViewTeachers() {
         })
       }
     })
-    
+
   }
 
   return (

@@ -85,7 +85,12 @@ const teacherSchema = new Schema(
       type: String,
     },
     myBatch:{
+      default:"",
       type:String
+    },
+    batchAssigned:{
+      type:Boolean,
+      default:false
     },
     // password: {
     //   type: String,

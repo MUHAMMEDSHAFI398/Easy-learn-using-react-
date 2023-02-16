@@ -34,7 +34,7 @@ function AddStudents() {
     };
 
     useEffect(() => {
-        axios.get('/office/batches', {
+        axios.get('/office/available-batches', {
             headers: {
                 Authorization: officeToken
             },
@@ -235,7 +235,7 @@ function AddStudents() {
                     </div>
                     <div className="d-flex flex-wrap justify-content-center mt-4">
                         <div className="d-flex flex-column">
-                            <label className='ms-2 mt-3'>Batch</label>
+                            <label className='ms-2 mt-3'>Available batch</label>
                             <select
                                 value={formValues.batch}
                                 onChange={onChangeHandle}

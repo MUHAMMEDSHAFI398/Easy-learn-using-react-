@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { MDBContainer, MDBCol, MDBRow, MDBInput } from 'mdb-react-ui-kit';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from '../../../axios'
 import './Body.css'
 
@@ -11,7 +11,7 @@ function Body() {
   const [formValues, setFormValues] = useState(initialVlaues);
   const navigate = useNavigate();
 
-  
+
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
@@ -19,21 +19,21 @@ function Body() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    axios.post('office/login',{
+    axios.post('office/login', {
 
-        email: formValues.email,
-        password: formValues.password,
+      email: formValues.email,
+      password: formValues.password,
 
-    }).then((response)=>{
-        const jwtToken = response.data.token
-        localStorage.setItem("officeToken", jwtToken);
-        navigate('/office/home');
+    }).then((response) => {
+      const jwtToken = response.data.token
+      localStorage.setItem("officeToken", jwtToken);
+      navigate('/office/home');
 
-    }).catch((error)=>{
-        console.log(error); 
-        
+    }).catch((error) => {
+      console.log(error);
+
     })
-}
+  }
 
   return (
 
@@ -54,9 +54,9 @@ function Body() {
                 <h1 className="mb-5 mt-3">Login</h1>
 
               </div>
-              
-               <form onSubmit={handleSubmit}>
-               <MDBInput
+
+              <form onSubmit={handleSubmit}>
+                <MDBInput
                   value={formValues.email}
                   onChange={onChangeHandle}
                   wrapperClass='mb-4 ms-4 me-4'
@@ -78,7 +78,7 @@ function Body() {
                   type='submit' value='Login'
                   id='formControlLg' size="lg"
                 />
-               </form>
+              </form>
 
             </div>
 

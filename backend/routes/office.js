@@ -41,6 +41,12 @@ officeRouter.patch('/unblock-student/:id',verifyToken.verifyTokenAdmin,officeCon
  
 officeRouter.get('/student/:id',verifyToken.verifyTokenAdmin,officeController.getStudent)
 
+officeRouter.get('/available-batches',verifyToken.verifyTokenAdmin,officeController.getAvailableBatch)
+
+officeRouter.get('/available-teachers',verifyToken.verifyTokenAdmin,officeController.getAvaliableTeachers)
+
+
+
 
 
 

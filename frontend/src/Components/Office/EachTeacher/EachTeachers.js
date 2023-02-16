@@ -166,24 +166,24 @@ function EachTeachers() {
                 <MDBCard className="mb-4 mb-lg-0">
                   <div className='borderDiv'>
                     <MDBCardBody className="p-0">
-                 
-                        <MDBListGroupItem className="d-flex justify-content-center align-items-center p-3">
-                          <h5 className='contact-inf'>Contact information</h5>
-                        </MDBListGroupItem>
-                        <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                          <MDBIcon fas icon="envelope" style={{ color: '#55acee' }} />
-                          <MDBCardText>{location.state.teacher.phone}</MDBCardText>
-                        </MDBListGroupItem>
-                        <hr className='mt-0 mb-1' />
-                        <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
-                          <MDBIcon fas icon="phone-alt" style={{ color: '#55acee' }} />
-                          <MDBCardText>{location.state.teacher.email}</MDBCardText>
-                        </MDBListGroupItem>
+
+                      <MDBListGroupItem className="d-flex justify-content-center align-items-center p-3">
+                        <h5 className='contact-inf'>Contact information</h5>
+                      </MDBListGroupItem>
+                      <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
+                        <MDBIcon fas icon="envelope" style={{ color: '#55acee' }} />
+                        <MDBCardText>{location.state.teacher.phone}</MDBCardText>
+                      </MDBListGroupItem>
+                      <hr className='mt-0 mb-1' />
+                      <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
+                        <MDBIcon fas icon="phone-alt" style={{ color: '#55acee' }} />
+                        <MDBCardText>{location.state.teacher.email}</MDBCardText>
+                      </MDBListGroupItem>
 
                     </MDBCardBody>
                   </div>
                 </MDBCard>
-           
+
 
               </MDBCol>
               <MDBCol lg="8">
@@ -278,25 +278,25 @@ function EachTeachers() {
 
                       <div className="d-flex flex-column">
 
-                        <input 
-                        value={formValues.salary}
-                        onChange={onChangeHandle} 
-                        className="inputdiv rounded-3" 
-                        placeholder='Salary' 
-                        required name="salary" 
-                        type="text" 
+                        <input
+                          value={formValues.salary}
+                          onChange={onChangeHandle}
+                          className="inputdiv rounded-3"
+                          placeholder='Salary'
+                          required name="salary"
+                          type="text"
                         />
                       </div>
 
                       <div className="d-flex flex-column">
 
                         <input
-                        value={formValues.experience} 
-                        onChange={onChangeHandle} 
-                        name="experience" 
-                        required placeholder='Experience' 
-                        className="inputdiv mt-4 rounded-3" 
-                        type="text" 
+                          value={formValues.experience}
+                          onChange={onChangeHandle}
+                          name="experience"
+                          required placeholder='Experience'
+                          className="inputdiv mt-4 rounded-3"
+                          type="text"
                         />
                       </div>
 

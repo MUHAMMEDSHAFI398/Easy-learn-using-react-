@@ -35,19 +35,19 @@ const validate = (values) => {
 
     if (values.parentName === "") {
         errors.parentName = "Parent name is required"
-    } else if (isNaN(values.parentName)) {
+    } else if (!isNaN(values.parentName)) {
         errors.parentName = "Invalid entry"
     }
 
     if (values.parentPhone === "") {
         errors.parentPhone = "Parent phone is required"
-    } else if (!isNaN(values.parentPhone)) {
+    } else if (isNaN(values.parentPhone)) {
         errors.parentPhone = "Invalid entry"
     }
 
     if (values.education === "") {
         errors.education = "Education is required"
-    } else if (isNaN(values.education)) {
+    } else if (!isNaN(values.education)) {
         errors.education = "Invalid entry"
     }
 
