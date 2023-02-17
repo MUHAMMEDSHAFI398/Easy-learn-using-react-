@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './EachBatch.css';
 import { useNavigate, useLocation } from "react-router-dom"
 import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
+import axios from '../../../axios';
+import { message } from 'antd'
+import Swal from 'sweetalert2'
+
 
 function EachBatches() {
 
@@ -14,7 +18,8 @@ function EachBatches() {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const readableStartDate = DateStart.toLocaleDateString('en-US', options);
   const batchId = location.state.batch[0]._id
-  console.log(location.state.availableSeat)
+  const officeToken = localStorage.getItem("officeToken");
+
   const handleClick = () => {
     navigate('/office/edit-batch', {
       state: {
@@ -28,6 +33,83 @@ function EachBatches() {
 
   }, [])
 
+  const handleGetStudent = async (id) => {
+    axios.get(`/office/student/${id}`, {
+      headers: {
+        Authorization: officeToken
+      },
+    }).then((response) => {
+      if (response.data.status) {
+
+        navigate('/office/each-student', {
+          state: {
+            studentData: response.data.studentData
+          }
+        });
+      }
+    })
+  }
+
+  const handleBlock = async (id) => {
+    Swal.fire({
+      text: "Are you sure you want to block this student?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'green',
+      cancelButtonColor: 'red',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.patch(`/office/block-student/${id}`, {}, {
+          headers: {
+            Authorization: officeToken
+          },
+        }).then(() => {
+          const setStudent = students.filter((obj) => {
+            if (obj._id === id) {
+              obj.isBlocked = true;
+            }
+            return obj;
+          })
+          message.success("The student has been blocked")
+          setStudents(setStudent);
+        })
+      }
+    })
+  }
+
+  const handleUnBlock = async (id) => {
+
+    Swal.fire({
+
+      text: "Are you sure you want to Un block this student?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'green',
+      cancelButtonColor: 'red',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.patch(`/office/unblock-student/${id}`, {}, {
+          headers: {
+            Authorization: officeToken
+          },
+        }).then(() => {
+          const setStudent = students.filter((obj) => {
+            if (obj._id === id) {
+              obj.isBlocked = false;
+            }
+            return obj;
+          })
+          message.success("The student has been Un blocked")
+          setStudents(setStudent);
+        })
+      }
+    })
+
+
+
+  }
   const data = () => {
     return {
       columns: [
@@ -82,7 +164,6 @@ function EachBatches() {
         },
       ],
       rows: students.map((obj, index) => {
-
         return {
           slno: index + 1,
           registerId: obj.registerId,
@@ -92,17 +173,13 @@ function EachBatches() {
           paarentPhone: obj.parentPhone,
           controlls:
             obj.isBlocked === false ?
-              <button className='block-button'>Block</button>
+              <button onClick={() => handleBlock(obj._id)} className='block-button'>Block</button>
               :
-              <button className='unblock-button'>Un block</button>,
+              <button onClick={() => handleUnBlock(obj._id)} className='unblock-button'>Un block</button>,
 
-          view: <i className="i-tags ms-4 fa fa-chevron-circle-right"></i>
-
-
+          view: <i onClick={() => handleGetStudent(obj._id)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
         }
-
       })
-
     };
   };
 

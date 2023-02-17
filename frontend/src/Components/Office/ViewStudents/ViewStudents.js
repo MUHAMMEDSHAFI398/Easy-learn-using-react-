@@ -57,12 +57,12 @@ function ViewStudents() {
       }
 
     })
-
-
-
-
-
   }
+
+
+
+
+  
   const handleUnBlock = async (id) => {
 
     Swal.fire({
@@ -91,9 +91,6 @@ function ViewStudents() {
         })
       }
     })
-
-
-
   }
 
   const handleClick = async (id) => {
