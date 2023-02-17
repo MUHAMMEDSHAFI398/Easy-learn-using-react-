@@ -314,7 +314,7 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <input
-
+                                accept='image/*'
                                 name='file'
                                 onChange={handleFileChange}
                                 className="input-tag form-control"
