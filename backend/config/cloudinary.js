@@ -19,7 +19,6 @@ const storage = new CloudinaryStorage({
 
 const multer = require("multer");
 const fileFilter = (req, file, cb) => {
-  console.log(req)
   if (!["image/png", "image/jpg", "image/jpeg"].includes(file.mimetype)) {
     return cb(new Error("File is not an image"));
   }
