@@ -5,6 +5,7 @@ function Landing() {
   return (
     <div>
       <NavBar/>
+      
     </div>
   )
 }
