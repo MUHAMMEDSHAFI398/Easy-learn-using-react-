@@ -14,6 +14,7 @@ function AddTeachers() {
     const [formValues, setFormValues] = useState(initialVlaues);
     const [imageURL, setImageURL] = useState(null);
     const [error, setErrors] = useState({});
+    const [imageError, setImageError] = useState('')
     const navigate = useNavigate();
     const officeToken = localStorage.getItem("officeToken");
 
@@ -68,9 +69,15 @@ function AddTeachers() {
                         Authorization: officeToken
                     },
                 }
-            ).then(() => {
-                message.success('Successfully added new teacher')
-                navigate('/office/teachers');
+            ).then((resp) => {
+                if (resp.data.imageError) {
+                    setImageError(resp.data.imageError)
+                } else {
+                    message.success('Successfully added new teacher')
+                    navigate('/office/teachers');
+                }
+
+
 
             }).catch((error) => {
                 console.log(error);
@@ -306,7 +313,7 @@ function AddTeachers() {
                     </div>
                     <div className="d-flex flex-wrap justify-content-center mt-4">
 
-                        {imageURL && <img className='imagedisplay' src={imageURL} alt="couldn't get" />}
+                        {imageURL && <img className='imagedisplay' src={imageURL} alt="could not load image" />}
 
                     </div>
 
@@ -314,12 +321,14 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <input
-                                accept='image/*'
+                                // accept='image/*'
                                 name='file'
                                 onChange={handleFileChange}
                                 className="input-tag form-control"
                                 type="file" id="formFile"
                             />
+                            {imageError && (<p className="ms-2 text-danger">{imageError}{window.scrollTo({ top: 500, behavior: "smooth" })}</p>)}
+
                         </div>
 
                     </div>

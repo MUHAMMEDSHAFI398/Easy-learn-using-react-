@@ -1,5 +1,5 @@
 const initialState = {
-    token: "",
+  officeToken: "",
   };
   
   const adminTokenReducer = (prevState = initialState, action) => {
@@ -7,12 +7,12 @@ const initialState = {
       case "storeAdminToken":
         return {
           ...prevState,
-          token: action.token,
+          officeToken: action.officeToken,
         };
       case "removeAdminToken":
         return {
           ...prevState,
-          token: "",
+          officeToken: "",
         };
       default:
         return initialState;

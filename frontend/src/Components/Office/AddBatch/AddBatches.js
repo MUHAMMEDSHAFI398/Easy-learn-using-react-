@@ -21,6 +21,7 @@ function AddBatches() {
   const [subjectValue, setSubjectValue] = useState(subjectInitiaValues);
   const [subjectValues, setSubjectValues] = useState([])
   const [teachers, setTeachers] = useState([]);
+  const [allTeachers,setAllTeachers]=useState([])
   const navigate = useNavigate();
   const officeToken = localStorage.getItem("officeToken");
 
@@ -33,6 +34,7 @@ function AddBatches() {
     }).then((response) => {
       if (response.data.status) {
         setTeachers(response.data.teachers);
+        setAllTeachers(response.data.allTeachers)
       } else {
         console.log(response);
       }
@@ -216,9 +218,9 @@ function AddBatches() {
                   >
                     <option defaultValue disabled value=''>Teacher</option>
                     {
-                      teachers.map((obj) => {
+                      allTeachers.map((obj) => {
                         return (
-                          <option value={obj.name}>{obj.name}</option>
+                          <option value={obj.name}>{obj.name} ({obj.registerId})</option>
                         )
                       })
                     }

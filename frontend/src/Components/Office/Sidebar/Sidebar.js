@@ -33,23 +33,23 @@ function Sidebar() {
           <Logo />
           <CDBSidebarMenu >
 
-            <NavLink exact to="/office/home" activeclassname="activeClicked">
+            <NavLink  to="/office/home" activeclassname="activeClicked">
               <CDBSidebarMenuItem style={{ color: 'black' }} icon="home">Dashboard</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink exact to="/office/batches" activeclassname="activeClicked">
+            <NavLink  to="/office/batches" activeclassname="activeClicked">
               <CDBSidebarMenuItem style={{ color: 'black' }} icon="table">Batches</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink exact to="/office/teachers" activeclassname="activeClicked">
+            <NavLink  to="/office/teachers" activeclassname="activeClicked">
               <CDBSidebarMenuItem style={{ color: 'black' }} icon="user">Teachers</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink exact to="/office/students" activeclassname="activeClicked">
+            <NavLink  to="/office/students" activeclassname="activeClicked">
               <CDBSidebarMenuItem style={{ color: 'black' }} icon="users">Students</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink exact to="/hero404" target="_blank" activeclassname="activeClicked">
+            <NavLink  to="/hero404" target="_blank" activeclassname="activeClicked">
               <CDBSidebarMenuItem style={{ color: 'black' }} icon="exclamation-circle">Payments</CDBSidebarMenuItem>
             </NavLink>
 

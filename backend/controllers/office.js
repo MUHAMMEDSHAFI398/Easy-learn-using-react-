@@ -10,7 +10,6 @@ dotenv.config();
 
 module.exports = {
     login: (req, res) => {
-
         const email = req.body.email;
         const password = req.body.password;
 
@@ -74,6 +73,7 @@ module.exports = {
             })
             res.json({ success: true })
         } catch (err) {
+           
             console.log(err)
         }
 
@@ -160,10 +160,11 @@ module.exports = {
 
         try {
             const teachers = await teacher.find({ myBatch: "" })
-
+            const allTeachers = await teacher.find()
             res.json({
                 status: true,
-                teachers: teachers
+                teachers: teachers,
+                allTeachers:allTeachers
             })
         } catch (err) {
 
@@ -298,17 +299,29 @@ module.exports = {
                     }
                 }
             ])
+            const availableTeachers= await teacher.aggregate([
+                {
+                    $match:{myBatch: ""}
+                },
+                {
+                    $project: {
+                        name: 1,
+                        registerId: 1
+                    }
+                }
+            ])
 
             res.json({
                 status: true,
                 batchData: batchData,
-                teachers: teachers
+                teachers: teachers,
+                availableTeachers:availableTeachers
             })
 
 
         } catch (err) {
             console.log(err)
-        }
+        }                
 
 
 

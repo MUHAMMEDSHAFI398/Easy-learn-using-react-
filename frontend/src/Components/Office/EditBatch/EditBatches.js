@@ -10,6 +10,7 @@ function EditBatches() {
   const location = useLocation()
   const batchId = location.state.id
   const [teachers, setTeachers] = useState([{ name: '', registerId: '' }])
+  const [availableTeachers, setAvailableTeachers] = useState([{ name: '', registerId: '' }])
   const [batchData, setBatchData] = useState({
     numberOfSeat: "",
     remarks: "",
@@ -30,6 +31,7 @@ function EditBatches() {
     }).then((response) => {
 
       setTeachers(response.data.teachers)
+      setAvailableTeachers(response.data.availableTeachers)
       const batchData = { ...response.data.batchData[0] }
       const subjectValues = response.data.batchData[0].subjects
       setBatchData(batchData)
@@ -122,7 +124,7 @@ function EditBatches() {
               >
                 <option value={batchData.batchHeadId}>{batchData.headOfTheBatch}</option>
                 {
-                  teachers.map((obj, index) => {
+                  availableTeachers.map((obj, index) => {
                     return (
                       <option key={index} value={obj.registerId}>{obj.name} ({obj.registerId})</option>
                     )

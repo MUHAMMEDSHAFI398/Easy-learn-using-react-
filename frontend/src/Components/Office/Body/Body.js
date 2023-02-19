@@ -4,18 +4,13 @@ import { useNavigate } from "react-router-dom";
 import axios from '../../../axios'
 import './Body.css'
 
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../../Redux/Action/Index';
-import { useDispatch } from 'react-redux';
+
 
 function Body() {
 
   const initialVlaues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialVlaues);
   const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-  const { storeAdminToken } = bindActionCreators(actionCreators, dispatch);
 
   const onChangeHandle = (e) => {
     const { name, value } = e.target;
@@ -32,7 +27,6 @@ function Body() {
     }).then((response) => {
       const jwtToken = response.data.token
       localStorage.setItem("officeToken", jwtToken);
-      storeAdminToken(jwtToken);
       navigate('/office/home');
 
     }).catch((error) => {

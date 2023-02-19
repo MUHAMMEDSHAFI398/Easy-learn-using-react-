@@ -5,11 +5,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../../axios';
 
 
-function ViewBatches() {
+function  ViewBatches() {
 
   const [batches, setBatches] = useState([]);
   const navigate = useNavigate();
-  const officeToken = localStorage.getItem("officeToken");
+  const officeToken=localStorage.getItem('officeToken')
 
 
   useEffect(() => {

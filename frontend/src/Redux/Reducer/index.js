@@ -3,7 +3,7 @@ import Reducer from './Reducer';
 
 
 const reducers = combineReducers({
-    token:Reducer,
+    officeToken:Reducer,
     
 });
 

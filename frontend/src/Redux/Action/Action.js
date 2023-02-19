@@ -1,18 +1,17 @@
-export const storeAdminToken =(data)=>{
-   
+export const storeAdminToken =(jwtToken)=>{
     return (dispatch)=>{
         dispatch({
             type:"storeAdminToken",
-            token:data.jwtToken,
+            officeToken:jwtToken,
         })
     }
 }
 
-export const removeAdminToken = (data)=>{
+export const removeAdminToken = (jwtToken)=>{
     return (dispatch)=>{
         dispatch({
             type:"removeAdminToken",
-            token:data.jwtToken,
+            officeToken:jwtToken,
         })
     }
 }

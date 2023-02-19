@@ -16,6 +16,7 @@ function AddStudents() {
     const [formValues, setFormValues] = useState(initialVlaues);
     const [imageURL, setImageURL] = useState(null);
     const [error, setErrors] = useState({});
+    const [imageError, setImageError] = useState('')
     const navigate = useNavigate();
     const officeToken = localStorage.getItem("officeToken");
 
@@ -31,6 +32,7 @@ function AddStudents() {
         });
         const imageURL = URL.createObjectURL(event.target.files[0])
         setImageURL(imageURL);
+        setImageError('')
     };
 
     useEffect(() => {
@@ -84,9 +86,15 @@ function AddStudents() {
                         Authorization: officeToken
                     },
                 }
-            ).then(() => {
-                message.success('Successfully added new student')
-                navigate('/office/students');
+            ).then((resp) => {
+                if (resp.data.imageError) {
+                    console.log(resp.data)
+                    setImageError(resp.data.imageError)
+                } else {
+                    message.success('Successfully added new student')
+                    navigate('/office/students');
+                }
+
 
             }).catch((error) => {
                 console.log(error);
@@ -267,7 +275,7 @@ function AddStudents() {
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.house_name && (<p className="ms-2 text-danger">{error.email}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.house_name && (<p className="ms-2 text-danger">{error.house_name}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
@@ -279,7 +287,7 @@ function AddStudents() {
                                 className="input-tag "
                                 type="text"
                             />
-                            {error.place && (<p className="ms-2 text-danger">{error.email}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.place && (<p className="ms-2 text-danger">{error.place}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
@@ -306,7 +314,7 @@ function AddStudents() {
                                 className="input-tag "
                                 type="number"
                             />
-                            {error.pin && (<p className="ms-2 text-danger">{error.email}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.pin && (<p className="ms-2 text-danger">{error.pin}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
                         <div className="d-flex flex-column">
@@ -348,6 +356,7 @@ function AddStudents() {
                                 className="input-tag form-control"
                                 type="file" id="formFile"
                             />
+                            {imageError && (<p className="ms-2 text-danger">{imageError}{window.scrollTo({ top: 500, behavior: "smooth" })}</p>)}
                         </div>
 
                     </div>

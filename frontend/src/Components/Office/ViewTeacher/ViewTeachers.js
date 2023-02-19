@@ -5,11 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 import { message } from 'antd'
 
+
 function ViewTeachers() {
+  const officeToken=localStorage.getItem('officeToken')
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
-  const officeToken = localStorage.getItem("officeToken");
 
+ 
 
   useEffect(() => {
     axios.get('/office/teachers', {
