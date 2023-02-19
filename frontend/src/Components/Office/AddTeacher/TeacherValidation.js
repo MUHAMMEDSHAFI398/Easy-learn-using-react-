@@ -87,6 +87,10 @@ const validate = (values) => {
         errors.state = "Invalid entry"
     }
 
+    if (values.file === null){
+        errors.file ="Image is required"
+    }
+
     
 
     

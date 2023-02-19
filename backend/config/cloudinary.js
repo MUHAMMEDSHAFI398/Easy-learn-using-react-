@@ -33,6 +33,6 @@ module.exports = (req, res, next) => {
       if (err.message === "File is not an image")
       return res.json({imageError:'Selected file is not an image'})
     }
-    return next();
+    return next();   
   });
 }; 

@@ -33,6 +33,8 @@ function AddStudents() {
         const imageURL = URL.createObjectURL(event.target.files[0])
         setImageURL(imageURL);
         setImageError('')
+        setErrors({ ...error, file: null });
+        
     };
 
     useEffect(() => {
@@ -88,7 +90,6 @@ function AddStudents() {
                 }
             ).then((resp) => {
                 if (resp.data.imageError) {
-                    console.log(resp.data)
                     setImageError(resp.data.imageError)
                 } else {
                     message.success('Successfully added new student')
@@ -350,12 +351,13 @@ function AddStudents() {
 
                         <div className="d-flex flex-column">
                             <input
-
+                              
                                 name='file'
                                 onChange={handleFileChange}
                                 className="input-tag form-control"
                                 type="file" id="formFile"
                             />
+                             {error.file && (<p className="ms-2 text-danger">{error.file}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                             {imageError && (<p className="ms-2 text-danger">{imageError}{window.scrollTo({ top: 500, behavior: "smooth" })}</p>)}
                         </div>
 
