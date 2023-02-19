@@ -313,7 +313,7 @@ function AddTeachers() {
                     </div>
                     <div className="d-flex flex-wrap justify-content-center mt-4">
 
-                        {imageURL && <img className='imagedisplay' src={imageURL} alt="could not load image" />}
+                        {imageURL && <img className='imagedisplay' src={imageURL} alt="could not load " />}
 
                     </div>
 
@@ -321,11 +321,12 @@ function AddTeachers() {
 
                         <div className="d-flex flex-column">
                             <input
-                                // accept='image/*'
+                                accept='image/*'
                                 name='file'
                                 onChange={handleFileChange}
                                 className="input-tag form-control"
                                 type="file" id="formFile"
+                                required
                             />
                             {imageError && (<p className="ms-2 text-danger">{imageError}{window.scrollTo({ top: 500, behavior: "smooth" })}</p>)}
 
