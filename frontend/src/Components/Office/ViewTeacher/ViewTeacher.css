@@ -1,9 +1,9 @@
-
-.buttonTop{
+.buttonTop {
     display: flex;
     margin-top: 100px;
 }
-.buttonDiv{
+
+.buttonDiv {
     border-radius: 13px;
     border: 1px solid green;
     background-color: green;
@@ -11,18 +11,21 @@
     width: 150px;
     height: 40px;
 }
-.block-button{
+
+.block-button {
     background-color: red;
     color: white;
     border-radius: 10px;
     border: none;
 }
-.unblock-button{
+
+.unblock-button {
     background-color: green;
     color: white;
     border-radius: 10px;
     border: none;
 }
-.i-tags{
+
+.i-tags {
     cursor: pointer;
 }

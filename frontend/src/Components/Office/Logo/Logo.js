@@ -3,7 +3,7 @@ import './Logo.css'
 
 function Logo() {
   return (
-    <div className='container'>
+    <div>
       <img className='logo' src="/images/logo-project.png" alt="" />
     </div>
   )

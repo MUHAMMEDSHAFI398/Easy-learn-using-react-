@@ -7,8 +7,10 @@ import Body from '../../Components/Office/Body/Body'
 function Login() {
   return (
     <div>
-        <Logo/>
-        <Body/>
+      <div className='ms-5 mt-3'>
+        <Logo />
+      </div>
+      <Body />
     </div>
   )
 }

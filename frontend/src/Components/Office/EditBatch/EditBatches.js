@@ -106,11 +106,11 @@ function EditBatches() {
               <input
                 onChange={handleChange}
                 value={batchData.numberOfSeat}
-                name="numberOfSeat" 
+                name="numberOfSeat"
                 className="input-tag "
                 type="number"
               />
-     {error.numberOfSeat && (<p className="ms-2 text-danger">{error.numberOfSeat}</p>)}
+              {error.numberOfSeat && (<p className="ms-2 text-danger">{error.numberOfSeat}</p>)}
 
             </div>
 
@@ -142,7 +142,7 @@ function EditBatches() {
                 onChange={handleChange}
                 value={batchData.remarks}
                 name="remarks"
-               className="input-tag "
+                className="input-tag "
                 type="text"
               />
             </div>
@@ -211,7 +211,7 @@ function EditBatches() {
       </div>
     </div>
   )
-  
+
 }
 
 export default EditBatches

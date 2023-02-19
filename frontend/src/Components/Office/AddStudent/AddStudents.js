@@ -34,7 +34,7 @@ function AddStudents() {
         setImageURL(imageURL);
         setImageError('')
         setErrors({ ...error, file: null });
-        
+
     };
 
     useEffect(() => {
@@ -351,13 +351,13 @@ function AddStudents() {
 
                         <div className="d-flex flex-column">
                             <input
-                              
+
                                 name='file'
                                 onChange={handleFileChange}
                                 className="input-tag form-control"
                                 type="file" id="formFile"
                             />
-                             {error.file && (<p className="ms-2 text-danger">{error.file}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+                            {error.file && (<p className="ms-2 text-danger">{error.file}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                             {imageError && (<p className="ms-2 text-danger">{imageError}{window.scrollTo({ top: 500, behavior: "smooth" })}</p>)}
                         </div>
 

@@ -1,7 +1,7 @@
 const validate = (values) => {
 
 
-    const errors = {};  
+    const errors = {};
 
     if (values.startDate === "") {
         errors.startDate = "Start date is required"
@@ -32,13 +32,6 @@ const validate = (values) => {
     } else if (!isNaN(values.headOfTheBatch)) {
         errors.headOfTheBatch = "Invalid entry"
     }
-
-
-
-
-
-
-
 
     return errors;
 };

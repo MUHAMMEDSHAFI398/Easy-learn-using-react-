@@ -1,8 +1,6 @@
 const subjectValidate = (values) => {
 
-
-    const subErrors = {};  
-
+    const subErrors = {};
 
     if (values.subject === "") {
         subErrors.subject = "Subject is required"

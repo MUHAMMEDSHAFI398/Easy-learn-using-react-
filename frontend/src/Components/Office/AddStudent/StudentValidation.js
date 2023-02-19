@@ -85,9 +85,9 @@ const validate = (values) => {
         errors.pin = "Pin is required"
     } else if (isNaN(values.pin)) {
         errors.pin = "Invalid entry"
-    } else if (!/^\d{6}$/.test(values.pin)){
+    } else if (!/^\d{6}$/.test(values.pin)) {
         console.log('regex')
-        errors.pin="Pin should be exactly 6 digit"
+        errors.pin = "Pin should be exactly 6 digit"
     }
 
     if (values.district === "") {
@@ -102,13 +102,9 @@ const validate = (values) => {
         errors.state = "Invalid entry"
     }
 
-    if (values.file === null){
-        errors.file ="Image is required"
+    if (values.file === null) {
+        errors.file = "Image is required"
     }
-
-
-
-
 
 
     return errors;

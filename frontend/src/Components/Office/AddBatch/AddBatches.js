@@ -21,7 +21,7 @@ function AddBatches() {
   const [subjectValue, setSubjectValue] = useState(subjectInitiaValues);
   const [subjectValues, setSubjectValues] = useState([])
   const [teachers, setTeachers] = useState([]);
-  const [allTeachers,setAllTeachers]=useState([])
+  const [allTeachers, setAllTeachers] = useState([])
   const navigate = useNavigate();
   const officeToken = localStorage.getItem("officeToken");
 

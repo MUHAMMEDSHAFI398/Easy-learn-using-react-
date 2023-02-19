@@ -7,11 +7,11 @@ import { message } from 'antd'
 
 
 function ViewTeachers() {
-  const officeToken=localStorage.getItem('officeToken')
+  const officeToken = localStorage.getItem('officeToken')
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
 
- 
+
 
   useEffect(() => {
     axios.get('/office/teachers', {

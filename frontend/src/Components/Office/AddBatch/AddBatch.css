@@ -1,14 +1,16 @@
-.subjectDiv{
+.subjectDiv {
     margin: auto;
     border-radius: 25px;
     border: 1px solid black;
-   
+
 }
-.p-tag{
+
+.p-tag {
     text-decoration: underline;
     font-weight: bold;
 }
-.subjectAndTeacher{
+
+.subjectAndTeacher {
 
     border-radius: 10px;
     width: 400px;

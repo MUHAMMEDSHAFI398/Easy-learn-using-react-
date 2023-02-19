@@ -1,8 +1,6 @@
 const validate = (values) => {
 
-
-    const errors = {};  
-
+    const errors = {};
 
     if (values.numberOfSeat === "") {
         errors.numberOfSeat = "Number of seat is required"
@@ -15,12 +13,6 @@ const validate = (values) => {
     } else if (!isNaN(values.headOfTheBatch)) {
         errors.headOfTheBatch = "Invalid entry"
     }
-
-
-
-
-
-
 
 
     return errors;
