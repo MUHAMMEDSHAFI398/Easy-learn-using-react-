@@ -1,0 +1,23 @@
+.paraentSection1 {
+    min-height: fit-content;
+    margin-left: 35px;
+    margin-right: 35px; 
+}
+.image1{
+    margin-top: 30px;
+    height: 550px;
+    width: 700px;
+}
+.para1{
+    margin-top: 130px;
+}
+.bg1{
+    background-color: rgb(250, 236, 227);
+}
+.quote1{
+    font-size: larger ;
+}
+.instituteImage{
+    width: 100%;
+}
+

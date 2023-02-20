@@ -9,14 +9,14 @@ function NavBar() {
                 <Logo />
                 <div className=' d-flex flex-column align-items-center'>
                     <h1 className='Nav-title'>Easy learn</h1>
-                    <p className='Nav-sub-title'>Re-accredited by NAAC with 'A+' grade</p>
+                    <p className='Nav-sub-title'>The right track towards the goal</p>
                 </div>
                 <div class="dropdown">
                     <button className='LoginButton'>Login</button>
                     <div class="dropdown-content">
-                        {/* <a href="#">Option</a>
-                        <a href="#">Option</a>
-                        <a href="#">Option</a> */}
+                        <a href="/office">Office login</a>
+                        <a href="/">Teacher login</a>
+                        <a href="/">Student login</a>
                     </div>
                 </div>
             </div>
