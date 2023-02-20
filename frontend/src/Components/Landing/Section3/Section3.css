@@ -1,0 +1,14 @@
+.paraentSection3 {
+    min-height: fit-content;
+    margin-left: 35px;
+    margin-right: 35px; 
+}
+.bg3{
+    background-color: rgb(245, 242, 240); 
+}
+.gallary-image{
+    border-radius: 30px;
+    width: 350px;
+    height: 220px;
+    margin-top: 17px;
+}

@@ -1,27 +1,27 @@
-.paraentSection1 {
+.paraentSection2 {
     min-height: fit-content;
     margin-left: 35px;
     margin-right: 35px;
 }
 
-.image1 {
+.sec-2Image {
     margin-top: 30px;
-    height: 550px;
-    width: 700px;
+    height: 500px;
+    width: 500px;
 }
 
-.para1 {
-    margin-top: 130px;
-}
-
-.bg1 {
+.bg2 {
     background-color: rgb(245, 242, 240);
 }
 
-.quote1 {
+.quote2 {
     font-size: larger;
 }
 
 .instituteImage {
     width: 100%;
+}
+
+.rightChilid {
+    margin-top: 150px;
 }
