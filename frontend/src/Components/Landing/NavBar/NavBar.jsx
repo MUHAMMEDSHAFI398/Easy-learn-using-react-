@@ -15,8 +15,8 @@ function NavBar() {
                     <button className='LoginButton'>Login</button>
                     <div class="dropdown-content">
                         <a href="/office">Office login</a>
-                        <a href="/">Teacher login</a>
-                        <a href="/">Student login</a>
+                        <a href="/teacher">Teacher login</a>
+                        <a href="/student">Student login</a>
                     </div>
                 </div>
             </div>
