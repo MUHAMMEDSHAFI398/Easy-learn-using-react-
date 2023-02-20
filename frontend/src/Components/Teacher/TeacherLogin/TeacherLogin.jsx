@@ -18,7 +18,6 @@ function TeacherLogin() {
 
                             <form >
                                 <MDBInput
-
                                     wrapperClass='mb-4 ms-4 me-4'
                                     className='input' name='email'
                                     label='Register id' id='formControlLg'

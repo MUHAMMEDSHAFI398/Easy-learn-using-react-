@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from '../../Components/Office/Logo/Logo'
-import TeacherLogin from '../../Components/Teacher/TeacherLogin'
+import TeacherLogin from '../../Components/Teacher/TeacherLogin/TeacherLogin'
 
 function LoginTeacher() {
   return (
