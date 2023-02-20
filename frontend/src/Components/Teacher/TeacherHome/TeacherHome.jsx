@@ -2,7 +2,7 @@ import React from 'react'
 import './TeacherHome.css'
 function TeacherHome() {
     return (
-        <div className='parentHome '>
+        <div className='parentHome container'>
 
             <div className='batch-deatails-parent-div'>
 
