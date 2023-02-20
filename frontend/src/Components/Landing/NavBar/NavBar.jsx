@@ -5,7 +5,7 @@ function NavBar() {
 
     return (
         <div className='parentNav'>
-            <div className='d-flex justify-content-between'>
+            <div className='d-flex flex-wrap justify-content-between'>
                 <Logo />
                 <div className=' d-flex flex-column align-items-center'>
                     <h1 className='Nav-title'>Easy learn</h1>
@@ -14,9 +14,9 @@ function NavBar() {
                 <div class="dropdown">
                     <button className='LoginButton'>Login</button>
                     <div class="dropdown-content">
+                        {/* <a href="#">Option</a>
                         <a href="#">Option</a>
-                        <a href="#">Option</a>
-                        <a href="#">Option</a>
+                        <a href="#">Option</a> */}
                     </div>
                 </div>
             </div>
