@@ -1,23 +1,19 @@
 const initialState = {
-  officeToken: "",
+  teacherData: {},
   };
   
-  const adminTokenReducer = (prevState = initialState, action) => {
+  const Reducer = (prevState = initialState, action) => {
     switch (action.type) {
-      case "storeAdminToken":
+      case "storeTeacherData":
         return {
           ...prevState,
-          officeToken: action.officeToken,
+          teacherData: action.teacherData,
         };
-      case "removeAdminToken":
-        return {
-          ...prevState,
-          officeToken: "",
-        };
+
       default:
         return initialState;
   
     }
   };
   
-  export default adminTokenReducer;
+  export default Reducer;

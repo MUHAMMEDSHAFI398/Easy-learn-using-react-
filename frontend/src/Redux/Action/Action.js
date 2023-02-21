@@ -1,17 +1,9 @@
-export const storeAdminToken =(jwtToken)=>{
+export const storeTeacherData =(teacherData)=>{
     return (dispatch)=>{
         dispatch({
-            type:"storeAdminToken",
-            officeToken:jwtToken,
+            type:"storeTeacherData",
+            teacherData:teacherData,
         })
     }
 }
 
-export const removeAdminToken = (jwtToken)=>{
-    return (dispatch)=>{
-        dispatch({
-            type:"removeAdminToken",
-            officeToken:jwtToken,
-        })
-    }
-}

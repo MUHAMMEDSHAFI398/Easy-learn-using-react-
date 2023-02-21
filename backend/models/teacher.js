@@ -88,15 +88,11 @@ const teacherSchema = new Schema(
       default:"",
       type:String
     },
-    batchAssigned:{
-      type:Boolean,
-      default:false
+    password: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    // password: {
-    //   type: String,
-    //   required: true,
-    //   trim: true,
-    // },
     image:[{
       url:{
         type:String

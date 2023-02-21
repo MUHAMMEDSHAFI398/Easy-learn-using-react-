@@ -1,7 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { MDBContainer, MDBCol, MDBRow, MDBInput } from 'mdb-react-ui-kit';
+import { useNavigate } from "react-router-dom";
 import './TeacherLogin.css'
+import axios from '../../../axios'
+
+
 function TeacherLogin() {
+    const initialVlaues = { registerId: "", password: "" };
+    const [formValues, setFormValues] = useState(initialVlaues);
+    const navigate = useNavigate();
+
+    const [error, setError] = useState('')
+
+    const onChangeHandle = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+        setError('')
+    };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        axios.post('teacher/login', {
+
+            registerId: formValues.registerId,
+            password: formValues.password,
+
+        }).then((response) => {
+            if (response.data.error) {
+                setError(response.data.error)
+            } else {
+                const jwtToken = response.data.token
+                localStorage.setItem("teacherToken", jwtToken);
+                navigate('/teacher/home');
+            }
+
+
+        }).catch((error) => {
+            console.log(error);
+
+        })
+    }
+
+
     return (
 
         <div className='border-login container  mb-5 '  >
@@ -16,23 +56,31 @@ function TeacherLogin() {
                                 <h1 className="mb-5 mt-3">Login</h1>
                             </div>
 
-                            <form >
+                            <form onSubmit={handleSubmit} >
                                 <MDBInput
+                                    value={formValues.registerId}
+                                    onChange={onChangeHandle}
                                     wrapperClass='mb-4 ms-4 me-4'
-                                    className='input' name='email'
+                                    className='input' name='registerId'
                                     label='Register id' id='formControlLg'
-                                    type='email' size="lg"
+                                    type='text' size="lg"
+                                    required
                                 />
 
                                 <MDBInput wrapperClass='mb-4 ms-4 me-4'
+                                    value={formValues.password}
+                                    onChange={onChangeHandle}
                                     className='input' name='password'
-                                    label='Password (DOB)' id='formControlLg'
-                                    type='date' size="lg"
+                                    label='Password' id='formControlLg'
+                                    type='password' size="lg"
+                                    required
                                     max={new Date().toISOString().split("T")[0]}
                                 />
+                                {error && <p className="ms-2 text-danger">{error}</p>}
+
 
                                 <MDBInput className='submit-login btn btn-success'
-                                    wrapperClass='mb-4 ms-4 me-4'
+                                    wrapperClass='mb-4 ms-4 me-4' 
                                     type='submit' value='Login'
                                     id='formControlLg' size="lg"
                                 />

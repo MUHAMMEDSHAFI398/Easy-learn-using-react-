@@ -5,6 +5,7 @@ const batch = require('../models/batch');
 const student = require('../models/student')
 const helpers = require('../helpers/helpers')
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 dotenv.config();
 
 
@@ -40,13 +41,16 @@ module.exports = {
         }
     },
     addTeacher: async (req, res) => {
-
+        
         const data = req.body
         const registerId = await helpers.uniqueCodeGenerator('teacher')
         const image = {
             url: req.file.path,
             filename: req.file.filename
         }
+        const password = data.date_of_birth
+        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log(hashedPassword)
         try {
             await teacher.create({
                 registerId: registerId,
@@ -61,6 +65,7 @@ module.exports = {
                 remarks: data.remarks,
                 isBlocked: false,
                 image: image,
+                password:hashedPassword,
                 address: {
                     house_name: data.house_name,
                     place: data.place,

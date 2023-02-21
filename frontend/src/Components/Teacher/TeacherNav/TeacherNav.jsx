@@ -1,34 +1,36 @@
 import React from 'react'
 import Logo from '../../Office/Logo/Logo'
+import './TeacherNav.css'
+import { message } from 'antd'
+import { useNavigate } from 'react-router-dom';
 
 function TeacherNav() {
+
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    localStorage.removeItem("teacherToken")
+    message.success("Logout successfully")
+    navigate('/teacher')
+  }
   return (
-    <nav class="navbar navbar-expand-lg bg-light">
-  <div class="container-fluid">
-    
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      {/* <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <Logo/>
-        </li>
+    <nav className="navbar navbar-expand-lg" style={{backgroundColor: "rgb(227, 224, 221)"}}>
+    <div className="container-fluid">
+      <Logo/>
+      <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span className="navbar-toggler-icon"></span>
+      </button>
+      <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div className="navbar-nav first-nav">    
+          <a className="nav-link " href="/teacher/home">Home</a>
+          <a className="nav-link " href="/teacher/mybatch">My batch</a>
+          <a className="nav-link " href="/teacher/updateProfile">Update profile</a>
+          <p className="nav-link " style={{cursor:"pointer"}} onClick={handleLogout}  >Logout</p>
        
-      </ul> */}
-      <div>
-        <ul className='d-flex'>
-        <li class="nav-item">dkjf</li>
-      <li class="nav-item">djdj</li> 
-        </ul>
-      
- 
-          
         </div>
+      </div>
     </div>
-  </div>
-</nav>
-  
+  </nav>
+
   )
 }
 

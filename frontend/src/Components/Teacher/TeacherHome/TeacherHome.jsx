@@ -1,6 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useEffect } from 'react'
 import './TeacherHome.css'
+import { getHome } from '../../../Services/TeacherServices'
+
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../Redux/Action/Index';
 function TeacherHome() {
+    // const [teacherData,setTeacherData]=useState({})
+    const dispatch = useDispatch();
+    const { storeTeacherData } = bindActionCreators(actionCreators, dispatch);
+    useEffect(() => {
+        getHome().then((response) => {
+
+            storeTeacherData(response.data.teacherData)
+        })
+    }, [])
+    const details = useSelector(state => state.teacherData)
+    console.log(details)
+
+    const date_of_birth = details.teacherData.date_of_birth
+    const birthDate = new Date(date_of_birth);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const readableDate = birthDate.toLocaleDateString('en-US', options);
+
+
     return (
         <div className='parentHome container'>
 
@@ -10,62 +35,60 @@ function TeacherHome() {
                     <h5 className='heading'>My profile</h5>
                 </div>
                 <div className='d-flex justify-content-center'>
-                    <img className='img-div' src='' alt="Image is not loaded" />
+                    <img className='img-div' src='/images/pic4.jpeg' alt="could not load" />
                 </div>
 
                 <div className='d-flex flex-wrap '>
 
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Register id</strong></p>
-                        <p>sd</p>
+                        <p>{details.teacherData.registerId}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Name</strong></p>
-                        <p>sf</p>
+                        <p>{details.teacherData.name}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Batch</strong></p>
-                        <p>sdf</p>
+                        <p>{details.teacherData.myBatch === "" ? "Batch not Assigned" : details.teacherData.myBatch}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Email</strong></p>
-                        <p>sd</p>
+                        <p>{details.teacherData.email}</p>
                     </div>
 
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Phone</strong></p>
-                        <p>df</p>
+                        <p>{details.teacherData.phone}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Date of birth</strong></p>
-                        <p>df</p>
+                        <p>{readableDate}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
-                        <p><strong>Gender</strong></p>
-                        <p>fd</p>
+                        <p><strong>Qualification</strong></p>
+                        <p>{details.teacherData.qualification}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
-                        <p><strong>Parent</strong></p>
-                        <p>fd</p>
+                        <p><strong>Experiance</strong></p>
+                        <p>{details.teacherData.experience}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
-                        <p><strong>Parent phone</strong></p>
-                        <p>df</p>
-                    </div>
-                    <div className='batch-deatails-child d-flex flex-column align-items-center'>
-                        <p><strong>Education</strong></p>
-                        <p>df</p>
-                    </div>
-                    <div className='batch-deatails-child d-flex flex-column align-items-center'>
-                        <p><strong>Last studied institute</strong></p>
-                        <p>df</p>
+                        <p><strong>Salary</strong></p>
+                        <p>{details.teacherData.qualification}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Address</strong></p>
                         <p>
-                            f
+                            {details.teacherData.address?.house_name},
+                            {details.teacherData.address.place}, <br />
+                            {details.teacherData.address.post},
+                            {details.teacherData.address.pin}, <br />
+                            {details.teacherData.address.district},
+                            {details.teacherData.address.state}
                         </p>
                     </div>
+
 
 
                 </div>
