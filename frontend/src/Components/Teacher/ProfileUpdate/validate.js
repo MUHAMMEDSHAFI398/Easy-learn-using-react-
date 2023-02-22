@@ -1,6 +1,5 @@
-const validate = (values) => {
+const validate = (values,address) => {
 
-    console.log(values)
     const errors = {};
 
     
@@ -17,44 +16,40 @@ const validate = (values) => {
         errors.email = "Invalid email"
     }
 
-    if (values.address.house_name === "") {
+    if (address.house_name === "") {
         errors.house_name = "House name is required"
-    } else if (!isNaN(values.house_name)) {
+    } else if (!isNaN(address.house_name)) {
         errors.house_name = "Invalid entry"
     }
 
-    if (values.address.place === "") {
+    if (address.place === "") {
         errors.place = "Place is required"
-    } else if (!isNaN(values.place)) {
+    } else if (!isNaN(address.place)) {
         errors.place = "Invalid entry"
     }
 
-    if (values.address.post === "") {
+    if (address.post === "") {
         errors.post = "Post is required"
-    } else if (!isNaN(values.post)) {
+    } else if (!isNaN(address.post)) {
         errors.post = "Invalid entry"
     }
 
-    if (values.address.pin === "") {
+    if (address.pin === "") {
         errors.pin = "Pin is required"
-    } else if (isNaN(values.pin)) {
+    } else if (isNaN(address.pin)) {
         errors.pin = "Invalid entry"
     }
 
-    if (values.address.district === "") {
+    if (address.district === "") {
         errors.district = "District is required"
-    } else if (!isNaN(values.district)) {
+    } else if (!isNaN(address.district)) {
         errors.district = "Invalid entry"
     }
 
-    if (values.address.state === "") {
+    if (address.state === "") {
         errors.state = "State is required"
-    } else if (!isNaN(values.state)) {
+    } else if (!isNaN(address.state)) {
         errors.state = "Invalid entry"
-    }
-
-    if (values.address.file === null) {
-        errors.file = "Image is required"
     }
 
 

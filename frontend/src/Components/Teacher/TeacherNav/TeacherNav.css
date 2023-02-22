@@ -1,6 +1,22 @@
 .TeacherNavParent{
-    background-color: rgb(206, 206, 205)
+    background-color: rgb(244, 243, 242);
+    box-shadow: 0 0 10px -2px ;
 }
 .first-nav{
     margin-left: 35px;
+}
+
+.react-link:hover{
+    color: blue;
+}
+.non-hilite{
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    
+}
+.hilite{
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
 }

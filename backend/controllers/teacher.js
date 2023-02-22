@@ -45,19 +45,49 @@ const login = async (req, res) => {
     }
 }
 
-const getHome = async(req,res)=>{
+const getHome = async (req, res) => {
     const token = req.headers.authorization;
     const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
-   try{
-     const teacherData= await teacher.findOne({registerId:decoded.registerId})
-     res.json({teacherData:teacherData})
-   }catch (err){
-    console.log(err)
-   }
+    try {
+        const teacherData = await teacher.findOne({ registerId: decoded.registerId })
+        res.json({ teacherData: teacherData })
+    } catch (err) {
+        console.log(err)
+    }
+}
+const updateProfile = async (req, res) => {
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
+    const address = req.body.address
+    const data = req.body.teacherData
+    try {
+        await teacher.updateOne(
+
+            { registerId: decoded.registerId },
+            {
+                $set: {
+                    phone: data.phone,
+                    email: data.email,
+                    address: {
+                        house_name: address.house_name,
+                        place: address.place,
+                        post: address.post,
+                        pin: address.pin,
+                        district: address.district,
+                        state: address.state
+                    }
+                }
+            }
+        )
+        res.json({ status: true })
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 
 module.exports = {
     login,
-    getHome
+    getHome,
+    updateProfile
 }
