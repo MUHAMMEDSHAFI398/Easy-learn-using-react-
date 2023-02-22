@@ -11,36 +11,36 @@ import ViewBatch from "../Pages/Office/ViewBatch";
 import AddBatach from "../Pages/Office/AddBatach";
 import EachBatch from "../Pages/Office/EachBatch";
 import EditBatch from "../Pages/Office/EditBatch";
-import AdminVerification from "../AdminVerificaton/AdminVerification";
+import AdminVerification from "../Varification/AdminVerification";
 import EachStudent from '../Pages/Office/EachStudent';
 
 const OfficeRoutes = () => (
-    
+
     <Routes>
 
-        <Route path="/" element={<AdminVerification> <Login /> </AdminVerification>} ></Route>
+        <Route path="/" element={<Login />} ></Route>
 
-        <Route path="/home" element={<AdminVerification> <OfficeHome /> </AdminVerification>} ></Route>
+        <Route path="/home" element={<OfficeHome />} ></Route>
 
-        <Route path="/add-teacher" element={<AdminVerification> <AddTeacher /> </AdminVerification>} ></Route>
+        <Route path="/add-teacher" element={<AddTeacher />} ></Route>
 
-        <Route path="/teachers" element={<AdminVerification> <ViewTeacher /> </AdminVerification>} ></Route>
+        <Route path="/teachers" element={<ViewTeacher />} ></Route>
 
-        <Route path="/each-teacher" element={<AdminVerification> <EachTeacher /> </AdminVerification>} ></Route>
+        <Route path="/each-teacher" element={<EachTeacher />} ></Route>
 
-        <Route path="/students" element={<AdminVerification> <ViewStudent /> </AdminVerification>} ></Route>
+        <Route path="/students" element={<ViewStudent />} ></Route>
 
-        <Route path="/add-student" element={<AdminVerification> <AddStudent /> </AdminVerification>} ></Route>
+        <Route path="/add-student" element={<AddStudent />} ></Route>
 
-        <Route path="/batches" element={<AdminVerification> <ViewBatch /> </AdminVerification>} ></Route>
+        <Route path="/batches" element={<ViewBatch />} ></Route>
 
-        <Route path="/add-batch" element={<AdminVerification> <AddBatach /> </AdminVerification>} ></Route>
+        <Route path="/add-batch" element={<AddBatach />} ></Route>
 
-        <Route path="/each-batch" element={<AdminVerification> <EachBatch /> </AdminVerification>} ></Route>
+        <Route path="/each-batch" element={<EachBatch />} ></Route>
 
-        <Route path="/edit-batch" element={<AdminVerification> <EditBatch /> </AdminVerification>} ></Route>
+        <Route path="/edit-batch" element={<EditBatch />} ></Route>
 
-        <Route path="/each-student" element={<AdminVerification> <EachStudent/> </AdminVerification>} ></Route>
+        <Route path="/each-student" element={<EachStudent />} ></Route>
 
 
     </Routes>

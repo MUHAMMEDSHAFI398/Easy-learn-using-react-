@@ -6,9 +6,6 @@
     margin-left: 35px;
 }
 
-.react-link:hover{
-    color: blue;
-}
 .non-hilite{
     text-decoration: none;
     color: black;
@@ -17,6 +14,12 @@
 }
 .hilite{
     text-decoration: none;
-    color: blue;
+    color: orange;
     font-weight: bold;
+}
+.hilite:hover{
+    color: orange;
+}
+.non-hilite:hover{
+    color: orange;
 }
