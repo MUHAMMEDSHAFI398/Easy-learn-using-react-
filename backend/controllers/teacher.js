@@ -9,7 +9,6 @@ dotenv.config();
 
 const login = async (req, res) => {
     const data = req.body
-    console.log(data)
     try {
         const teacherData = await teacher.findOne({ registerId: data.registerId })
         if (teacherData) {

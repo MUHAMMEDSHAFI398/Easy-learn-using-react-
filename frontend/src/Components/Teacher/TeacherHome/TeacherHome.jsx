@@ -42,24 +42,24 @@ function TeacherHome() {
 
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Register id</strong></p>
-                        <p>{details.teacherData.registerId}</p>
+                        <p>{details?.teacherData?.registerId}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Name</strong></p>
-                        <p>{details.teacherData.name}</p>
+                        <p>{details?.teacherData?.name}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Batch</strong></p>
-                        <p>{details.teacherData.myBatch === "" ? "Batch not Assigned" : details.teacherData.myBatch}</p>
+                        <p>{details?.teacherData?.myBatch === "" ? "Batch not Assigned" : details?.teacherData?.myBatch}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Email</strong></p>
-                        <p>{details.teacherData.email}</p>
+                        <p>{details?.teacherData?.email}</p>
                     </div>
 
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Phone</strong></p>
-                        <p>{details.teacherData.phone}</p>
+                        <p>{details?.teacherData?.phone}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Date of birth</strong></p>
@@ -67,25 +67,25 @@ function TeacherHome() {
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Qualification</strong></p>
-                        <p>{details.teacherData.qualification}</p>
+                        <p>{details?.teacherData?.qualification}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Experiance</strong></p>
-                        <p>{details.teacherData.experience}</p>
+                        <p>{details?.teacherData?.experience}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Salary</strong></p>
-                        <p>{details.teacherData.qualification}</p>
+                        <p>{details?.teacherData?.qualification}</p>
                     </div>
                     <div className='batch-deatails-child d-flex flex-column align-items-center'>
                         <p><strong>Address</strong></p>
                         <p>
-                            {details.teacherData.address?.house_name},
-                            {details.teacherData.address.place}, <br />
-                            {details.teacherData.address.post},
-                            {details.teacherData.address.pin}, <br />
-                            {details.teacherData.address.district},
-                            {details.teacherData.address.state}
+                            {details?.teacherData?.address?.house_name},
+                            {details?.teacherData?.address?.place}, <br />
+                            {details?.teacherData?.address?.post},
+                            {details?.teacherData?.address?.pin}, <br />
+                            {details?.teacherData?.address?.district},
+                            {details?.teacherData?.address?.state}
                         </p>
                     </div>
 
