@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useEffect } from 'react'
 import './TeacherHome.css'
 import { getHome } from '../../../Services/TeacherServices'
@@ -8,18 +8,18 @@ import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../Redux/Action/Index';
 function TeacherHome() {
-    // const [teacherData,setTeacherData]=useState({})
+
     const dispatch = useDispatch();
     const { storeTeacherData } = bindActionCreators(actionCreators, dispatch);
+
     useEffect(() => {
         getHome().then((response) => {
-
             storeTeacherData(response.data.teacherData)
         })
     }, [])
-    const details = useSelector(state => state.teacherData)
-    console.log(details)
 
+   
+    const details = useSelector(state => state.teacherData)
     const date_of_birth = details.teacherData.date_of_birth
     const birthDate = new Date(date_of_birth);
     const options = { year: 'numeric', month: 'long', day: 'numeric' };

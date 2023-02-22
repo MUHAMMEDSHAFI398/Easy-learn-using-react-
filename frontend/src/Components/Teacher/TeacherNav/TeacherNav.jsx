@@ -2,7 +2,7 @@ import React from 'react'
 import Logo from '../../Office/Logo/Logo'
 import './TeacherNav.css'
 import { message } from 'antd'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function TeacherNav() {
 
@@ -13,23 +13,23 @@ function TeacherNav() {
     navigate('/teacher')
   }
   return (
-    <nav className="navbar navbar-expand-lg" style={{backgroundColor: "rgb(227, 224, 221)"}}>
-    <div className="container-fluid">
-      <Logo/>
-      <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div className="navbar-nav first-nav">    
-          <a className="nav-link " href="/teacher/home">Home</a>
-          <a className="nav-link " href="/teacher/mybatch">My batch</a>
-          <a className="nav-link " href="/teacher/updateProfile">Update profile</a>
-          <p className="nav-link " style={{cursor:"pointer"}} onClick={handleLogout}  >Logout</p>
-       
+    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgb(227, 224, 221)" }}>
+      <div className="container-fluid">
+        <Logo />
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div className="navbar-nav first-nav">
+            <Link style={{ textDecoration: "none" }} to='/teacher/home'><p className="nav-link" >Home</p></Link>
+            <Link style={{ textDecoration: "none"}} to='/teacher/mybatch'><p className="nav-link" >My batch</p></Link>
+            <Link style={{ textDecoration: "none"}} to='/teacher/update-profile'> <p className="nav-link" >Update profile</p></Link>
+            <p className="nav-link" style={{ cursor: "pointer" }} onClick={handleLogout}  >Logout</p>
+
+          </div>
         </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
   )
 }

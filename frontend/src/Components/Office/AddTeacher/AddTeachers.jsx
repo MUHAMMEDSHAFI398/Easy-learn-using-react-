@@ -114,7 +114,7 @@ function AddTeachers() {
                         </div>
 
                         <div class="d-flex flex-column">
-                            <label className='ms-4 mt-3'>Phone</label>
+                            <label className='ms-2 mt-3'>Phone</label>
                             <input
                                 value={formValues.phone}
                                 onChange={onChangeHandle}
