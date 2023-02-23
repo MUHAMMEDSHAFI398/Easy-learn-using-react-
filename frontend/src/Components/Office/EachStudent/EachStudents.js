@@ -105,7 +105,7 @@ function EachStudents() {
                         <h5 className='heading'>Details of the Student</h5>
                     </div>
                     <div className='d-flex justify-content-center'>
-                        <img className='img-div' src={location.state.studentData.image[0].url} alt="Image is not loaded" />
+                        <img className='img-div' src={location.state.studentData.image[0].url} alt="could not load" />
                     </div>
 
                     <div className='d-flex flex-wrap '>

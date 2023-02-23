@@ -28,7 +28,6 @@ function EachBatches() {
     })
   }
   useEffect(() => {
-    console.log(location.state.students)
     setStudents(location.state.students);
 
   }, [])

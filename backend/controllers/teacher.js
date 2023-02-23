@@ -84,10 +84,106 @@ const updateProfile = async (req, res) => {
         console.log(err)
     }
 }
+const getMyStudents = async (req, res) => {
 
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
+    try {
+        const teacherData = await teacher.aggregate([
+            {
+                $match: {
+                    registerId: decoded.registerId
+                }
+            },
+            {
+                $project: {
+                    myBatch: 1
+                }
+            }
+        ])
+        if (teacherData[0].myBatch !== "") {
+            const batchStudents = await student.find({ batch: teacherData[0].myBatch })
+            res.json({
+                status: true,
+                students: batchStudents
+            })
+        } else {
+            res.json({ status: false })
+        }
+    } catch (err) {
+        console.log(err)
+    }
+
+}
+const eachStudent = async (req, res) => {
+    const id = req.params.id
+    try {
+        const studentData = await student.findOne({ registerId: id })
+        res.json({
+            status: true,
+            student: studentData
+        })
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+const getMyBatch = async(req, res) => {
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
+
+    try {
+        const teacherData = await teacher.aggregate([
+            {
+                $match: {
+                    registerId: decoded.registerId
+                }
+            },
+            {
+                $project: {
+                    myBatch: 1
+                }
+            }
+        ])
+        if (teacherData[0].myBatch !== ""){
+            const batchData = await batch.aggregate([
+                {
+                    $match: {
+                        registerId: teacherData[0].myBatch
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "teachers",
+                        localField: "headOfTheBatch",
+                        foreignField: "registerId",
+                        as: "teacher_data"
+                    }
+                }
+            ])
+            const numberOfSeat = batchData[0].numberOfSeat
+            const batchFill = batchData[0].batchFill
+            const availableSeat = numberOfSeat - batchFill
+            res.json({
+                status: true,
+                batch: batchData,
+                availableSeat: availableSeat,
+            })
+        }else{
+            res.json({status:false})
+        } 
+        
+
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 module.exports = {
     login,
     getHome,
-    updateProfile
+    updateProfile,
+    getMyStudents,
+    eachStudent,
+    getMyBatch
 }

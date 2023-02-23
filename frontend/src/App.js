@@ -5,7 +5,7 @@ import Landing from "./Pages/Landing/Landing";
 import OfficeRoutes from "./Routes/OfficeRoutes";
 import TeacherRoutes from "./Routes/TeacherRoutes";
 import AdminVerification from "./Varification/AdminVerification";
-import StudentRoutes from "./Routes/StudentRoutes";
+// import StudentRoutes from "./Routes/StudentRoutes";
 import TeacherVarification from "./Varification/TeacherVarification";
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
           <Route path='/' element={<Landing />} />
           <Route path='/office/*' element={<AdminVerification><OfficeRoutes /></AdminVerification>} />
           <Route path='/teacher/*' element={<TeacherVarification><TeacherRoutes /></TeacherVarification>} />
-          <Route path='/student/*' element={<StudentRoutes />} />
+          {/* <Route path='/student/*' element={<StudentRoutes />} /> */}
 
         </Routes>
       </Router>

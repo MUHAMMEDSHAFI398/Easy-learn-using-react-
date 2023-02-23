@@ -231,7 +231,6 @@ module.exports = {
 
         try {      
             const batchStudents = await student.find({batch:batchId})
-            console.log(batchStudents)
             const batchData = await batch.aggregate([
                 {
                     $match: {

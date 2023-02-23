@@ -11,7 +11,6 @@ import ViewBatch from "../Pages/Office/ViewBatch";
 import AddBatach from "../Pages/Office/AddBatach";
 import EachBatch from "../Pages/Office/EachBatch";
 import EditBatch from "../Pages/Office/EditBatch";
-import AdminVerification from "../Varification/AdminVerification";
 import EachStudent from '../Pages/Office/EachStudent';
 
 const OfficeRoutes = () => (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Logo from '../../Office/Logo/Logo'
 import './TeacherNav.css'
 import { message } from 'antd'
@@ -30,7 +30,7 @@ function TeacherNav() {
               <p className="ms-4"  >Home</p>
             </Link>
 
-            <Link className={location.pathname === '/teacher/mybatch' ? 'hilite' : 'non-hilite'} to='/teacher/mybatch'>
+            <Link className={location.pathname === '/teacher/my-batch' ? 'hilite' : 'non-hilite'} to='/teacher/my-batch'>
               <p className="ms-4"  >My batch</p>
             </Link>
 
