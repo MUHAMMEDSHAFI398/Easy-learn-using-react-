@@ -28,7 +28,7 @@ module.exports = {
                     if (err) console.error("There is some error in token", err);
                     else {
                         res.json({
-                            success: true,
+                            status: true,
                             email: email,
                             token: `Bearer ${token}`,
                         });
@@ -37,11 +37,10 @@ module.exports = {
             );
         } else {
             errors = "Incorrect email or password";
-            return res.status(400).json(errors);
+            res.json({errors:errors})
         }
     },
     addTeacher: async (req, res) => {
-        
         const data = req.body
         const registerId = await helpers.uniqueCodeGenerator('teacher')
         const image = {
@@ -50,7 +49,6 @@ module.exports = {
         }
         const password = data.date_of_birth
         const hashedPassword = await bcrypt.hash(password, 10);
-        console.log(hashedPassword)
         try {
             await teacher.create({
                 registerId: registerId,
@@ -486,7 +484,6 @@ module.exports = {
     getStudent: async (req, res) => {
         try {
             const id = req.params.id
-            console.log(id)
             const studentData = await student.findOne({ _id: id })
             res.json({
                 status: true,

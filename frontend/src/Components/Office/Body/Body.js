@@ -7,7 +7,8 @@ import { officeLoginAPI } from '../../../Services/OfficeServices';
 
 
 function Body() {
-
+  
+  const [error,setError]=useState("")
   const initialVlaues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialVlaues);
   const navigate = useNavigate();
@@ -20,9 +21,14 @@ function Body() {
     event.preventDefault();
 
     officeLoginAPI(formValues).then((response) => {
-      const jwtToken = response.data.token
+      if(response.data.status){
+        const jwtToken = response.data.token
       localStorage.setItem("officeToken", jwtToken);
       navigate('/office/home');
+      }else{
+        setError(response.data.errors)
+      }
+      
 
     }).catch((error) => {
       console.log(error);
@@ -68,13 +74,15 @@ function Body() {
                   onChange={onChangeHandle}
 
                 />
+                
+                {error && <p>{error}</p> }
                 <MDBInput className='submit-login btn btn-success'
                   wrapperClass='mb-4 ms-4 me-4'
                   type='submit' value='Login'
                   id='formControlLg' size="lg"
                 />
               </form>
-
+ 
             </div>
 
 

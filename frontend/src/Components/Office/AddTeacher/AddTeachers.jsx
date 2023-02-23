@@ -62,6 +62,7 @@ function AddTeachers() {
         if (Object.keys(errors).length !== 0) {
             setErrors(errors);
         } else {
+            
             addTeacherAPI(data).then((resp) => {
                 if (resp.data.imageError) {
                     setImageError(resp.data.imageError)
