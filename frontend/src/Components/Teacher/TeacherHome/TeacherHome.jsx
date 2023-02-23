@@ -18,7 +18,7 @@ function TeacherHome() {
         })
     },[])
 
-   
+
     const details = useSelector(state => state.teacherData)
     const date_of_birth = details.teacherData.date_of_birth
     const birthDate = new Date(date_of_birth);

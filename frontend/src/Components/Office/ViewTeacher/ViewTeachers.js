@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import './ViewTeacher.css'
-import axios from '../../../axios'
 import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 import { message } from 'antd'
 import { getTeachersAPI, getTeacherAPI, blockTeacherAPI, unBlockTeacherAPI } from '../../../Services/OfficeServices';
 
 function ViewTeachers() {
-  const officeToken = localStorage.getItem('officeToken')
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
 
@@ -19,7 +17,7 @@ function ViewTeachers() {
         setTeachers(response.data.teachers);
       } else {
         console.log(response);
-      }
+      } 
     })
   }, [])
 

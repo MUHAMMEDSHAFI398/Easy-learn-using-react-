@@ -3,14 +3,12 @@ import { message } from 'antd'
 import './ViewStudents.css'
 import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
 import { Link, useNavigate } from "react-router-dom";
-import axios from '../../../axios';
 import Swal from 'sweetalert2'
 import { getstudentsAPI, blockStudentAPI, unBlockStudentAPI, handleGetStudentAPI } from '../../../Services/OfficeServices';
 
 function ViewStudents() {
 
   const [students, setStudents] = useState([]);
-  const officeToken = localStorage.getItem('officeToken')
   const navigate = useNavigate()
 
   useEffect(() => {
