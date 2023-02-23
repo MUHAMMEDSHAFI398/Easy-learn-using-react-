@@ -18,7 +18,7 @@ function TeacherHome() {
         })
     },[])
 
-
+   
     const details = useSelector(state => state.teacherData)
     const date_of_birth = details.teacherData.date_of_birth
     const birthDate = new Date(date_of_birth);
@@ -40,44 +40,44 @@ function TeacherHome() {
 
                 <div className='d-flex flex-wrap '>
 
-                    <div className='batch-deatails-child d-flex flex-column  mt-3'>
+                    <div className='batch-deatails-child d-flex flex-column align-items-center mt-3'>
                         <p><strong>Register id</strong></p>
                         <p>{details?.teacherData?.registerId}</p>
                     </div>
-                    <div className='batch-deatails-child d-flex flex-column  mt-3'>
+                    <div className='batch-deatails-child d-flex flex-column align-items-center mt-3'>
                         <p><strong>Name</strong></p>
                         <p>{details?.teacherData?.name}</p>
                     </div>
-                    <div className='batch-deatails-child d-flex flex-column  mt-3'>
+                    <div className='batch-deatails-child d-flex flex-column align-items-center mt-3'>
                         <p><strong>My batch</strong></p>
                         <p>{details?.teacherData?.myBatch === "" ? "Batch not Assigned" : details?.teacherData?.myBatch}</p>
                     </div>
-                    <div className='batch-deatails-child d-flex flex-column  mt-3'>
+                    <div className='batch-deatails-child d-flex flex-column align-items-center mt-3'>
                         <p><strong>Email</strong></p>
                         <p>{details?.teacherData?.email}</p>
                     </div>
 
-                    <div className='batch-deatails-child d-flex flex-column  mt-3'>
+                    <div className='batch-deatails-child d-flex flex-column align-items-center mt-3'>
                         <p><strong>Phone</strong></p>
                         <p>{details?.teacherData?.phone}</p>
                     </div>
-                    <div className='batch-deatails-child d-flex flex-column  mt-3'>
+                    <div className='batch-deatails-child d-flex flex-column align-items-center mt-3'>
                         <p><strong>Date of birth</strong></p>
                         <p>{readableDate}</p>
                     </div>
-                    <div className='batch-deatails-child d-flex flex-column  mt-3'>
+                    <div className='batch-deatails-child d-flex flex-column align-items-center mt-3'>
                         <p><strong>Qualification</strong></p>
                         <p>{details?.teacherData?.qualification}</p>
                     </div>
-                    <div className='batch-deatails-child d-flex flex-column  mt-3'>
+                    <div className='batch-deatails-child d-flex flex-column align-items-center mt-3'>
                         <p><strong>Experiance</strong></p>
                         <p>{details?.teacherData?.experience}</p>
                     </div>
-                    <div className='batch-deatails-child d-flex flex-column  mt-3'>
+                    <div className='batch-deatails-child d-flex flex-column align-items-center mt-3'>
                         <p><strong>Salary</strong></p>
                         <p>{details?.teacherData?.salary}</p>
                     </div>
-                    <div className='batch-deatails-child d-flex flex-column  mt-3'>
+                    <div className='batch-deatails-child d-flex flex-column align-items-center mt-3'>
                         <p><strong>Address</strong></p>
                         <p>
                             {details?.teacherData?.address?.house_name},

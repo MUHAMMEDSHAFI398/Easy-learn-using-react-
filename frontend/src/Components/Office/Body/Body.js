@@ -75,7 +75,7 @@ function Body() {
 
                 />
                 
-                {error && <p>{error}</p> }
+                {error && <p className="ms-2 text-danger">{error}</p> }
                 <MDBInput className='submit-login btn btn-success'
                   wrapperClass='mb-4 ms-4 me-4'
                   type='submit' value='Login'
