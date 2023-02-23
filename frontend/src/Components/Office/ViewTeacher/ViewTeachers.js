@@ -4,7 +4,7 @@ import axios from '../../../axios'
 import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 import { message } from 'antd'
-
+import { getTeachersAPI, getTeacherAPI, blockTeacherAPI, unBlockTeacherAPI } from '../../../Services/OfficeServices';
 
 function ViewTeachers() {
   const officeToken = localStorage.getItem('officeToken')
@@ -14,11 +14,7 @@ function ViewTeachers() {
 
 
   useEffect(() => {
-    axios.get('/office/teachers', {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then((response) => {
+    getTeachersAPI().then((response) => {
       if (response.data.status) {
         setTeachers(response.data.teachers);
       } else {
@@ -29,11 +25,7 @@ function ViewTeachers() {
 
 
   const handleClick = async (id) => {
-    axios.get(`/office/get-teacher/${id}`, {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then((response) => {
+    getTeacherAPI(id).then((response) => {
       if (response.data.status) {
         navigate('/office/each-teacher', {
           state: {
@@ -53,12 +45,9 @@ function ViewTeachers() {
       cancelButtonColor: 'red',
       confirmButtonText: 'Yes'
     }).then((result) => {
+
       if (result.isConfirmed) {
-        axios.patch(`/office/block-teacher/${id}`, {}, {
-          headers: {
-            Authorization: officeToken
-          },
-        }).then(() => {
+        blockTeacherAPI(id).then(() => {
           const setTeacher = teachers.filter((value) => {
             if (value._id === id) {
               value.isBlocked = true
@@ -83,12 +72,9 @@ function ViewTeachers() {
       cancelButtonColor: 'red',
       confirmButtonText: 'Yes'
     }).then((result) => {
+
       if (result.isConfirmed) {
-        axios.patch(`/office/unblock-teacher/${id}`, {}, {
-          headers: {
-            Authorization: officeToken
-          },
-        }).then(() => {
+        unBlockTeacherAPI(id).then(() => {
           const setTeacher = teachers.filter((value) => {
             if (value._id === id) {
               value.isBlocked = false

@@ -2,22 +2,16 @@ import React, { useEffect, useState } from 'react'
 import './ViewBatch.css'
 import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from '../../../axios';
-
+import { getBatches, getEachBatch } from '../../../Services/OfficeServices';
 
 function ViewBatches() {
 
   const [batches, setBatches] = useState([]);
   const navigate = useNavigate();
-  const officeToken = localStorage.getItem('officeToken')
 
 
   useEffect(() => {
-    axios.get('/office/batches', {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then((response) => {
+    getBatches().then((response) => {
       if (response.data.status) {
         setBatches(response.data.batches);
 
@@ -28,11 +22,7 @@ function ViewBatches() {
   }, [])
 
   const handleClick = async (id) => {
-    axios.get(`/office/get-batch/${id}`, {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then((response) => {
+    getEachBatch(id).then((response) => {
       if (response.data.status) {
         navigate('/office/each-batch', {
           state: {

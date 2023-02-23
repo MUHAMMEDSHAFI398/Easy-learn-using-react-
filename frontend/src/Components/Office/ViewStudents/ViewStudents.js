@@ -5,7 +5,7 @@ import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
 import { Link, useNavigate } from "react-router-dom";
 import axios from '../../../axios';
 import Swal from 'sweetalert2'
-
+import { getstudentsAPI, blockStudentAPI, unBlockStudentAPI, handleGetStudentAPI } from '../../../Services/OfficeServices';
 
 function ViewStudents() {
 
@@ -14,11 +14,7 @@ function ViewStudents() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    axios.get('/office/students', {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then((response) => {
+    getstudentsAPI().then((response) => {
 
       if (response.data.status) {
         setStudents(response.data.students);
@@ -38,13 +34,10 @@ function ViewStudents() {
       confirmButtonColor: 'green',
       cancelButtonColor: 'red',
       confirmButtonText: 'Yes'
+
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.patch(`/office/block-student/${id}`, {}, {
-          headers: {
-            Authorization: officeToken
-          },
-        }).then(() => {
+        blockStudentAPI(id).then(() => {
           const setStudent = students.filter((obj) => {
             if (obj._id === id) {
               obj.isBlocked = true;
@@ -73,13 +66,11 @@ function ViewStudents() {
       confirmButtonColor: 'green',
       cancelButtonColor: 'red',
       confirmButtonText: 'Yes'
+
     }).then((result) => {
+
       if (result.isConfirmed) {
-        axios.patch(`/office/unblock-student/${id}`, {}, {
-          headers: {
-            Authorization: officeToken
-          },
-        }).then(() => {
+        unBlockStudentAPI(id).then(() => {
           const setStudent = students.filter((obj) => {
             if (obj._id === id) {
               obj.isBlocked = false;
@@ -94,13 +85,9 @@ function ViewStudents() {
   }
 
   const handleClick = async (id) => {
-    axios.get(`/office/student/${id}`, {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then((response) => {
-      if (response.data.status) {
 
+    handleGetStudentAPI(id).then((response) => {
+      if (response.data.status) {
         navigate('/office/each-student', {
           state: {
             studentData: response.data.studentData

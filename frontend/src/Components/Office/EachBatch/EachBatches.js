@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './EachBatch.css';
 import { useNavigate, useLocation } from "react-router-dom"
 import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
-import axios from '../../../axios';
 import { message } from 'antd'
 import Swal from 'sweetalert2'
 import { handleGetStudentAPI, blockStudentAPI, unBlockStudentAPI } from '../../../Services/OfficeServices';
@@ -18,7 +17,6 @@ function EachBatches() {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const readableStartDate = DateStart.toLocaleDateString('en-US', options);
   const batchId = location.state.batch[0]._id
-  const officeToken = localStorage.getItem("officeToken");
 
   const handleClick = () => {
     navigate('/office/edit-batch', {

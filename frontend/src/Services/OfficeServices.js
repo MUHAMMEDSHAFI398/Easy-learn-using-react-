@@ -57,4 +57,15 @@ export const getEditBatchAPI = (id) => {
 export const editBatchAPI = (id,data) => {
     return axios.patch(`/office/edit-batch/${id}`,data, headers)
 }
-
+export const getBatches = () => {
+    return axios.get('/office/batches', headers)
+}
+export const getEachBatch = (id) => {
+    return axios.get(`/office/get-batch/${id}`, headers)
+}
+export const getstudentsAPI = () => {
+    return axios.get('/office/students', headers)
+}
+export const getTeachersAPI = () => {
+    return axios.get('/office/teachers', headers)
+}

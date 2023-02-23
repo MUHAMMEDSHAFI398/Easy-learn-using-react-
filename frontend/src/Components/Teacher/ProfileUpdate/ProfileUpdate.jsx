@@ -39,7 +39,11 @@ function ProfileUpdate() {
         if (Object.keys(errors).length !== 0) {
             setErrors(errors);
         } else {
-          updateProfileAPI(teacherData,address).then((response)=>{
+            const data={
+                teacherData:teacherData,
+                address:address
+              }
+          updateProfileAPI(data).then((response)=>{
             if(response.data.status){
                 message.success('Successfully updated your profile')
                 navigate('/teacher/home')

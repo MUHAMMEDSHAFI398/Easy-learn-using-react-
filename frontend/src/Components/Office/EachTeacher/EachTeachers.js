@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './EachTeacher.css';
 import { useLocation, useNavigate } from "react-router-dom"
-import axios from '../../../axios'
 import Swal from 'sweetalert2'
 import { message } from 'antd'
 import { editTeachertAPI, getTeacherAPI, blockTeacherAPI, unBlockTeacherAPI } from '../../../Services/OfficeServices';
@@ -14,7 +13,6 @@ import {
   MDBCardBody,
   MDBCardImage,
   MDBIcon,
-  MDBListGroup,
   MDBListGroupItem,
 
 } from 'mdb-react-ui-kit';
@@ -32,7 +30,6 @@ function EachTeachers() {
   const birthDate = new Date(date_of_birth);
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const readableDate = birthDate.toLocaleDateString('en-US', options);
-  const officeToken = localStorage.getItem("officeToken");
 
 
   const onChangeHandle = (e) => {

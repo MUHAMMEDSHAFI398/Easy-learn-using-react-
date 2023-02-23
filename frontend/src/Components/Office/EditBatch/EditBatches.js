@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import './EditBatch.css'
 import { useLocation, useNavigate } from "react-router-dom"
-import axios from '../../../axios'
 import validate from './Validation';
-import { getEditBatchAPI,editBatchAPI } from '../../../Services/OfficeServices';
+import { getEditBatchAPI, editBatchAPI } from '../../../Services/OfficeServices';
 function EditBatches() {
 
   const navigate = useNavigate('')
@@ -19,7 +18,6 @@ function EditBatches() {
   });
   const [error, setErrors] = useState({});
   const [subjectValues, setSubjectValues] = useState([{ subject: "", teacher: "" }])
-  const officeToken = localStorage.getItem("officeToken");
 
 
 
@@ -38,7 +36,7 @@ function EditBatches() {
 
 
     })
-  }, [officeToken, batchId])
+  }, [batchId])
 
 
   const handleChange = (e) => {
@@ -74,7 +72,7 @@ function EditBatches() {
         subjectValues,
         ...batchData
       }
-     editBatchAPI(batchId,data).then((response) => {
+      editBatchAPI(batchId, data).then((response) => {
         if (response.data.status) {
           navigate('/office/batches')
         }

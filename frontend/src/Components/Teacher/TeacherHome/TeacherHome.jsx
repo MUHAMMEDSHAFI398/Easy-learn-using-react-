@@ -16,7 +16,7 @@ function TeacherHome() {
         getHome().then((response) => {
             storeTeacherData(response.data.teacherData)
         })
-    }, [])
+    },[])
 
    
     const details = useSelector(state => state.teacherData)
