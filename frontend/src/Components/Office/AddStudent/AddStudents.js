@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import './AddStudent.css'
-import axios from '../../../axios'
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import validate from './StudentValidation';
+import { availableBatchAPI, addStudentAPI } from '../../../Services/OfficeServices';
+
 function AddStudents() {
 
     const initialVlaues = {
@@ -18,7 +19,6 @@ function AddStudents() {
     const [error, setErrors] = useState({});
     const [imageError, setImageError] = useState('')
     const navigate = useNavigate();
-    const officeToken = localStorage.getItem("officeToken");
 
     const onChangeHandle = (e) => {
         const { name, value } = e.target;
@@ -38,11 +38,7 @@ function AddStudents() {
     };
 
     useEffect(() => {
-        axios.get('/office/available-batches', {
-            headers: {
-                Authorization: officeToken
-            },
-        }).then((response) => {
+        availableBatchAPI().then((response) => {
             if (response.data.status) {
                 setBatches(response.data.batches);
 
@@ -81,14 +77,7 @@ function AddStudents() {
         if (Object.keys(errors).length !== 0) {
             setErrors(errors);
         } else {
-            axios.post('/office/add-student', data,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        Authorization: officeToken
-                    },
-                }
-            ).then((resp) => {
+            addStudentAPI(data).then((resp) => {
                 if (resp.data.imageError) {
                     setImageError(resp.data.imageError)
                 } else {

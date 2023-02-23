@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import axios from '../../../axios'
 import Swal from 'sweetalert2'
 import { message } from 'antd'
+import { editTeachertAPI, getTeacherAPI, blockTeacherAPI, unBlockTeacherAPI } from '../../../Services/OfficeServices';
 import {
   MDBCol,
   MDBContainer,
@@ -24,10 +25,8 @@ function EachTeachers() {
   const navigate = useNavigate()
   const location = useLocation();
   const initialvalues = { experience: "", salary: "" }
-  // const previosValues={experience: location.state.teacher.experience, salary:location.state.teacher.salary}
   const [formValues, setFormValues] = useState(initialvalues);
   const [teacherBlock, setTeacherBlock] = useState(location.state.teacher.isBlocked)
-  // const [editteacher,setEditTeacher]=useState(previosValues)
 
   const date_of_birth = location.state.teacher.date_of_birth
   const birthDate = new Date(date_of_birth);
@@ -43,22 +42,9 @@ function EachTeachers() {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    axios.patch(`/office/edit-teacher/${location.state.teacher._id}`, {
-      salary: formValues.salary,
-      experience: formValues.experience,
-
-    }, {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then(() => {
-      // setEditTeacher({salary: formValues.salary,experience: formValues.experience})
-      axios.get(`/office/get-teacher/${location.state.teacher._id}`, {
-        headers: {
-          Authorization: officeToken
-        },
-      }).then((response) => {
+    const id = location.state.teacher._id
+    editTeachertAPI(id, formValues).then(() => {
+      getTeacherAPI(id).then((response) => {
         if (response.data.status) {
           navigate('/office/each-teacher', {
             state: {
@@ -85,13 +71,11 @@ function EachTeachers() {
       confirmButtonColor: 'green',
       cancelButtonColor: 'red',
       confirmButtonText: 'Yes'
+
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.patch(`/office/block-teacher/${location.state.teacher._id}`, {}, {
-          headers: {
-            Authorization: officeToken
-          },
-        }).then(() => {
+        const id = location.state.teacher._id
+        blockTeacherAPI(id).then(() => {
           message.success("This teacher has been blocked")
           setTeacherBlock(true)
         })
@@ -112,13 +96,11 @@ function EachTeachers() {
       confirmButtonColor: 'green',
       cancelButtonColor: 'red',
       confirmButtonText: 'Yes'
+
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.patch(`/office/unblock-teacher/${location.state.teacher._id}`, {}, {
-          headers: {
-            Authorization: officeToken
-          },
-        }).then(() => {
+        const id = location.state.teacher._id
+        unBlockTeacherAPI(id).then(() => {
           message.success("This teacher has been Unblocked")
           setTeacherBlock(false)
         })

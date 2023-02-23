@@ -3,7 +3,7 @@ import './EditBatch.css'
 import { useLocation, useNavigate } from "react-router-dom"
 import axios from '../../../axios'
 import validate from './Validation';
-
+import { getEditBatchAPI,editBatchAPI } from '../../../Services/OfficeServices';
 function EditBatches() {
 
   const navigate = useNavigate('')
@@ -24,11 +24,10 @@ function EditBatches() {
 
 
   useEffect(() => {
-    axios.get(`/office/get-edit-batch/${batchId}`, {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then((response) => {
+
+    const id = location.state.id
+
+    getEditBatchAPI(id).then((response) => {
 
       setTeachers(response.data.teachers)
       setAvailableTeachers(response.data.availableTeachers)
@@ -71,15 +70,11 @@ function EditBatches() {
     if (Object.keys(errors).length !== 0) {
       setErrors(errors);
     } else {
-      axios.patch(`/office/edit-batch/${batchId}`, {
+      const data = {
         subjectValues,
-        ...batchData,
-
-      }, {
-        headers: {
-          Authorization: officeToken
-        },
-      }).then((response) => {
+        ...batchData
+      }
+     editBatchAPI(batchId,data).then((response) => {
         if (response.data.status) {
           navigate('/office/batches')
         }
@@ -152,7 +147,7 @@ function EditBatches() {
 
             <div className='subjectDiv'>
               <div className='d-flex justify-content-center mt-1'>
-                <p className='p-tag'>Edit subjects</p>
+                <p className='p-tag'>Edit subject's teachers</p>
               </div>
               {
                 subjectValues.map((obj, index) => {

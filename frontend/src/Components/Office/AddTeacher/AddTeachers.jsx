@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import './AddTeacher.css'
 import { useNavigate } from "react-router-dom";
-import axios from '../../../axios'
 import { message } from 'antd'
 import validate from './TeacherValidation';
+import { addTeacherAPI } from '../../../Services/OfficeServices';
 
 function AddTeachers() {
     const initialVlaues = {
@@ -16,8 +16,6 @@ function AddTeachers() {
     const [error, setErrors] = useState({});
     const [imageError, setImageError] = useState('')
     const navigate = useNavigate();
-    const officeToken = localStorage.getItem("officeToken");
-
 
     const onChangeHandle = (e) => {
         const { name, value } = e.target;
@@ -64,14 +62,7 @@ function AddTeachers() {
         if (Object.keys(errors).length !== 0) {
             setErrors(errors);
         } else {
-            axios.post('/office/add-teacher', data,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        Authorization: officeToken
-                    },
-                }
-            ).then((resp) => {
+            addTeacherAPI(data).then((resp) => {
                 if (resp.data.imageError) {
                     setImageError(resp.data.imageError)
                 } else {

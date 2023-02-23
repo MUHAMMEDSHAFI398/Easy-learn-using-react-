@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './AddBatch.css'
-import axios from '../../../axios'
 import { message } from 'antd'
 import validate from './BatchValidation';
 import subjectValidate from './SubjectValidation'
-import { availableTeachersAPI } from '../../../Services/OfficeServices';
+import { availableTeachersAPI, addBatchAPI } from '../../../Services/OfficeServices';
 
 function AddBatches() {
 
@@ -23,15 +22,11 @@ function AddBatches() {
   const [teachers, setTeachers] = useState([]);
   const [allTeachers, setAllTeachers] = useState([])
   const navigate = useNavigate();
-  const officeToken = localStorage.getItem("officeToken");
 
 
   useEffect(() => {
-    axios.get('/office/available-teachers', {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then((response) => {
+    availableTeachersAPI().then((response) => {
+
       if (response.data.status) {
         setTeachers(response.data.teachers);
         setAllTeachers(response.data.allTeachers)
@@ -39,28 +34,36 @@ function AddBatches() {
         console.log(response);
       }
     })
-  }, [officeToken])
+
+  }, [])
 
   const onChangeHandle = (e) => {
+
     e.preventDefault();
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
     setErrors({ ...error, [name]: "" });
+
   };
 
   const handleChange = (e) => {
+
     e.preventDefault();
     const { name, value } = e.target;
     setSubjectValue({ ...subjectValue, [name]: value });
     setSubErrors({ ...subErrors, [name]: "" });
+
   };
 
   const addSubHandle = (e) => {
+
     e.preventDefault();
     const subErrors = subjectValidate(subjectValue);
+
     if (Object.keys(subErrors).length !== 0) {
       setSubErrors(subErrors);
     } else {
+
       setSubjectValues([...subjectValues, subjectValue]);
       setSubjectValue(subjectInitiaValues);
     }
@@ -74,17 +77,14 @@ function AddBatches() {
     if (Object.keys(errors).length !== 0) {
       setErrors(errors);
     } else {
-
-      axios.post('/office/add-batch', {
+      const data = {
         ...formValues,
-        subjectValues,
-      }, {
-        headers: {
-          Authorization: officeToken
-        },
-      }).then((response) => {
-        message.success('Successfully added new batch')
+        subjectValues
+      }
+      addBatchAPI(data).then((response) => {
+
         if (response.data.status) {
+          message.success('Successfully added new batch')
           navigate('/office/batches')
         } else {
           console.log(response.data)

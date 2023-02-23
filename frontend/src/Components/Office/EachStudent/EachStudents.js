@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 import { useLocation } from "react-router-dom"
 import './EachStudent.css'
-import axios from '../../../axios'
 import Swal from 'sweetalert2'
 import { message } from 'antd'
-
+import { blockStudentAPI, unBlockStudentAPI } from '../../../Services/OfficeServices';
 function EachStudents() {
 
-
-    // const navigate = useNavigate()
     const location = useLocation();
     const birthDate = new Date(location.state.studentData.dateOfBirth);
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const readableDate = birthDate.toLocaleDateString('en-US', options);
     const [studentBlock, setStudentBlock] = useState(location.state.studentData.isBlocked)
-    const officeToken = localStorage.getItem("officeToken");
 
     const handleBlock = () => {
         Swal.fire({
@@ -25,13 +21,11 @@ function EachStudents() {
             confirmButtonColor: 'green',
             cancelButtonColor: 'red',
             confirmButtonText: 'Yes'
+
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.patch(`/office/block-student/${location.state.studentData._id}`, {}, {
-                    headers: {
-                        Authorization: officeToken
-                    },
-                }).then(() => {
+                const id = location.state.studentData._id
+                blockStudentAPI(id).then(() => {
                     setStudentBlock(true);
                     message.success("The student has been blocked")
                 })
@@ -48,13 +42,12 @@ function EachStudents() {
             confirmButtonColor: 'green',
             cancelButtonColor: 'red',
             confirmButtonText: 'Yes'
+
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.patch(`/office/unblock-student/${location.state.studentData._id}`, {}, {
-                    headers: {
-                        Authorization: officeToken
-                    },
-                }).then(() => {
+
+                const id = location.state.studentData._id
+                unBlockStudentAPI(id).then(() => {
                     setStudentBlock(false);
                     message.success("The student has been Unblocked")
                 })
@@ -158,7 +151,7 @@ function EachStudents() {
                         <div className='batch-deatails-child d-flex flex-column align-items-center'>
                             <p><strong>Address</strong></p>
                             <p>
-                                {location.state.studentData.address.house_name},
+                                {location.state.studentData.address.house_name},<br />
                                 {location.state.studentData.address.place},
                                 {location.state.studentData.address.post},<br />
                                 {location.state.studentData.address.pin},

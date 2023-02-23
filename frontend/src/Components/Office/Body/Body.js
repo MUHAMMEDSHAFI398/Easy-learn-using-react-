@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { MDBContainer, MDBCol, MDBRow, MDBInput } from 'mdb-react-ui-kit';
 import { useNavigate } from "react-router-dom";
-import axios from '../../../axios'
 import './Body.css'
+import { officeLoginAPI } from '../../../Services/OfficeServices';
 
 
 
@@ -19,12 +19,7 @@ function Body() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    axios.post('office/login', {
-
-      email: formValues.email,
-      password: formValues.password,
-
-    }).then((response) => {
+    officeLoginAPI(formValues).then((response) => {
       const jwtToken = response.data.token
       localStorage.setItem("officeToken", jwtToken);
       navigate('/office/home');

@@ -142,7 +142,7 @@ const getMyBatch = async(req, res) => {
             {
                 $project: {
                     myBatch: 1
-                }
+                } 
             }
         ])
         if (teacherData[0].myBatch !== ""){
@@ -158,7 +158,7 @@ const getMyBatch = async(req, res) => {
                         localField: "headOfTheBatch",
                         foreignField: "registerId",
                         as: "teacher_data"
-                    }
+                    }  
                 }
             ])
             const numberOfSeat = batchData[0].numberOfSeat

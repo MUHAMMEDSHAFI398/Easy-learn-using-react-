@@ -5,7 +5,7 @@ import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
 import axios from '../../../axios';
 import { message } from 'antd'
 import Swal from 'sweetalert2'
-
+import { handleGetStudentAPI, blockStudentAPI, unBlockStudentAPI } from '../../../Services/OfficeServices';
 
 function EachBatches() {
 
@@ -33,11 +33,7 @@ function EachBatches() {
   }, [])
 
   const handleGetStudent = async (id) => {
-    axios.get(`/office/student/${id}`, {
-      headers: {
-        Authorization: officeToken
-      },
-    }).then((response) => {
+    handleGetStudentAPI(id).then((response) => {
       if (response.data.status) {
 
         navigate('/office/each-student', {
@@ -50,6 +46,7 @@ function EachBatches() {
   }
 
   const handleBlock = async (id) => {
+
     Swal.fire({
       text: "Are you sure you want to block this student?",
       icon: 'warning',
@@ -57,13 +54,12 @@ function EachBatches() {
       confirmButtonColor: 'green',
       cancelButtonColor: 'red',
       confirmButtonText: 'Yes'
+
     }).then((result) => {
+
       if (result.isConfirmed) {
-        axios.patch(`/office/block-student/${id}`, {}, {
-          headers: {
-            Authorization: officeToken
-          },
-        }).then(() => {
+
+        blockStudentAPI(id).then(() => {
           const setStudent = students.filter((obj) => {
             if (obj._id === id) {
               obj.isBlocked = true;
@@ -87,13 +83,12 @@ function EachBatches() {
       confirmButtonColor: 'green',
       cancelButtonColor: 'red',
       confirmButtonText: 'Yes'
+
     }).then((result) => {
+
       if (result.isConfirmed) {
-        axios.patch(`/office/unblock-student/${id}`, {}, {
-          headers: {
-            Authorization: officeToken
-          },
-        }).then(() => {
+
+        unBlockStudentAPI(id).then(() => {
           const setStudent = students.filter((obj) => {
             if (obj._id === id) {
               obj.isBlocked = false;
@@ -245,10 +240,6 @@ function EachBatches() {
               <p><strong>Start date</strong></p>
               <p>{readableStartDate}</p>
             </div>
-            {/* <div className='batch-deatails-child d-flex flex-column align-items-center'>
-              <p><strong>End date</strong></p>
-              <p>dfjk</p>
-            </div> */}
             <div className='batch-deatails-child d-flex flex-column align-items-center'>
               <p><strong>Duration</strong></p>
               <p>{location.state.batch[0].duration}</p>
