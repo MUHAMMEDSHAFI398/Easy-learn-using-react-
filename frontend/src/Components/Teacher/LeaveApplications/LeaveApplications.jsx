@@ -191,8 +191,8 @@ function LeaveApplications() {
                       scrollX
                       data={data()}
                       materialSearch
-                      entriesOptions={[3,5]}
-
+                      entriesOptions={[3,4,5,6]}
+                      entries={5} 
                     />
                   </CDBCardBody>
                 </div>

@@ -37,7 +37,7 @@ module.exports = {
             );
         } else {
             errors = "Incorrect email or password";
-            res.json({errors:errors})
+            res.json({ errors: errors })
         }
     },
     addTeacher: async (req, res) => {
@@ -63,7 +63,7 @@ module.exports = {
                 remarks: data.remarks,
                 isBlocked: false,
                 image: image,
-                password:hashedPassword,
+                password: hashedPassword,
                 address: {
                     house_name: data.house_name,
                     place: data.place,
@@ -76,7 +76,7 @@ module.exports = {
             })
             res.json({ success: true })
         } catch (err) {
-           
+
             console.log(err)
         }
 
@@ -167,7 +167,7 @@ module.exports = {
             res.json({
                 status: true,
                 teachers: teachers,
-                allTeachers:allTeachers
+                allTeachers: allTeachers
             })
         } catch (err) {
 
@@ -227,8 +227,8 @@ module.exports = {
     getBatch: async (req, res) => {
         const batchId = req.params.id
 
-        try {      
-            const batchStudents = await student.find({batch:batchId})
+        try {
+            const batchStudents = await student.find({ batch: batchId })
             const batchData = await batch.aggregate([
                 {
                     $match: {
@@ -252,7 +252,7 @@ module.exports = {
                 status: true,
                 batch: batchData,
                 availableSeat: availableSeat,
-                students:batchStudents
+                students: batchStudents
             })
 
         } catch (err) {
@@ -301,9 +301,9 @@ module.exports = {
                     }
                 }
             ])
-            const availableTeachers= await teacher.aggregate([
+            const availableTeachers = await teacher.aggregate([
                 {
-                    $match:{myBatch: ""}
+                    $match: { myBatch: "" }
                 },
                 {
                     $project: {
@@ -317,13 +317,13 @@ module.exports = {
                 status: true,
                 batchData: batchData,
                 teachers: teachers,
-                availableTeachers:availableTeachers
+                availableTeachers: availableTeachers
             })
 
 
         } catch (err) {
             console.log(err)
-        }                
+        }
 
 
 
@@ -493,34 +493,80 @@ module.exports = {
             console.log(err)
         }
     },
-    getLeaveApplications: async(req,res) =>{
-        try{
-          const leveData = await teacher.aggregate([
-            {
-                $match:{
-                    myLeaves:{$exists: true}
+    getLeaveApplications: async (req, res) => {
+        try {
+            const leaveData = await teacher.aggregate([
+                {
+                    $match: {
+                        myLeaves: { $exists: true }
+                    }
+                },
+                {
+                    $unwind: "$myLeaves"
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        myLeaves: 1,
+                        registerId: 1,
+                        name: 1
+                    }
+                },
+                {
+                    $sort: {
+                        "myLeaves.date": -1
+                    }
                 }
-            },
-            {
-                $unwind: "$myLeaves"
-            },
-            {
-                $project:{
-                    _id: 0,
-                    myLeaves:1,
-                    registerId:1,
-                    name:1
-                }
-            }
-          ])
-          console.log(leveData)
-          res.json({
-            status:true,
-            leveData:leveData
-          })    
-        } catch(err){
+            ])
+
+            res.json({
+                status: true,
+                leaveData: leaveData
+            })
+        } catch (err) {
             console.log(err)
         }
-    } 
- 
-} 
+    },
+    leaveApprove: async (req, res) => {
+        try {
+            const data = req.body
+            await teacher.updateOne(
+                {
+                    registerId: data.id,
+                    "myLeaves._id": data.arrayElementId
+                },
+                {
+                    $set: {
+                        "myLeaves.$.status": "Approved"
+                    }
+                }
+            )
+            res.json({ status: true })
+        } catch (err) {
+            console.log(err)
+        }
+    },
+    leaveReject: async (req, res) => {
+        try {
+            const data = req.body
+            console.log(data.arrayElementId)
+            const hi = await teacher.updateOne(
+                {
+                    registerId: data.id,
+                    "myLeaves._id": data.arrayElementId
+                },
+                {
+                    $set: {
+                        "myLeaves.$.status": "Rejected"
+                    }
+                }
+            )
+            console.log(hi)
+            res.json({ status: true })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+}
+

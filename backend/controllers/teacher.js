@@ -218,11 +218,13 @@ const getLeaveHistory=async(req,res)=>{
                     myLeaves:1,
                     
                 }
-            }
+            },
+           
         ])
+        const reverse = leaveHistory.reverse()
         res.json({
             status:true,
-            leaveHistory:leaveHistory
+            leaveHistory:reverse
         })
     } catch (err){
         console.log(err)

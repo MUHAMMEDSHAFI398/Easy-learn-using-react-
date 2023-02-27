@@ -73,3 +73,11 @@ export const getTeachersAPI = () => {
 export const leaveApplcationsAPI = () => {
     return axios.get('/office/leave-applications', headers)
 }
+
+export const leaveApproveAPI = (data) => {
+    return axios.patch('/office/leave-approve',data, headers)
+}
+
+export const leaveRejectAPI = (data) => {
+    return axios.patch('/office/leave-reject',data, headers)
+}

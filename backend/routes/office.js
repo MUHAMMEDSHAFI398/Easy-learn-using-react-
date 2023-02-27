@@ -45,6 +45,10 @@ officeRouter.get('/available-teachers', verifyToken.verifyTokenAdmin, officeCont
 
 officeRouter.get('/leave-applications', verifyToken.verifyTokenAdmin, officeController.getLeaveApplications)
 
+officeRouter.patch('/leave-approve', verifyToken.verifyTokenAdmin, officeController.leaveApprove)
+
+officeRouter.patch('/leave-reject', verifyToken.verifyTokenAdmin, officeController.leaveReject)
+
 
  
 
