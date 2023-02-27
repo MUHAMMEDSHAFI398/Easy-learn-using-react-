@@ -214,17 +214,24 @@ const getLeaveHistory=async(req,res)=>{
                 }
             },
             {
+                $unwind: "$myLeaves" 
+            },
+            {
                 $project:{
                     myLeaves:1,
-                    
+                     
                 }
             },
+            {
+                $sort: {
+                    "myLeaves.date": -1,
+                }
+            }
            
         ])
-        const reverse = leaveHistory.reverse()
         res.json({
             status:true,
-            leaveHistory:reverse
+            leaveHistory:leaveHistory
         })
     } catch (err){
         console.log(err)

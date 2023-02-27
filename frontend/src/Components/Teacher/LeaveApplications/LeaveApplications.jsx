@@ -3,6 +3,7 @@ import './LeaveApplication.css'
 import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
 import { postLetterAPI } from '../../../Services/TeacherServices';
 import { message } from 'antd'
+import Swal from 'sweetalert2'
 import { leaveHistoryAPI } from '../../../Services/TeacherServices';
 import validate
   from './validation';
@@ -17,6 +18,7 @@ function LeaveApplications() {
   useEffect(() => {
     leaveHistoryAPI().then((response) => {
       if (response.data.status) {
+        console.log(response.data.leaveHistory)
         setLeaveHistory(response.data.leaveHistory)
       }
     })
@@ -44,17 +46,33 @@ function LeaveApplications() {
       setErrors(errors);
 
     } else {
-      postLetterAPI(letter).then((response) => {
-        if (response.data.status) {
-          message.success('Successfully sent leave application')
-          setLetter({ leaveLetter: "" });
-          leaveHistoryAPI().then((response) => {
-            if (response.data.status) {
-              setLeaveHistory(response.data.leaveHistory)
-            }
-          })
-        }
-      })
+      Swal.fire({
+
+        text: "Are you sure you want submit leave application?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'green',
+        cancelButtonColor: 'red',
+        confirmButtonText: 'Yes'
+
+    }).then((result)=>{
+
+      if(result.isConfirmed){
+
+        postLetterAPI(letter).then((response) => {
+          if (response.data.status) {
+            message.success('Successfully sent leave application?')
+            setLetter({ leaveLetter: "" });
+            leaveHistoryAPI().then((response) => {
+              if (response.data.status) {
+                setLeaveHistory(response.data.leaveHistory)
+              }
+            })
+          }
+        })
+      }
+    })
+      
     }
   }
 
@@ -88,9 +106,9 @@ function LeaveApplications() {
         },
       ],
 
-      rows: leaveHistory[0]?.myLeaves?.map((leave, index) => {
+      rows: leaveHistory?.map((leave, index) => {
 
-        const dateString = leave.date
+        const dateString = leave. myLeaves.date
         const date = new Date(dateString);
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         const formattedDate = date.toLocaleDateString('en-US', dateOptions);
@@ -98,10 +116,10 @@ function LeaveApplications() {
         return {
           slno: index + 1,
           AppliedDate: formattedDate,
-          status: leave.status,
+          status: leave.myLeaves.status,
           view: (
             <div>
-              <i onClick={() => handleModalClick(formattedDate, leave.status, leave.letter)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
+              <i onClick={() => handleModalClick(formattedDate, leave.myLeaves.status, leave.myLeaves.letter)} className="i-tags ms-4 fa fa-chevron-circle-right"></i>
               {isModalOpen && (
                 <div className="modal">
 
@@ -147,7 +165,7 @@ function LeaveApplications() {
   return (
     <div className='container'>
 
-      <div className='d-flex flex-wrap justify-content-between align-items-center mt-5 mainDiv'>
+      <div className='d-flex flex-wrap justify-content-between align-items-center mt-3 mainDiv'>
 
         <div className='flexItem'>
 
@@ -167,7 +185,7 @@ function LeaveApplications() {
           </div>
           {error.leaveLetter && (<p className="ms-2 text-danger">{error.leaveLetter}</p>)}
 
-          <div className='d-flex justify-content-center align-items-center mt-3'>
+          <div className='d-flex justify-content-center align-items-center mt-2'>
             <button onClick={handleSubmit} className='btn btn-success'>Submit</button>
           </div>
 
