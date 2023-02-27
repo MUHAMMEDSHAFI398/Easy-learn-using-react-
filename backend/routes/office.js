@@ -43,6 +43,7 @@ officeRouter.get('/available-batches', verifyToken.verifyTokenAdmin, officeContr
 
 officeRouter.get('/available-teachers', verifyToken.verifyTokenAdmin, officeController.getAvaliableTeachers)
 
+officeRouter.get('/leave-applications', verifyToken.verifyTokenAdmin, officeController.getLeaveApplications)
 
 
  

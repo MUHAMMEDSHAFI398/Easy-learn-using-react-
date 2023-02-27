@@ -2,11 +2,12 @@ import React from 'react'
 import { useEffect } from 'react'
 import './TeacherHome.css'
 import { getHome } from '../../../Services/TeacherServices'
-
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../Redux/Action/Index';
+import { Link } from 'react-router-dom';
+
 function TeacherHome() {
 
     const dispatch = useDispatch();
@@ -16,9 +17,9 @@ function TeacherHome() {
         getHome().then((response) => {
             storeTeacherData(response.data.teacherData)
         })
-    },[])
+    }, [])
 
-   
+
     const details = useSelector(state => state.teacherData)
     const date_of_birth = details.teacherData.date_of_birth
     const birthDate = new Date(date_of_birth);
@@ -28,14 +29,18 @@ function TeacherHome() {
 
     return (
         <div className='parentHome container'>
-
+            <div className='d-flex justify-content-end'>
+                <Link to='/teacher/leave-applications'>
+                <button className='btn btn-success'> Apply for leave</button>
+                </Link>
+            </div>
             <div className='batch-deatails-parent-div'>
 
                 <div className='d-flex justify-content-center'>
                     <h5 className='heading'>My profile</h5>
                 </div>
                 <div className='d-flex justify-content-center'>
-                    <img className='img-div' src='/images/pic4.jpeg' alt="could not load" />
+                    <img className='img-div' src={details?.teacherData?.image && details.teacherData.image[0]?.url} alt="could not load" />
                 </div>
 
                 <div className='d-flex flex-wrap '>

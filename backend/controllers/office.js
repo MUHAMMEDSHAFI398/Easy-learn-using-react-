@@ -20,7 +20,7 @@ module.exports = {
             };
             jwt.sign(
                 payload,
-                "secret",
+                process.env.ADMIN_SECRET,
                 {
                     expiresIn: 3600000,
                 },
@@ -492,6 +492,35 @@ module.exports = {
         } catch (err) {
             console.log(err)
         }
-    }
-
+    },
+    getLeaveApplications: async(req,res) =>{
+        try{
+          const leveData = await teacher.aggregate([
+            {
+                $match:{
+                    myLeaves:{$exists: true}
+                }
+            },
+            {
+                $unwind: "$myLeaves"
+            },
+            {
+                $project:{
+                    _id: 0,
+                    myLeaves:1,
+                    registerId:1,
+                    name:1
+                }
+            }
+          ])
+          console.log(leveData)
+          res.json({
+            status:true,
+            leveData:leveData
+          })    
+        } catch(err){
+            console.log(err)
+        }
+    } 
+ 
 } 

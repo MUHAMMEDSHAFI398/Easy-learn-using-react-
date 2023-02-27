@@ -10,7 +10,7 @@ const verifyTokenAdmin = (req, res, next) => {
     });
   }
   try {
-    const decoded = jwt.verify(token.split(' ')[1], 'secret');
+    const decoded = jwt.verify(token.split(' ')[1], process.env.ADMIN_SECRET);
     if(decoded) next();
     else return 'invalid token'
   } catch (error) {
@@ -24,10 +24,13 @@ const verifyTokenTeacher = (req, res, next) => {
     return res.status(401).send({  
       message: 'No token provided'
     });
-  }
+  } 
   try {
     const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
-    if(decoded) next();
+    if(decoded){
+      req.registerId = decoded.registerId;
+      next();
+    }
     else return 'invalid token'
   } catch (error) {
     console.log(error)

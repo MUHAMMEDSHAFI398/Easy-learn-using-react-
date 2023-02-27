@@ -92,7 +92,9 @@ function ViewTeachers() {
 
       <div className='container'>
         <div className='buttonTop' >
-          <button className='buttonDiv'>Leave applications</button>
+        <Link to="/office/leave-applications">
+        <button className='buttonDiv'>Leave applications</button>
+          </Link>
           <Link to="/office/add-teacher">
             <button className='buttonDiv ms-4'>Add teacher</button>
           </Link>

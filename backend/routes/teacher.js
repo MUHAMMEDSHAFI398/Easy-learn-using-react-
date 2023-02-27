@@ -16,6 +16,10 @@ teacherRouter.get('/each-student/:id',verifyToken.verifyTokenTeacher, teacherCon
 
 teacherRouter.get('/my-batch',verifyToken.verifyTokenTeacher, teacherController.getMyBatch)
 
+teacherRouter.post('/letter',verifyToken.verifyTokenTeacher, teacherController.postLetter)
+
+teacherRouter.get('/leave-history',verifyToken.verifyTokenTeacher, teacherController.getLeaveHistory)
 
 
-module.exports = teacherRouter
+
+module.exports = teacherRouter 

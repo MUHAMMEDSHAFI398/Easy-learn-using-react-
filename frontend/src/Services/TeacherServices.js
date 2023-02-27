@@ -24,3 +24,11 @@ export const eachStudentAPI = (id) =>{
 export const getMyBatchAPI = ()=>{
   return axios.get('/teacher/my-batch',headers)
 }
+
+export const postLetterAPI = (data)=>{
+  return axios.post('/teacher/letter',data,headers)
+}
+
+export const leaveHistoryAPI = ()=>{
+  return axios.get('/teacher/leave-history',headers)
+}

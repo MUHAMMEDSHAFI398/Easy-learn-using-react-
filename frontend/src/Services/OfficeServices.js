@@ -69,3 +69,7 @@ export const getstudentsAPI = () => {
 export const getTeachersAPI = () => {
     return axios.get('/office/teachers', headers)
 }
+
+export const leaveApplcationsAPI = () => {
+    return axios.get('/office/leave-applications', headers)
+}

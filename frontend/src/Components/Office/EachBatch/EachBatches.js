@@ -261,6 +261,10 @@ function EachBatches() {
               }
 
             </div>
+            <div className='batch-deatails-child d-flex flex-column align-items-center'>
+              <p><strong>Remarks</strong></p>
+              <p>{location.state.batch[0].remarks !=="" ? location.state.batch[0].remarks : "No remarks added" }</p>
+            </div>
 
 
           </div>

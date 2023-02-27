@@ -178,6 +178,56 @@ const getMyBatch = async(req, res) => {
         console.log(err)
     }
 }
+const postLetter =async(req,res)=>{
+    const id=req.registerId
+    const today = new Date();
+    const data={
+         date:today,
+         letter:req.body.leaveLetter,
+         status:"Pending"
+    }
+    try{
+        await teacher.updateOne(
+            {
+                registerId:id
+            },
+            {
+                $push:{
+                    myLeaves:data
+                }
+            }
+        )
+        res.json({
+            status:true, 
+        })
+    } catch(err){
+        console.log(err)
+    }
+}
+const getLeaveHistory=async(req,res)=>{
+    const id=req.registerId
+    try{
+        const leaveHistory = await teacher.aggregate([
+            {
+                $match:{
+                    registerId:id
+                }
+            },
+            {
+                $project:{
+                    myLeaves:1,
+                    
+                }
+            }
+        ])
+        res.json({
+            status:true,
+            leaveHistory:leaveHistory
+        })
+    } catch (err){
+        console.log(err)
+    }
+}
 
 module.exports = {
     login,
@@ -185,5 +235,7 @@ module.exports = {
     updateProfile,
     getMyStudents,
     eachStudent,
-    getMyBatch
+    getMyBatch,
+    postLetter,
+    getLeaveHistory
 }

@@ -58,17 +58,19 @@ function Body() {
 
               <form onSubmit={handleSubmit}>
                 <MDBInput
+                required
                   value={formValues.email}
                   onChange={onChangeHandle}
                   wrapperClass='mb-4 ms-4 me-4'
                   className='input' name='email'
-                  label='Email address' id='formControlLg'
+                  placeholder='Email' id='formControlLg'
                   type='email' size="lg"
                 />
 
-                <MDBInput wrapperClass='mb-4 ms-4 me-4'
+                <MDBInput wrapperClass='mb-4 ms-4 me-4 mt-5'
+                required
                   className='input' name='password'
-                  label='Password' id='formControlLg'
+                  placeholder='Password' id='formControlLg'
                   type='password' size="lg"
                   value={formValues.password}
                   onChange={onChangeHandle}
@@ -76,7 +78,7 @@ function Body() {
                 />
                 
                 {error && <p className="ms-2 text-danger">{error}</p> }
-                <MDBInput className='submit-login btn btn-success'
+                <MDBInput className='submit-login btn btn-success mt-4'
                   wrapperClass='mb-4 ms-4 me-4'
                   type='submit' value='Login'
                   id='formControlLg' size="lg"

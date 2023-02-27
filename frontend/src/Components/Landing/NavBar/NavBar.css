@@ -1,18 +1,29 @@
 body {
-    background-color: rgb(245, 242, 240);   
+    background-color: rgb(245, 242, 240);
+     
 }
 
 .parentNav {
     padding: 15px;
     background-color: rgb(245, 242, 240);
     min-height: fit-content;
+    background-image: url('../../../../public/images/wat2.jpeg');
+    background-size: 100% ;
+    position: fixed;
+    width: 100%;
+    box-shadow: 0 0 10px -2px ;
+    z-index: 1;
 }
+
 .Nav-title{
-    color: black;
+    color: rgb(53, 40, 40);
+    font-family: 'Times New Roman', Times, serif;
+      
 }
 .Nav-sub-title{
     font-weight: bold;
-    color: black;
+    color: rgb(92, 85, 85);
+    font-family: 'Times New Roman', Times, serif;
 }
 
 

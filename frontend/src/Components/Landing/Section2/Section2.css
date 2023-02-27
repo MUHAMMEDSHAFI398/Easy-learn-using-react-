@@ -2,6 +2,7 @@
     min-height: fit-content;
     margin-left: 35px;
     margin-right: 35px;
+    
 }
 
 .sec-2Image {
@@ -11,7 +12,12 @@
 }
 
 .bg2 {
-    background-color: rgb(245, 242, 240);
+    background-color: rgb(252, 245, 236);
+    width: 100%;
+    background-size: 100% ;
+    background-image: url('../../../../public/images/wat13.jpg');
+    box-shadow: 0 0 10px -2px ;
+
 }
 
 .quote2 {

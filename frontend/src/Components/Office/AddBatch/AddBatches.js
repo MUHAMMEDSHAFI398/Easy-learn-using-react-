@@ -152,7 +152,7 @@ function AddBatches() {
                 className="input-tag "
                 type="number"
               />
-              {error.numberOfSeat && (<p className="ms-2 text-danger">{error.startDate}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
+              {error.numberOfSeat && (<p className="ms-2 text-danger">{error.numberOfSeat}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
             </div>
 
             <div className="d-flex flex-column">

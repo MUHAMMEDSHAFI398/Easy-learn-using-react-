@@ -12,6 +12,7 @@ import AddBatach from "../Pages/Office/AddBatach";
 import EachBatch from "../Pages/Office/EachBatch";
 import EditBatch from "../Pages/Office/EditBatch";
 import EachStudent from '../Pages/Office/EachStudent';
+import TeacherLeaveApplications from '../Pages/Office/TeacherLeaveApplications';
 
 const OfficeRoutes = () => (
 
@@ -40,6 +41,9 @@ const OfficeRoutes = () => (
         <Route path="/edit-batch" element={<EditBatch />} ></Route>
 
         <Route path="/each-student" element={<EachStudent />} ></Route>
+
+        <Route path="/leave-applications" element={<TeacherLeaveApplications />} ></Route>
+
 
 
     </Routes>
