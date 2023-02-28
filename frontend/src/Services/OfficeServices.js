@@ -22,7 +22,6 @@ export const handleGetStudentAPI = (id,headers) => {
     return axios.get(`/office/student/${id}`, headers)
 }
 export const blockStudentAPI = (id,headers) => {
-    console.log(localStorage.getItem("officeToken"))
     return axios.patch(`/office/block-student/${id}`,{}, headers)
 }
 export const unBlockStudentAPI = (id,headers) => {

@@ -8,7 +8,7 @@ import { getTeachersAPI, getTeacherAPI, blockTeacherAPI, unBlockTeacherAPI } fro
 function ViewTeachers() {
   const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
-
+ let count=1;
 
 
   useEffect(() => {
@@ -140,11 +140,11 @@ function ViewTeachers() {
 
             <tbody>
               {
-                teachers.map((obj, index) => {
+                teachers.map((obj) => {
 
                   return (
-                    <tr key={index}>
-                      <th scope="row">{index + 1}</th>
+                    <tr key={obj._id}>
+                      <th scope="row">{count++}</th>
                       <td>{obj.registerId}</td>
                       <td>{obj.name}</td>
                       <td>{obj.phone}</td>

@@ -40,6 +40,28 @@ const uniqueCodeGenerator = (data) => {
     }
 
 };
+function getMonthYearList(startDate, endDate) {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthYearList = [];
+    let currentDate = new Date(startDate);
+    
+    while (currentDate <= endDate) {
+      const month = months[currentDate.getMonth()];
+      const year = currentDate.getFullYear();
+      monthYearList.push(`${month} ${year}`);
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      console.log(currentDate)
+    }
+    
+    return monthYearList;
+  }
+  
+  // Example usage:
+  const startDate = new Date('2022-12-29');
+  const endDate = new Date('2025-12-29');
+  const monthYearList = getMonthYearList(startDate, endDate);
+  console.log(monthYearList); // Output: ["December 2022", "January 2023", "February 2023", ..., "November 2025", "December 2025"]
+  
 module.exports={
     uniqueCodeGenerator
 }

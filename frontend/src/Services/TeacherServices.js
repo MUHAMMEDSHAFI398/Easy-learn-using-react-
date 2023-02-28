@@ -1,9 +1,5 @@
 import axios from "../axios";
 
-const teacherToken =localStorage.getItem('teacherToken');
-const headers = { headers: {
-    Authorization: teacherToken
-  }}
 
 export const getHomeAPI =(headers)=>{
     return axios.get('/teacher/home',headers)

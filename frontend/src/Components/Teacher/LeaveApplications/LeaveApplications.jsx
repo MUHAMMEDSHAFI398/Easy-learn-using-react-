@@ -21,7 +21,6 @@ function LeaveApplications() {
     }}
     leaveHistoryAPI(headers).then((response) => {
       if (response.data.status) {
-        console.log(response.data.leaveHistory)
         setLeaveHistory(response.data.leaveHistory)
       }
     })

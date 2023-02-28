@@ -10,7 +10,7 @@ function ViewStudents() {
 
   const [students, setStudents] = useState([]);
   const navigate = useNavigate()
-
+  let count =1;
   useEffect(() => {
     const headers = {
       headers: {
@@ -168,10 +168,11 @@ function ViewStudents() {
           width: 80,
         },
       ],
-      rows: students.map((obj, index) => {
+      rows: students.map((obj) => {
 
         return {
-          slno: index + 1,
+          key:obj._id,
+          slno: count++,
           registerId: obj.registerId,
           name: obj.name,
           phone: obj.phone,

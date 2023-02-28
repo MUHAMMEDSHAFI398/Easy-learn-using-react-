@@ -57,33 +57,42 @@ function TeacherLogin() {
                             </div>
 
                             <form onSubmit={handleSubmit} >
+                                
+                                <p className='ms-4 mb-1'>Register Id</p>
                                 <MDBInput
+                                    className='input'
                                     value={formValues.registerId}
                                     onChange={onChangeHandle}
                                     wrapperClass='mb-4 ms-4 me-4'
-                                    className='input' name='registerId'
-                                    label='Register id' id='formControlLg'
+                                    name='registerId'
+                                    id='formControlLg'
                                     type='text' size="lg"
                                     required
                                 />
 
-                                <MDBInput wrapperClass='mb-4 ms-4 me-4'
+                                <p className='ms-4 mb-1'>Passwword</p>
+                                <MDBInput
+                                    className='input'
+                                    wrapperClass='mb-4 ms-4 me-4'
                                     value={formValues.password}
                                     onChange={onChangeHandle}
-                                    className='input' name='password'
-                                    label='Password' id='formControlLg'
+                                    name='password'
+                                    id='formControlLg'
                                     type='password' size="lg"
                                     required
                                     max={new Date().toISOString().split("T")[0]}
                                 />
                                 {error && <p className="ms-2 text-danger">{error}</p>}
 
-
-                                <MDBInput className='submit-login btn btn-success'
-                                    wrapperClass='mb-4 ms-4 me-4' 
-                                    type='submit' value='Login'
-                                    id='formControlLg' size="lg"
+                                <MDBInput
+                                    type='submit'
+                                    value='Login'
+                                    id='formControlLg'
+                                    size="lg"
+                                    className='submit-login btn btn-success mt-3'
+                                    wrapperClass='mb-4 ms-4 me-4'
                                 />
+
                             </form>
                         </div>
                     </MDBCol>

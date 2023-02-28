@@ -17,7 +17,7 @@ function EachBatches() {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const readableStartDate = DateStart.toLocaleDateString('en-US', options);
   const batchId = location.state.batch[0]._id
-
+  let count = 1;
   const handleClick = () => {
     navigate('/office/edit-batch', {
       state: {
@@ -33,10 +33,10 @@ function EachBatches() {
   const handleGetStudent = async (id) => {
     const headers = {
       headers: {
-          Authorization: localStorage.getItem("officeToken")
+        Authorization: localStorage.getItem("officeToken")
       }
-  }
-    handleGetStudentAPI(id,headers).then((response) => {
+    }
+    handleGetStudentAPI(id, headers).then((response) => {
       if (response.data.status) {
 
         navigate('/office/each-student', {
@@ -63,10 +63,10 @@ function EachBatches() {
       if (result.isConfirmed) {
         const headers = {
           headers: {
-              Authorization: localStorage.getItem("officeToken")
+            Authorization: localStorage.getItem("officeToken")
           }
-      }
-        blockStudentAPI(id,headers).then(() => {
+        }
+        blockStudentAPI(id, headers).then(() => {
           const setStudent = students.filter((obj) => {
             if (obj._id === id) {
               obj.isBlocked = true;
@@ -96,10 +96,10 @@ function EachBatches() {
       if (result.isConfirmed) {
         const headers = {
           headers: {
-              Authorization: localStorage.getItem("officeToken")
+            Authorization: localStorage.getItem("officeToken")
           }
-      }
-        unBlockStudentAPI(id,headers).then(() => {
+        }
+        unBlockStudentAPI(id, headers).then(() => {
           const setStudent = students.filter((obj) => {
             if (obj._id === id) {
               obj.isBlocked = false;
@@ -151,7 +151,7 @@ function EachBatches() {
 
         {
           label: 'Parent Contact',
-          field: 'paarentPhone',
+          field: 'parentPhone',
           sort: 'disabled',
           width: 130,
         },
@@ -170,12 +170,13 @@ function EachBatches() {
       ],
       rows: students.map((obj, index) => {
         return {
+          key:obj._id,
           slno: index + 1,
           registerId: obj.registerId,
           name: obj.name,
           phone: obj.phone,
           batch: obj.batch,
-          paarentPhone: obj.parentPhone,
+          parentPhone: obj.parentPhone,
           controlls:
             obj.isBlocked === false ?
               <button onClick={() => handleBlock(obj._id)} className='block-button'>Block</button>
@@ -270,31 +271,32 @@ function EachBatches() {
             <div className='batch-deatails-child d-flex flex-column align-items-center'>
               <p><strong>Subjects</strong></p>
               <div className="table-responsive">
-              <table className="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">SL NO</th>
-                    <th scope="col">Subject</th>
-                    <th scope="col">Teacher</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    location.state.batch[0].subjects.map((obj,index) => {
-                      return (
-                  <tr>
-                    <th scope="row">{index+1}</th>
-                    <td>{obj.subject}</td>
-                    <td>{obj.teacher}</td>
-                  </tr>
-                  )
-                })
-                  }
-                </tbody>
-              </table>
+                <table className="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">SL NO</th>
+                      <th scope="col">Subject</th>
+                      <th scope="col">Teacher</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+
+                      location.state.batch[0].subjects.map((obj) => {
+                        return (
+                          <tr key={obj._id}>
+                            <th scope="row">{count++}</th>
+                            <td>{obj.subject}</td>
+                            <td>{obj.teacher}</td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
+                </table>
               </div>
             </div>
-           
+
 
 
           </div>

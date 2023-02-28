@@ -7,8 +7,8 @@ import { officeLoginAPI } from '../../../Services/OfficeServices';
 
 
 function Body() {
-  
-  const [error,setError]=useState("")
+
+  const [error, setError] = useState("")
   const initialVlaues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialVlaues);
   const navigate = useNavigate();
@@ -21,14 +21,14 @@ function Body() {
     event.preventDefault();
 
     officeLoginAPI(formValues).then((response) => {
-      if(response.data.status){
+      if (response.data.status) {
         const jwtToken = response.data.token
-      localStorage.setItem("officeToken", jwtToken);
-      navigate('/office/home');
-      }else{
+        localStorage.setItem("officeToken", jwtToken);
+        navigate('/office/home');
+      } else {
         setError(response.data.errors)
       }
-      
+
 
     }).catch((error) => {
       console.log(error);
@@ -58,33 +58,36 @@ function Body() {
 
               <form onSubmit={handleSubmit}>
                 <MDBInput
-                required
+                  className='input'
+                  required
                   value={formValues.email}
                   onChange={onChangeHandle}
                   wrapperClass='mb-4 ms-4 me-4'
-                  className='input' name='email'
+                  name='email'
                   placeholder='Email' id='formControlLg'
                   type='email' size="lg"
                 />
 
-                <MDBInput wrapperClass='mb-4 ms-4 me-4 mt-5'
-                required
-                  className='input' name='password'
+                <MDBInput
+                  className='input'
+                  wrapperClass='mb-4 ms-4 me-4 mt-5'
+                  required
+                  name='password'
                   placeholder='Password' id='formControlLg'
                   type='password' size="lg"
                   value={formValues.password}
                   onChange={onChangeHandle}
 
                 />
-                
-                {error && <p className="ms-2 text-danger">{error}</p> }
+                {error && <p className="ms-2 text-danger">{error}</p>}
+
                 <MDBInput className='submit-login btn btn-success mt-4'
                   wrapperClass='mb-4 ms-4 me-4'
                   type='submit' value='Login'
                   id='formControlLg' size="lg"
                 />
               </form>
- 
+
             </div>
 
 
