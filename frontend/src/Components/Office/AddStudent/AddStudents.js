@@ -38,7 +38,12 @@ function AddStudents() {
     };
 
     useEffect(() => {
-        availableBatchAPI().then((response) => {
+        const headers = {
+            headers: {
+                Authorization: localStorage.getItem("officeToken")
+            }
+        }
+        availableBatchAPI(headers ).then((response) => {
             if (response.data.status) {
                 setBatches(response.data.batches);
 
@@ -77,7 +82,13 @@ function AddStudents() {
         if (Object.keys(errors).length !== 0) {
             setErrors(errors);
         } else {
-            addStudentAPI(data).then((resp) => {
+            const headers = {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: localStorage.getItem("officeToken")
+                },
+            }
+            addStudentAPI(data,headers).then((resp) => {
                 if (resp.data.imageError) {
                     setImageError(resp.data.imageError)
                 } else {

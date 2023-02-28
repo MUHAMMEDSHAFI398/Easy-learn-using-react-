@@ -24,8 +24,12 @@ function EditBatches() {
   useEffect(() => {
 
     const id = location.state.id
-
-    getEditBatchAPI(id).then((response) => {
+    const headers = {
+      headers: {
+          Authorization: localStorage.getItem("officeToken")
+      }
+  }
+    getEditBatchAPI(id,headers).then((response) => {
 
       setTeachers(response.data.teachers)
       setAvailableTeachers(response.data.availableTeachers)
@@ -72,7 +76,12 @@ function EditBatches() {
         subjectValues,
         ...batchData
       }
-      editBatchAPI(batchId, data).then((response) => {
+      const headers = {
+        headers: {
+            Authorization: localStorage.getItem("officeToken")
+        }
+    }
+      editBatchAPI(batchId, data,headers).then((response) => {
         if (response.data.status) {
           navigate('/office/batches')
         }

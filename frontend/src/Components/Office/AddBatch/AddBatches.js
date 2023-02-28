@@ -25,7 +25,12 @@ function AddBatches() {
 
 
   useEffect(() => {
-    availableTeachersAPI().then((response) => {
+    const headers = {
+      headers: {
+          Authorization: localStorage.getItem("officeToken")
+      }
+  }
+    availableTeachersAPI(headers).then((response) => {
 
       if (response.data.status) {
         setTeachers(response.data.teachers);
@@ -81,8 +86,13 @@ function AddBatches() {
         ...formValues,
         subjectValues
       }
-      addBatchAPI(data).then((response) => {
-
+      const headers = {
+        headers: {
+            Authorization: localStorage.getItem("officeToken")
+        }
+    }
+      addBatchAPI(data,headers).then((response) => {
+        
         if (response.data.status) {
           message.success('Successfully added new batch')
           navigate('/office/batches')

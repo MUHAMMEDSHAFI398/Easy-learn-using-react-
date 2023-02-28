@@ -14,7 +14,12 @@ function TeacherLeaveApplication() {
 
 
     useEffect(() => {
-        leaveApplcationsAPI().then((response) => {
+        const headers = {
+            headers: {
+                Authorization: localStorage.getItem("officeToken")
+            }
+        }
+        leaveApplcationsAPI(headers).then((response) => {
             setLeaveData(response.data.leaveData)
         })
     }, [])
@@ -36,7 +41,12 @@ function TeacherLeaveApplication() {
                     id: id,
                     arrayElementId: arrayElementId
                 }
-                leaveApproveAPI(data).then((response) => {
+                const headers = {
+                    headers: {
+                        Authorization: localStorage.getItem("officeToken")
+                    }
+                }
+                leaveApproveAPI(data,headers ).then((response) => {
                     if (response.data.status) {
                         const data = leaveData.filter((value) => {
                             if (value.myLeaves._id === arrayElementId) {
@@ -69,7 +79,12 @@ function TeacherLeaveApplication() {
                     id: id,
                     arrayElementId: arrayElementId
                 }
-                leaveRejectAPI(data).then((response) => {
+                const headers = {
+                    headers: {
+                        Authorization: localStorage.getItem("officeToken")
+                    }
+                }
+                leaveRejectAPI(data,headers).then((response) => {
 
                     if (response.data.status) {
                         const data = leaveData.filter((value) => {

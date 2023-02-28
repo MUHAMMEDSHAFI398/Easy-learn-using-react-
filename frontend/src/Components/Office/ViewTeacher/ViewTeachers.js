@@ -12,7 +12,12 @@ function ViewTeachers() {
 
 
   useEffect(() => {
-    getTeachersAPI().then((response) => {
+    const headers = {
+      headers: {
+          Authorization: localStorage.getItem("officeToken")
+      }
+  }
+    getTeachersAPI(headers).then((response) => {
       if (response.data.status) {
         setTeachers(response.data.teachers);
       } else {
@@ -23,7 +28,12 @@ function ViewTeachers() {
 
 
   const handleClick = async (id) => {
-    getTeacherAPI(id).then((response) => {
+    const headers = {
+      headers: {
+          Authorization: localStorage.getItem("officeToken")
+      }
+  }
+    getTeacherAPI(id,headers).then((response) => {
       if (response.data.status) {
         navigate('/office/each-teacher', {
           state: {
@@ -45,7 +55,12 @@ function ViewTeachers() {
     }).then((result) => {
 
       if (result.isConfirmed) {
-        blockTeacherAPI(id).then(() => {
+        const headers = {
+          headers: {
+              Authorization: localStorage.getItem("officeToken")
+          }
+      }
+        blockTeacherAPI(id,headers).then(() => {
           const setTeacher = teachers.filter((value) => {
             if (value._id === id) {
               value.isBlocked = true
@@ -72,7 +87,12 @@ function ViewTeachers() {
     }).then((result) => {
 
       if (result.isConfirmed) {
-        unBlockTeacherAPI(id).then(() => {
+        const headers = {
+          headers: {
+              Authorization: localStorage.getItem("officeToken")
+          }
+      }
+        unBlockTeacherAPI(id,headers).then(() => {
           const setTeacher = teachers.filter((value) => {
             if (value._id === id) {
               value.isBlocked = false

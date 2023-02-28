@@ -11,7 +11,12 @@ function ViewBatches() {
 
 
   useEffect(() => {
-    getBatches().then((response) => {
+    const headers = {
+      headers: {
+          Authorization: localStorage.getItem("officeToken")
+      }
+  }
+    getBatches(headers).then((response) => {
       if (response.data.status) {
         setBatches(response.data.batches);
 
@@ -22,7 +27,12 @@ function ViewBatches() {
   }, [])
 
   const handleClick = async (id) => {
-    getEachBatch(id).then((response) => {
+    const headers = {
+      headers: {
+          Authorization: localStorage.getItem("officeToken")
+      }
+  }
+    getEachBatch(id,headers).then((response) => {
       if (response.data.status) {
         navigate('/office/each-batch', {
           state: {

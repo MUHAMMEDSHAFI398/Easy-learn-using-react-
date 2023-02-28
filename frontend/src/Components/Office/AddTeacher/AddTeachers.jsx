@@ -62,8 +62,13 @@ function AddTeachers() {
         if (Object.keys(errors).length !== 0) {
             setErrors(errors);
         } else {
-            
-            addTeacherAPI(data).then((resp) => {
+            const headers = {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: localStorage.getItem("officeToken")
+                },
+            }
+            addTeacherAPI(data,headers).then((resp) => {
                 if (resp.data.imageError) {
                     setImageError(resp.data.imageError)
                 } else {

@@ -40,8 +40,13 @@ function EachTeachers() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const id = location.state.teacher._id
-    editTeachertAPI(id, formValues).then(() => {
-      getTeacherAPI(id).then((response) => {
+    const headers = {
+      headers: {
+          Authorization: localStorage.getItem("officeToken")
+      }
+  }
+    editTeachertAPI(id, formValues,headers).then(() => {
+      getTeacherAPI(id,headers).then((response) => {
         if (response.data.status) {
           navigate('/office/each-teacher', {
             state: {
@@ -72,7 +77,12 @@ function EachTeachers() {
     }).then((result) => {
       if (result.isConfirmed) {
         const id = location.state.teacher._id
-        blockTeacherAPI(id).then(() => {
+        const headers = {
+          headers: {
+              Authorization: localStorage.getItem("officeToken")
+          }
+      }
+        blockTeacherAPI(id,headers).then(() => {
           message.success("This teacher has been blocked")
           setTeacherBlock(true)
         })
@@ -97,7 +107,12 @@ function EachTeachers() {
     }).then((result) => {
       if (result.isConfirmed) {
         const id = location.state.teacher._id
-        unBlockTeacherAPI(id).then(() => {
+        const headers = {
+          headers: {
+              Authorization: localStorage.getItem("officeToken")
+          }
+      }
+        unBlockTeacherAPI(id,headers).then(() => {
           message.success("This teacher has been Unblocked")
           setTeacherBlock(false)
         })

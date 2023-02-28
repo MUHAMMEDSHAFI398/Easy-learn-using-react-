@@ -31,7 +31,12 @@ function EachBatches() {
   }, [])
 
   const handleGetStudent = async (id) => {
-    handleGetStudentAPI(id).then((response) => {
+    const headers = {
+      headers: {
+          Authorization: localStorage.getItem("officeToken")
+      }
+  }
+    handleGetStudentAPI(id,headers).then((response) => {
       if (response.data.status) {
 
         navigate('/office/each-student', {
@@ -56,8 +61,12 @@ function EachBatches() {
     }).then((result) => {
 
       if (result.isConfirmed) {
-
-        blockStudentAPI(id).then(() => {
+        const headers = {
+          headers: {
+              Authorization: localStorage.getItem("officeToken")
+          }
+      }
+        blockStudentAPI(id,headers).then(() => {
           const setStudent = students.filter((obj) => {
             if (obj._id === id) {
               obj.isBlocked = true;
@@ -85,8 +94,12 @@ function EachBatches() {
     }).then((result) => {
 
       if (result.isConfirmed) {
-
-        unBlockStudentAPI(id).then(() => {
+        const headers = {
+          headers: {
+              Authorization: localStorage.getItem("officeToken")
+          }
+      }
+        unBlockStudentAPI(id,headers).then(() => {
           const setStudent = students.filter((obj) => {
             if (obj._id === id) {
               obj.isBlocked = false;

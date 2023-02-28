@@ -25,7 +25,12 @@ function EachStudents() {
         }).then((result) => {
             if (result.isConfirmed) {
                 const id = location.state.studentData._id
-                blockStudentAPI(id).then(() => {
+                const headers = {
+                    headers: {
+                        Authorization: localStorage.getItem("officeToken")
+                    }
+                }
+                blockStudentAPI(id,headers).then(() => {
                     setStudentBlock(true);
                     message.success("The student has been blocked")
                 })
@@ -45,9 +50,13 @@ function EachStudents() {
 
         }).then((result) => {
             if (result.isConfirmed) {
-
                 const id = location.state.studentData._id
-                unBlockStudentAPI(id).then(() => {
+                const headers = {
+                    headers: {
+                        Authorization: localStorage.getItem("officeToken")
+                    }
+                }
+                unBlockStudentAPI(id,headers).then(() => {
                     setStudentBlock(false);
                     message.success("The student has been Unblocked")
                 })
