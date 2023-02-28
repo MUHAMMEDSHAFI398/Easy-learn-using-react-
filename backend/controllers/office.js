@@ -549,8 +549,7 @@ module.exports = {
     leaveReject: async (req, res) => {
         try {
             const data = req.body
-            console.log(data.arrayElementId)
-            const hi = await teacher.updateOne(
+            await teacher.updateOne(
                 {
                     registerId: data.id,
                     "myLeaves._id": data.arrayElementId
@@ -561,7 +560,7 @@ module.exports = {
                     }
                 }
             )
-            console.log(hi)
+
             res.json({ status: true })
         } catch (err) {
             console.log(err)

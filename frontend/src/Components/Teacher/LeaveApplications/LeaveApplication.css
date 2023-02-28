@@ -1,5 +1,5 @@
 .mainDiv{
-    padding: 30px;
+    padding-top: 125px;
 }
 
 .flexItem{
@@ -19,7 +19,7 @@
     background-color: rgb(244, 243, 242);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     width: 570px;
-    height: 400px;
+    height: 370px;
     border-radius: 15px;
     resize: none;
 }

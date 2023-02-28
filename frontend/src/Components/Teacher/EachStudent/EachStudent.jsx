@@ -11,7 +11,7 @@ function EachStudent() {
   return (
     <div className='container'>
 
-    <div className="container mt-4">
+    <div className="container">
         <div className="d-flex flex-wrap justify-content-between">
 
             <div className='childs'>

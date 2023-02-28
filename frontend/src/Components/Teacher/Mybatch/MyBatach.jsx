@@ -23,7 +23,7 @@ function MyBatach() {
     return (
         <div className='container'>
 
-            <div className="container mt-4">
+            <div className="container">
                 <div className="d-flex flex-wrap justify-content-between">
 
                     <div className='child'>
@@ -65,18 +65,22 @@ function MyBatach() {
                             <p><strong>Batch</strong></p>
                             <p>{batch[0]?.registerId}</p>
                         </div>
+
                         <div className='batch-deatails-child d-flex flex-column align-items-center'>
                             <p><strong>Head of the batch</strong></p>
                             <p>{batch[0]?.teacher_data[0].name}</p>
                         </div>
+
                         <div className='batch-deatails-child d-flex flex-column align-items-center'>
                             <p><strong>Number of students</strong></p>
                             <p>{batch[0]?.batchFill}</p>
                         </div>
+
                         <div className='batch-deatails-child d-flex flex-column align-items-center'>
                             <p><strong>Total seat</strong></p>
                             <p>{batch[0]?.numberOfSeat}</p>
                         </div>
+
                         <div className='batch-deatails-child d-flex flex-column align-items-center'>
                             <p><strong>Start date</strong></p>
                             <p>{readableStartDate ? readableStartDate : ""}</p>
@@ -86,24 +90,47 @@ function MyBatach() {
                             <p><strong>Duration</strong></p>
                             <p>{batch[0]?.duration}</p>
                         </div>
+
                         <div className='batch-deatails-child d-flex flex-column align-items-center'>
                             <p><strong>Course fee</strong></p>
                             <p>{batch[0]?.fee}</p>
                         </div>
+
                         <div className='batch-deatails-child d-flex flex-column align-items-center'>
                             <p><strong>Total seats</strong></p>
                             <p>{batch[0]?.numberOfSeat}</p>
                         </div>
+
                         <div className='batch-deatails-child d-flex flex-column align-items-center'>
                             <p><strong>Subjects</strong></p>
-                            {
-                                batch[0]?.subjects.map((obj) => {
-                                    return (
-                                        <p>{obj?.subject} ({obj?.teacher})</p>
-                                    )
-                                })
-                            }
+                            <div class="table-responsive">
 
+                                <table class="table table-striped table-bordered">
+
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">SL NO</th>
+                                            <th scope="col">subject</th>
+                                            <th scope="col">Teacher</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {
+                                            batch[0]?.subjects.map((obj, index) => {
+                                                return (
+                                                    <tr>
+                                                        <th scope="row">{index + 1}</th>
+                                                        <td>{obj?.subject}</td>
+                                                        <td>{obj?.teacher}</td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div>
                         </div>
 
 

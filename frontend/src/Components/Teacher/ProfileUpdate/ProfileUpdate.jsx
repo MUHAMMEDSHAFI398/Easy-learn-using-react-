@@ -53,15 +53,13 @@ function ProfileUpdate() {
     }
 
     return (
-
+         <div className='container'>
         <div className="container border-line">
 
-            <div className=" d-flex align-items-center justify-content-center">
+            <form className="formClass mb-3" onSubmit={handleSubmit}>
+            <div className=" d-flex align-items-center justify-content-center ">
                 <h5 className="text-decoration-underline mt-4 mb-5 ">Update profile</h5>
             </div>
-
-            <form className=" mb-3" onSubmit={handleSubmit}>
-
                 <div className="d-flex flex-wrap justify-content-between">
                     <div className="d-flex flex-column">
                         <label className='ms-2 mt-3'>Phone</label>
@@ -171,7 +169,7 @@ function ProfileUpdate() {
                 </div>
 
             </form>
-
+            </div>
         </div>
     )
 }

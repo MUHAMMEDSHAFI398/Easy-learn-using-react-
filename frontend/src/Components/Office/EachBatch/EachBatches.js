@@ -251,20 +251,37 @@ function EachBatches() {
               <p>{location.state.batch[0].numberOfSeat}</p>
             </div>
             <div className='batch-deatails-child d-flex flex-column align-items-center'>
-              <p><strong>Subjects</strong></p>
-              {
-                location.state.batch[0].subjects.map((obj) => {
-                  return (
-                    <p>{obj.subject} ({obj.teacher})</p>
-                  )
-                })
-              }
-
+              <p><strong>Remarks</strong></p>
+              <p>{location.state.batch[0].remarks !== "" ? location.state.batch[0].remarks : "No remarks added"}</p>
             </div>
             <div className='batch-deatails-child d-flex flex-column align-items-center'>
-              <p><strong>Remarks</strong></p>
-              <p>{location.state.batch[0].remarks !=="" ? location.state.batch[0].remarks : "No remarks added" }</p>
+              <p><strong>Subjects</strong></p>
+              <div class="table-responsive">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">SL NO</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Teacher</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    location.state.batch[0].subjects.map((obj,index) => {
+                      return (
+                  <tr>
+                    <th scope="row">{index+1}</th>
+                    <td>{obj.subject}</td>
+                    <td>{obj.teacher}</td>
+                  </tr>
+                  )
+                })
+                  }
+                </tbody>
+              </table>
+              </div>
             </div>
+           
 
 
           </div>

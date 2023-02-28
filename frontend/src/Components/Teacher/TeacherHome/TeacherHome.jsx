@@ -28,7 +28,11 @@ function TeacherHome() {
 
 
     return (
+        <div className='container'>
         <div className='parentHome container'>
+            
+
+            
             <div className='d-flex justify-content-end'>
                 <Link to='/teacher/leave-applications'>
                 <button className='btn btn-success'> Apply for leave</button>
@@ -103,7 +107,7 @@ function TeacherHome() {
 
             </div>
 
-
+            </div>
         </div>
     )
 }

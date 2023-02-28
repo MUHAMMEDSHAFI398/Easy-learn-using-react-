@@ -108,7 +108,7 @@ function LeaveApplications() {
 
       rows: leaveHistory?.map((leave, index) => {
 
-        const dateString = leave. myLeaves.date
+        const dateString = leave.myLeaves.date
         const date = new Date(dateString);
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         const formattedDate = date.toLocaleDateString('en-US', dateOptions);
@@ -165,7 +165,7 @@ function LeaveApplications() {
   return (
     <div className='container'>
 
-      <div className='d-flex flex-wrap justify-content-between align-items-center mt-3 mainDiv'>
+      <div className='d-flex flex-wrap justify-content-between align-items-center mainDiv'>
 
         <div className='flexItem'>
 
@@ -185,7 +185,7 @@ function LeaveApplications() {
           </div>
           {error.leaveLetter && (<p className="ms-2 text-danger">{error.leaveLetter}</p>)}
 
-          <div className='d-flex justify-content-center align-items-center mt-2'>
+          <div className='d-flex justify-content-center align-items-center mt-3'>
             <button onClick={handleSubmit} className='btn btn-success'>Submit</button>
           </div>
 
