@@ -126,7 +126,7 @@ function AddBatches() {
               {error.startDate && (<p className="ms-2 text-danger">{error.startDate}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
             </div>
 
-            <div class="d-flex flex-column">
+            <div className="d-flex flex-column">
               <label className='ms-2 mt-3'>Duration in month</label>
               <input
                 value={formValues.duration}

@@ -13,9 +13,9 @@ function NavBar() {
                     <h1 className='Nav-title'>EASY LEARN</h1>
                     <p className='Nav-sub-title'>The right track towards the goal</p>
                 </div>
-                <div class="dropdown">
+                <div className="dropdown">
                     <button className='LoginButton'>Login</button>
-                    <div class="dropdown-content">
+                    <div className="dropdown-content">
                         <Link to='/office' ><p>Office login</p></Link>
                         <Link to='/teacher'><p>Teacher login</p></Link>
                         <Link to='/student'><p>Student login</p></Link>

@@ -10,7 +10,10 @@ function MyStudents() {
   const [sutdents, setStudents] = useState([])
   const navigate = useNavigate()
   useEffect(() => {
-    getMyStudents().then((response) => {
+    const headers = { headers: {
+      Authorization: localStorage.getItem('teacherToken')
+    }}
+    getMyStudents(headers).then((response) => {
       if (response.data.status) {
         setStudents(response.data.students)
       } else {
@@ -24,7 +27,10 @@ function MyStudents() {
   }, [])
 
   const handleClick = async (id) => {
-    eachStudentAPI(id).then((response) => {
+    const headers = { headers: {
+      Authorization: localStorage.getItem('teacherToken')
+    }}
+    eachStudentAPI(id,headers).then((response) => {
       navigate('/teacher/each-student', {
         state: {
           studentData: response.data.student

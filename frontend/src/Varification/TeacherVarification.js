@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../Redux/Action/Index';
-import { getHome } from '../Services/TeacherServices'
+import { getHomeAPI } from '../Services/TeacherServices'
 
 
 export default function TeacherVarification({ children }) {
@@ -17,16 +17,21 @@ export default function TeacherVarification({ children }) {
             navigate('/teacher')
         }
     }, [])
-    useEffect(()=>{
-        if(localStorage.getItem('teacherToken')){
-            getHome().then((response) => {
+    useEffect(() => {
+        if (localStorage.getItem('teacherToken')) {
+            const headers = {
+                headers: {
+                    Authorization: localStorage.getItem('teacherToken')
+                }
+            }
+            getHomeAPI(headers).then((response) => {
                 storeTeacherData(response.data.teacherData)
-            }) 
+            })
         }
-    },[])
+    }, [])
     return children
 
-    
+
 }
 
 

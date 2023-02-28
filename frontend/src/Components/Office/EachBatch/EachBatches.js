@@ -269,8 +269,8 @@ function EachBatches() {
             </div>
             <div className='batch-deatails-child d-flex flex-column align-items-center'>
               <p><strong>Subjects</strong></p>
-              <div class="table-responsive">
-              <table class="table table-striped table-bordered">
+              <div className="table-responsive">
+              <table className="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th scope="col">SL NO</th>

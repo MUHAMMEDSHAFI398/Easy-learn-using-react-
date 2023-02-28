@@ -43,7 +43,10 @@ function ProfileUpdate() {
                 teacherData:teacherData,
                 address:address
               }
-          updateProfileAPI(data).then((response)=>{
+              const headers = { headers: {
+                Authorization: localStorage.getItem('teacherToken')
+              }}
+          updateProfileAPI(data,headers).then((response)=>{
             if(response.data.status){
                 message.success('Successfully updated your profile')
                 navigate('/teacher/home')

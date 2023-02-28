@@ -9,17 +9,17 @@ function Section3() {
 
             </div>
             <div className='paraentSection3 d-flex flex-wrap justify-content-between mt-3 '>
-                <img className='gallary-image mb-4' src="/images/lab.jpeg" alt="" />
-                <img className='gallary-image mb-4' src="/images/library.jpeg" alt="" />
-                <img className='gallary-image mb-4' src="/images/pic5.jpeg" alt="" />
-                <img className='gallary-image mb-4' src="/images/convo.jpeg" alt="" />
-                <img className='gallary-image mb-4' src="/images/pic1.jpeg" alt="" />
-                <img className='gallary-image mb-4' src="/images/pic2.jpeg" alt="" />
-                <img className='gallary-image mb-4' src="/images/pic3.jpeg" alt="" />
-                <img className='gallary-image mb-4' src="/images/pic4.jpeg" alt="" />
+                <img className='gallary-image mb-4' src="/images/lab.jpeg" alt="cant not load" />
+                <img className='gallary-image mb-4' src="/images/library.jpeg" alt="cant not load" />
+                <img className='gallary-image mb-4' src="/images/pic5.jpeg" alt="cant not load" />
+                <img className='gallary-image mb-4' src="/images/convo.jpeg" alt="cant not load" />
+                <img className='gallary-image mb-4' src="/images/pic1.jpeg" alt="cant not load" />
+                <img className='gallary-image mb-4' src="/images/pic2.jpeg" alt="cant not load" />
+                <img className='gallary-image mb-4' src="/images/pic3.jpeg" alt="cant not load" />
+                <img className='gallary-image mb-4' src="/images/pic4.jpeg" alt="cant not load" />
             </div>
         </div>
-    )
+    ) 
 }
 
 export default Section3

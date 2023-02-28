@@ -122,7 +122,7 @@ function AddTeachers() {
                             {error.phone && (<p className="ms-2 text-danger">{error.phone}{window.scrollTo({ top: 60, behavior: "smooth" })}</p>)}
                         </div>
 
-                        <div class="d-flex flex-column">
+                        <div className="d-flex flex-column">
                             <label className='ms-2 mt-3'>Email</label>
                             <input
                                 value={formValues.email}

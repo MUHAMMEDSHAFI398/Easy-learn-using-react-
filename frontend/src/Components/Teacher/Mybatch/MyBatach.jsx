@@ -11,7 +11,10 @@ function MyBatach() {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const readableStartDate = DateStart.toLocaleDateString('en-US', options);
     useEffect(() => {
-        getMyBatchAPI().then((response) => {
+        const headers = { headers: {
+            Authorization: localStorage.getItem('teacherToken')
+          }}
+        getMyBatchAPI(headers).then((response) => {
             if (response.data.status) {
                 setBatch(response.data.batch)
                 setAvailableSeat(response.data.availableSeat)
@@ -103,9 +106,9 @@ function MyBatach() {
 
                         <div className='batch-deatails-child d-flex flex-column align-items-center'>
                             <p><strong>Subjects</strong></p>
-                            <div class="table-responsive">
+                            <div className="table-responsive">
 
-                                <table class="table table-striped table-bordered">
+                                <table className="table table-striped table-bordered">
 
                                     <thead>
                                         <tr>

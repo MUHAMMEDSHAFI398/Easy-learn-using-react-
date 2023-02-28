@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
 import './TeacherHome.css'
-import { getHome } from '../../../Services/TeacherServices'
+import { getHomeAPI } from '../../../Services/TeacherServices'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -14,7 +14,10 @@ function TeacherHome() {
     const { storeTeacherData } = bindActionCreators(actionCreators, dispatch);
 
     useEffect(() => {
-        getHome().then((response) => {
+        const headers = { headers: {
+            Authorization: localStorage.getItem('teacherToken')
+          }}
+        getHomeAPI(headers).then((response) => {
             storeTeacherData(response.data.teacherData)
         })
     }, [])

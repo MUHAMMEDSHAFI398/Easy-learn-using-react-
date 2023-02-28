@@ -16,7 +16,10 @@ function LeaveApplications() {
   const [modalvalues, setModalValues] = useState({ date: "", status: "", letter: "" })
 
   useEffect(() => {
-    leaveHistoryAPI().then((response) => {
+    const headers = { headers: {
+      Authorization: localStorage.getItem('teacherToken')
+    }}
+    leaveHistoryAPI(headers).then((response) => {
       if (response.data.status) {
         console.log(response.data.leaveHistory)
         setLeaveHistory(response.data.leaveHistory)
@@ -58,8 +61,10 @@ function LeaveApplications() {
     }).then((result)=>{
 
       if(result.isConfirmed){
-
-        postLetterAPI(letter).then((response) => {
+        const headers = { headers: {
+          Authorization: localStorage.getItem('teacherToken')
+        }}
+        postLetterAPI(letter,headers).then((response) => {
           if (response.data.status) {
             message.success('Successfully sent leave application?')
             setLetter({ leaveLetter: "" });
