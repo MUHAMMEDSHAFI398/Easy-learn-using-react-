@@ -67,7 +67,7 @@ function LeaveApplications() {
           if (response.data.status) {
             message.success('Successfully sent leave application?')
             setLetter({ leaveLetter: "" });
-            leaveHistoryAPI().then((response) => {
+            leaveHistoryAPI(headers).then((response) => {
               if (response.data.status) {
                 setLeaveHistory(response.data.leaveHistory)
               }

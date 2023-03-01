@@ -44,20 +44,20 @@ const searchArrayElement = (arr, target) => {
 
     try {
         return new Promise(async (resolve, reject) => {
-          const n = arr.length;
-          let found = false;
-          for (let i = 0; i < n; i++) {
-            if (arr[i].workingDays.month.getTime() === target.getTime()) {
-              found = true;
-              break;
+            const n = arr.length;
+            let found = false;
+            for (let i = 0; i < n; i++) {
+                if (arr[i].workingDays.month.getTime() === target.getTime()) {
+                    found = true;
+                    break;
+                }
             }
-          }
-          resolve(found);
+            resolve(found);
         });
-      } catch (err) {
+    } catch (err) {
         console.log(err);
-      }
-      
+    }
+
 
 }
 
@@ -65,4 +65,4 @@ const searchArrayElement = (arr, target) => {
 module.exports = {
     uniqueCodeGenerator,
     searchArrayElement
-}
+}   
