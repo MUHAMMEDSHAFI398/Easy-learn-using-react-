@@ -194,28 +194,28 @@ function EachBatches() {
 
       <button onClick={handleClick} className='EditButton'>Edit Batch deatails</button>
 
-      <div className="container mt-4">
+      <div className="container">
         <div className="d-flex flex-wrap justify-content-between">
 
-          <div className='child'>
+          <div className='children'>
             <div className="d-flex flex-column align-items-center">
               <h5>Batch performance</h5>
               <h4>25%</h4>
             </div>
           </div>
-          <div className='child'>
+          <div className='children'>
             <div className="d-flex flex-column align-items-center">
               <h5>Avg batch attenddance</h5>
               <h4>25%</h4>
             </div>
           </div>
-          <div className='child'>
+          <div className='children'>
             <div className="d-flex flex-column align-items-center">
               <h5>Fee complition rate</h5>
               <h4>25%</h4>
             </div>
           </div>
-          <div className='child'>
+          <div className='children'>
             <div className="d-flex flex-column align-items-center">
               <h5>Available seat</h5>
               <h4>{location.state.availableSeat}</h4>

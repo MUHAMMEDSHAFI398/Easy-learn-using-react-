@@ -20,6 +20,12 @@ teacherRouter.post('/letter',verifyToken.verifyTokenTeacher, teacherController.p
 
 teacherRouter.get('/leave-history',verifyToken.verifyTokenTeacher, teacherController.getLeaveHistory)
 
+teacherRouter.get('/start-end',verifyToken.verifyTokenTeacher, teacherController.batchStartEndDate)
+
+teacherRouter.post('/add-working-days',verifyToken.verifyTokenTeacher, teacherController.addWorkingDays)
+
+teacherRouter.get('/month-work-days',verifyToken.verifyTokenTeacher, teacherController.monthlyWorkDays)
+
 
 
 module.exports = teacherRouter 

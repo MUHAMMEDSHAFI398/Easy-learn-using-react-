@@ -8,14 +8,14 @@
     margin-top: 80px;
     margin-left: 25px;
 }
-.child{
+.children{
     border-radius: 10px;
     width: 280px;
     height: 79px;
     border: 1px solid black;
     background-color: rgb(244, 243, 242);
     margin-left: 14px;
-    margin-top: 8px;    
+    margin-top: 30px;   
 }
 .batch-deatails-parent{
     border: 1px solid black;

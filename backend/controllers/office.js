@@ -188,10 +188,13 @@ module.exports = {
                 }
             }
         )
-
+        const startDate = new Date(data.startDate);
+        const endDate =  new Date(startDate.getFullYear(), startDate.getMonth()+parseInt(data.duration), startDate.getDate());
+    
         batch.create({
-            registerId: batchId,
+            registerId: batchId, 
             startDate: data.startDate,
+            endDate:endDate,
             duration: data.duration,
             fee: data.fee,
             numberOfSeat: data.numberOfSeat,

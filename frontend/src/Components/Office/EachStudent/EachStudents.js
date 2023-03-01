@@ -71,28 +71,28 @@ function EachStudents() {
                 <button onClick={handleUnBlock} className='std-Unblock-btn'>Unblock</button>
             }
 
-            <div className="container mt-4">
+            <div className="container">
                 <div className="d-flex flex-wrap justify-content-between">
 
-                    <div className='child'>
+                    <div className='childrens'>
                         <div className="d-flex flex-column align-items-center">
                             <h5>Attenddance</h5>
                             <h4>25%</h4>
                         </div>
                     </div>
-                    <div className='child'>
+                    <div className='childrens'>
                         <div className="d-flex flex-column align-items-center">
                             <h5>Performance</h5>
                             <h4>25%</h4>
                         </div>
                     </div>
-                    <div className='child'>
+                    <div className='childrens'>
                         <div className="d-flex flex-column align-items-center">
                             <h5>Current rank in the class</h5>
                             <h4>25%</h4>
                         </div>
                     </div>
-                    <div className='child'>
+                    <div className='childrens'>
                         <div className="d-flex flex-column align-items-center">
                             <h5>Fee completion</h5>
                             <h4>25%</h4>

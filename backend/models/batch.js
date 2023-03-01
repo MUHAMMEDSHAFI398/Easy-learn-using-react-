@@ -13,6 +13,10 @@ const batchSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    endDate: {
+      type: Date,
+      required: true,
+    },
     duration: {
       type: Number,
       required: true,
@@ -25,9 +29,9 @@ const batchSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    batchFill:{
-      type:Number,
-      default:0
+    batchFill: {
+      type: Number,
+      default: 0
     },
     headOfTheBatch: {
       type: String,
@@ -35,9 +39,19 @@ const batchSchema = new mongoose.Schema(
       trim: true,
       uppercase: true,
     },
-    remarks:{
+    remarks: {
       type: String,
     },
+    workingDays: [
+      {
+        month: {
+          type: Date
+        },
+        numberOfWorkingDays: {
+          type: Number
+        }
+      }
+    ],
     subjects: [
       {
         subject: {
@@ -57,4 +71,4 @@ const batchSchema = new mongoose.Schema(
 
 
 const batch = mongoose.model("batch", batchSchema);
-module.exports=batch
+module.exports = batch

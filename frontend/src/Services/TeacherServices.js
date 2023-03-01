@@ -28,3 +28,15 @@ export const postLetterAPI = (data,headers)=>{
 export const leaveHistoryAPI = (headers)=>{
   return axios.get('/teacher/leave-history',headers)
 }
+
+export const batchStartEndAPI = (headers)=>{
+  return axios.get('/teacher/start-end',headers)
+}
+
+export const postWorkingDaysAPI = (data,headers)=>{
+  return axios.post('/teacher/add-working-days',data,headers)
+}
+
+export const getmonthlyWorkDaysAPI = (headers)=>{
+  return axios.get('/teacher/month-work-days',headers)
+}

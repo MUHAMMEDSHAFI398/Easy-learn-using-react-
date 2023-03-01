@@ -5,6 +5,7 @@ const batch = require('../models/batch');
 const student = require('../models/student')
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const helpers = require('../helpers/helpers')
 dotenv.config();
 
 const login = async (req, res) => {
@@ -128,7 +129,7 @@ const eachStudent = async (req, res) => {
         console.log(err)
     }
 }
-const getMyBatch = async(req, res) => {
+const getMyBatch = async (req, res) => {
     const token = req.headers.authorization;
     const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
 
@@ -142,10 +143,10 @@ const getMyBatch = async(req, res) => {
             {
                 $project: {
                     myBatch: 1
-                } 
+                }
             }
         ])
-        if (teacherData[0].myBatch !== ""){
+        if (teacherData[0].myBatch !== "") {
             const batchData = await batch.aggregate([
                 {
                     $match: {
@@ -158,7 +159,7 @@ const getMyBatch = async(req, res) => {
                         localField: "headOfTheBatch",
                         foreignField: "registerId",
                         as: "teacher_data"
-                    }  
+                    }
                 }
             ])
             const numberOfSeat = batchData[0].numberOfSeat
@@ -169,57 +170,57 @@ const getMyBatch = async(req, res) => {
                 batch: batchData,
                 availableSeat: availableSeat,
             })
-        }else{
-            res.json({status:false})
-        } 
-        
+        } else {
+            res.json({ status: false })
+        }
+
 
     } catch (err) {
         console.log(err)
     }
 }
-const postLetter =async(req,res)=>{
-    const id=req.registerId
+const postLetter = async (req, res) => {
+    const id = req.registerId
     const today = new Date();
-    const data={
-         date:today,
-         letter:req.body.leaveLetter,
-         status:"Pending"
+    const data = {
+        date: today,
+        letter: req.body.leaveLetter,
+        status: "Pending"
     }
-    try{
+    try {
         await teacher.updateOne(
             {
-                registerId:id
+                registerId: id
             },
             {
-                $push:{
-                    myLeaves:data
+                $push: {
+                    myLeaves: data
                 }
             }
         )
         res.json({
-            status:true, 
+            status: true,
         })
-    } catch(err){
+    } catch (err) {
         console.log(err)
     }
 }
-const getLeaveHistory=async(req,res)=>{
-    const id=req.registerId
-    try{
+const getLeaveHistory = async (req, res) => {
+    const id = req.registerId
+    try {
         const leaveHistory = await teacher.aggregate([
             {
-                $match:{
-                    registerId:id
+                $match: {
+                    registerId: id
                 }
             },
             {
-                $unwind: "$myLeaves" 
+                $unwind: "$myLeaves"
             },
             {
-                $project:{
-                    myLeaves:1,
-                     
+                $project: {
+                    myLeaves: 1,
+
                 }
             },
             {
@@ -227,15 +228,169 @@ const getLeaveHistory=async(req,res)=>{
                     "myLeaves.date": -1,
                 }
             }
-           
+
         ])
         res.json({
-            status:true,
-            leaveHistory:leaveHistory
+            status: true,
+            leaveHistory: leaveHistory
         })
-    } catch (err){
+    } catch (err) {
         console.log(err)
     }
+}
+
+const batchStartEndDate = async (req, res) => {
+    const id = req.registerId
+    try {
+
+        const teacherData = await teacher.aggregate([
+            {
+                $match: {
+                    registerId: id
+                }
+            },
+            {
+                $project: {
+                    myBatch: 1
+                }
+            }
+        ])
+        const batchData = await batch.aggregate([
+            {
+                $match: {
+                    registerId: teacherData[0].myBatch
+                }
+            },
+            {
+                $project: {
+                    startDate: 1,
+                    endDate: 1
+                }
+            }
+        ])
+        const startDate = new Date(batchData[0].startDate);
+        const formattedStartDate = startDate.toISOString().slice(0, 7);
+        const endDate = new Date(batchData[0].endDate);
+        const formattedEndDate = endDate.toISOString().slice(0, 7);
+        const dates = {
+            startDate: formattedStartDate,
+            endDate: formattedEndDate
+        }
+        res.json({ dates: dates })
+
+
+    } catch (err) {
+        console.loeg(err)
+    }
+}
+const addWorkingDays = async (req, res) => {
+    const id = req.registerId
+    const data = req.body
+    try {
+        const teacherData = await teacher.aggregate([
+            {
+                $match: {
+                    registerId: id
+                }
+            },
+            {
+                $project: {
+                    myBatch: 1
+                }
+            }
+        ])
+        const workDaysArray = await batch.aggregate([
+            {
+                $match: {
+                    registerId: teacherData[0].myBatch
+                }
+            },
+            {
+                $unwind: "$workingDays"
+            },
+            {
+                $project: {
+                    workingDays: 1
+                }
+            }
+        ])
+        const date = new Date(data.month);
+        const isoString = date.toISOString();
+        const month = new Date(isoString);
+        const found = await helpers.searchArrayElement(workDaysArray, month)
+        if (found) {
+            res.json({ alert: "The selected month already added" })
+        } else {
+            await batch.updateOne(
+                {
+                    registerId: teacherData[0].myBatch
+                },
+                {
+                    $push: {
+                        workingDays: data
+                    }
+                }
+
+            )
+            const workingDays = await batch.aggregate([
+                {
+                    $match: {
+                        registerId: teacherData[0].myBatch
+                    }
+                },
+                {
+                    $project: {
+                        workingDays: 1
+                    }
+                }
+            ])
+            const workDays = workingDays[0].workingDays
+            res.json({
+                status: true,
+                workingDays: workDays
+            })
+        }
+    } catch (err) {
+        console.log(err)
+    }
+
+}
+const monthlyWorkDays = async (req, res) => {
+    const id = req.registerId
+    try {
+        const teacherData = await teacher.aggregate([
+            {
+                $match: {
+                    registerId: id
+                }
+            },
+            {
+                $project: {
+                    myBatch: 1
+                }
+            }
+        ])
+        const workingDays = await batch.aggregate([
+            {
+                $match: {
+                    registerId: teacherData[0].myBatch
+                }
+            },
+            {
+                $project: {
+                    workingDays: 1
+                }
+            }
+        ])
+        const workDays = workingDays[0].workingDays
+        res.json({
+            status: true,
+            workingDays: workDays
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
 }
 
 module.exports = {
@@ -246,5 +401,8 @@ module.exports = {
     eachStudent,
     getMyBatch,
     postLetter,
-    getLeaveHistory
+    getLeaveHistory,
+    batchStartEndDate,
+    addWorkingDays,
+    monthlyWorkDays 
 }

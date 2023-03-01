@@ -27,7 +27,7 @@ function MyBatach() {
         <div className='container'>
 
             <div className="container">
-                <div className="d-flex flex-wrap justify-content-between">
+                <div className="d-flex flex-wrap justify-content-between align-items-center">
 
                     <div className='child'>
                         <div className="d-flex flex-column align-items-center">
@@ -58,7 +58,7 @@ function MyBatach() {
 
                 <div className='batch-deatails-parent'>
 
-                    <div className='d-flex justify-content-center'>
+                    <div className='d-flex justify-content-center align-items-center'>
                         <h5 className='heading'>Details of the batch</h5>
                     </div>
 
