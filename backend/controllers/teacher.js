@@ -392,6 +392,45 @@ const monthlyWorkDays = async (req, res) => {
     }
 
 }
+const availableMonth = async (req,res)=>{
+    const id = req.registerId
+    try{
+        const teacherData = await teacher.aggregate([
+            {
+                $match: {
+                    registerId: id
+                }
+            },
+            {
+                $project: {
+                    myBatch: 1
+                }
+            }
+        ])
+        const availableMonth = await batch.aggregate([
+            {
+                $match:{
+                    registerId: teacherData[0].myBatch
+                }
+            },
+            {
+                $project:{
+                    _id: 0, 
+                    workingDays:1
+                }
+            } 
+        ])
+      const sortedAvailbleMonth = availableMonth[0].workingDays.sort((a, b) => b.month - a.month)
+    
+      res.json({
+        status:true,
+        availableMonth:sortedAvailbleMonth
+      })
+    } catch (err){
+        console.log(err)
+    }
+   
+}
 
 module.exports = {
     login,
@@ -404,5 +443,6 @@ module.exports = {
     getLeaveHistory,
     batchStartEndDate,
     addWorkingDays,
-    monthlyWorkDays 
-}
+    monthlyWorkDays,
+    availableMonth 
+}   

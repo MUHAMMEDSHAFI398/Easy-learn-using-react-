@@ -26,6 +26,7 @@ teacherRouter.post('/add-working-days',verifyToken.verifyTokenTeacher, teacherCo
 
 teacherRouter.get('/month-work-days',verifyToken.verifyTokenTeacher, teacherController.monthlyWorkDays)
 
+teacherRouter.get('/available-month',verifyToken.verifyTokenTeacher, teacherController.availableMonth)
 
 
 module.exports = teacherRouter 
