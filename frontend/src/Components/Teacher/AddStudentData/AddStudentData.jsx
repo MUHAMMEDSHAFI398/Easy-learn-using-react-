@@ -33,11 +33,10 @@ function AddStudentData() {
     const studentId= location.state.studentData.registerId
     attenDanceDetailsAPI(studentId,headers).then((response) => {
       if(response.data.status){
-        console.log('hi')
-        // setMonthData(response.data.monthData)
+        setMonthData(response.data.attendanceData)
       }
     })
-  }, [])
+  }, [postStudentAttendanceAPI])
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -89,8 +88,13 @@ function AddStudentData() {
                 confirmButtonColor: 'green',
                 confirmButtonText: 'OK'
               })
+              
             } else if (response.data.status) {
               message.success('Successfully submitted the data')
+              setMonthData(response.data.attendanceData)
+              setFormMonth({ month: "", workingDays: "" })
+              setFormNoOfDays({ noOfDaysPresent: "" })
+              
             }
           })
         }
@@ -110,14 +114,32 @@ function AddStudentData() {
           </div>
 
           <div className='container d-flex flex-wrap align-items-center monthlyData' >
-            <div className='childOfMonthlyData ms-1 me-1'>
-              <div className='d-flex justify-content-center align-items-center'>
-                <p className='monthName'>fg</p>
-              </div>
-              <div className='d-flex justify-content-center align-items-center' >
-                <p className='numberworkingDays'> days</p>
-              </div>
-            </div>
+
+          {
+                    monthData?.map((obj) => {
+                      const dateStr = obj.month;
+                      const date = new Date(dateStr);
+                      const formattedDate = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                      return (
+                        <div key={obj._id} className='childOfMonthlyDatas ms-1 me-1'>
+                          <div className='d-flex justify-content-center align-items-center'>
+                            <p className='monthName'>{formattedDate}</p>
+                          </div>
+                          <div className='d-flex justify-content-center align-items-center' >
+                            <p className='numberworkingday'>Working days : {obj.workingDays} d</p>
+                          </div>
+                          <div className='d-flex justify-content-center align-items-center' >
+                            <p className='numberworkingday'>Present : {obj.noOfDaysPresent} d</p>
+                          </div>
+                          <div className='d-flex justify-content-center align-items-center' >
+                            <p className='numberworkingdays'>Percentage : {obj.percent} %</p>
+                          </div>
+                        </div>
+
+                      )
+                    })
+                  }
+
           </div>
         </div>
       </div>

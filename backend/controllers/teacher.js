@@ -437,7 +437,8 @@ const addAttendance = async (req, res) => {
     const object = {
         month: data.month,
         workingDays: data.workingDays,
-        noOfDaysPresent: data.noOfDaysPresent
+        noOfDaysPresent: data.noOfDaysPresent,
+        percent: Math.round(((data.noOfDaysPresent / data.workingDays) * 100)*100)/100
     }
     try {
         const attendanceArray = await student.aggregate([
@@ -473,8 +474,22 @@ const addAttendance = async (req, res) => {
                     }
                 }
             )
+            const attendanceData = await student.aggregate([
+                {
+                    $match: {
+                        registerId: data.studentId
+                    }
+                },
+                {
+                    $project: {
+                        attendance: 1
+                    }
+                }
+            ])
+            const attendacearray = attendanceData[0].attendance
             res.json({
-                status: true
+                status: true,
+                attendanceData: attendacearray
             })
         }
 
@@ -482,24 +497,27 @@ const addAttendance = async (req, res) => {
         console.log(err)
     }
 }
-const attenDanceData = async (req,res)=>{
+const attenDanceData = async (req, res) => {
     const id = req.params.id
-    try{
-      const attendanceData = await student.aggregate([
-        {
-            $match:{
-             registerId:id
+    try {
+        const attendanceData = await student.aggregate([
+            {
+                $match: {
+                    registerId: id
+                }
+            },
+            {
+                $project: {
+                    attendance: 1
+                }
             }
-        },
-        {
-            $project:{
-                attendance:1
-            }
-        }
-      ])
-      console.log(attendanceData)
-      res.json({status:true})
-    }catch(err){
+        ])
+        const attendacearray = attendanceData[0].attendance.sort((a, b) => a.month - b.month)
+        res.json({
+            status: true,
+            attendanceData: attendacearray
+        })
+    } catch (err) {
         console.log(err)
     }
 }

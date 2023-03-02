@@ -30,7 +30,7 @@ teacherRouter.get('/available-month',verifyToken.verifyTokenTeacher, teacherCont
 
 teacherRouter.post('/add-attendance', verifyToken.verifyTokenTeacher,teacherController.addAttendance)
 
-teacherRouter.get('/attendance-data', verifyToken.verifyTokenTeacher,teacherController.attenDanceData)
+teacherRouter.get('/attendance-data/:id', verifyToken.verifyTokenTeacher,teacherController.attenDanceData)
 
 
 

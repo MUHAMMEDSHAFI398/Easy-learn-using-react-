@@ -35,7 +35,7 @@ const studentSchema = new Schema(
     },
     parentName: {
       type: String,
-      required: true, 
+      required: true,
       trim: true,
     },
     parentPhone: {
@@ -88,31 +88,34 @@ const studentSchema = new Schema(
       trim: true,
       uppercase: true,
     },
-    attendance:[{
-      month:{
-        type:Date
+    attendance: [{
+      month: {
+        type: Date
       },
-      workingDays:{
-      type:Number
-     },
-     noOfDaysPresent:{
-      type:Number
-     }
-    }],
-    image:[{
-      url:{
-        type:String
+      workingDays: {
+        type: Number
       },
-      filename:{
-        type:String
+      noOfDaysPresent: {
+        type: Number
+      },
+      percent: {
+        type: Number
       }
     }],
-    isBlocked:{
-      type:Boolean
-    }      
+    image: [{
+      url: {
+        type: String
+      },
+      filename: {
+        type: String
+      }
+    }],
+    isBlocked: {
+      type: Boolean
+    }
   },
   { timestamps: true }
 );
 
 const student = mongoose.model("student", studentSchema);
-module.exports=student
+module.exports = student

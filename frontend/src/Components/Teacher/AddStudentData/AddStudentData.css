@@ -20,11 +20,33 @@
     border: 1px solid green;
     background-color: green;
     color: white;
-    margin-top: 70px;
+    margin-top: 50px;
 
 }
 .monthParentDivss{
     border: 1px solid black;
     border-radius: 10px;
     margin-bottom: 20px;
+}
+.childOfMonthlyDatas{
+    width: 193px;
+    height: 160px;
+    background-color: rgb(58, 70, 70);
+    border-radius: 20px;
+    color: white;
+    margin-top: 15px;
+    
+}
+.monthlyData{
+    margin-bottom: 30px;
+}
+.monthName{
+    font-size: 20px;
+    font-weight: 700;
+}
+.numberworkingdays{
+    color: white;
+    margin-top: -10px;
+    font-size: 16px;
+    font-weight: 400;
 }
