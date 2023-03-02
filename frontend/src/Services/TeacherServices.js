@@ -48,3 +48,7 @@ export const availableMonthAPI = (headers) => {
 export const postStudentAttendanceAPI = (data, headers) => {
   return axios.post('/teacher/add-attendance', data, headers)
 }
+
+export const attenDanceDetailsAPI = (id,headers) => {
+  return axios.get(`/teacher/attendance-data/${id}`, headers)
+}

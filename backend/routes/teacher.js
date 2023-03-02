@@ -28,5 +28,10 @@ teacherRouter.get('/month-work-days',verifyToken.verifyTokenTeacher, teacherCont
 
 teacherRouter.get('/available-month',verifyToken.verifyTokenTeacher, teacherController.availableMonth)
 
+teacherRouter.post('/add-attendance', verifyToken.verifyTokenTeacher,teacherController.addAttendance)
+
+teacherRouter.get('/attendance-data', verifyToken.verifyTokenTeacher,teacherController.attenDanceData)
+
+
 
 module.exports = teacherRouter 

@@ -88,6 +88,17 @@ const studentSchema = new Schema(
       trim: true,
       uppercase: true,
     },
+    attendance:[{
+      month:{
+        type:Date
+      },
+      workingDays:{
+      type:Number
+     },
+     noOfDaysPresent:{
+      type:Number
+     }
+    }],
     image:[{
       url:{
         type:String

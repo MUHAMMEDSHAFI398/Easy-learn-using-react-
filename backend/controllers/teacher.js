@@ -392,9 +392,9 @@ const monthlyWorkDays = async (req, res) => {
     }
 
 }
-const availableMonth = async (req,res)=>{
+const availableMonth = async (req, res) => {
     const id = req.registerId
-    try{
+    try {
         const teacherData = await teacher.aggregate([
             {
                 $match: {
@@ -409,27 +409,99 @@ const availableMonth = async (req,res)=>{
         ])
         const availableMonth = await batch.aggregate([
             {
-                $match:{
+                $match: {
                     registerId: teacherData[0].myBatch
                 }
             },
             {
-                $project:{
-                    _id: 0, 
-                    workingDays:1
+                $project: {
+                    _id: 0,
+                    workingDays: 1
                 }
-            } 
+            }
         ])
-      const sortedAvailbleMonth = availableMonth[0].workingDays.sort((a, b) => b.month - a.month)
-    
-      res.json({
-        status:true,
-        availableMonth:sortedAvailbleMonth
-      })
-    } catch (err){
+        const sortedAvailbleMonth = availableMonth[0].workingDays.sort((a, b) => b.month - a.month)
+
+        res.json({
+            status: true,
+            availableMonth: sortedAvailbleMonth
+        })
+    } catch (err) {
         console.log(err)
     }
-   
+
+}
+const addAttendance = async (req, res) => {
+
+    const data = req.body
+    const object = {
+        month: data.month,
+        workingDays: data.workingDays,
+        noOfDaysPresent: data.noOfDaysPresent
+    }
+    try {
+        const attendanceArray = await student.aggregate([
+            {
+                $match: {
+                    registerId: data.studentId
+                }
+            },
+            {
+                $unwind: "$attendance"
+            },
+            {
+                $project: {
+                    attendance: 1
+                }
+            }
+        ])
+        const date = new Date(data.month);
+        const isoString = date.toISOString();
+        const month = new Date(isoString);
+        const found = await helpers.searchAttendanceMonth(attendanceArray, month)
+
+        if (found) {
+            res.json({ alert: "Selected month data already added" })
+        } else {
+            await student.updateOne(
+                {
+                    registerId: data.studentId
+                },
+                {
+                    $push: {
+                        attendance: object
+                    }
+                }
+            )
+            res.json({
+                status: true
+            })
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+const attenDanceData = async (req,res)=>{
+    const id = req.params.id
+    try{
+      const attendanceData = await student.aggregate([
+        {
+            $match:{
+             registerId:id
+            }
+        },
+        {
+            $project:{
+                attendance:1
+            }
+        }
+      ])
+      console.log(attendanceData)
+      res.json({status:true})
+    }catch(err){
+        console.log(err)
+    }
 }
 
 module.exports = {
@@ -444,5 +516,7 @@ module.exports = {
     batchStartEndDate,
     addWorkingDays,
     monthlyWorkDays,
-    availableMonth 
+    availableMonth,
+    addAttendance,
+    attenDanceData
 }   

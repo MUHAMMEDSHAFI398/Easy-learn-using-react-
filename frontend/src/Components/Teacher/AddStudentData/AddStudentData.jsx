@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { availableMonthAPI, postStudentAttendanceAPI } from '../../../Services/TeacherServices'
+import { availableMonthAPI, postStudentAttendanceAPI,attenDanceDetailsAPI } from '../../../Services/TeacherServices'
 import './AddStudentData.css'
 import { message } from 'antd'
 import validate from './validation'
+import { useLocation } from "react-router-dom"
+import Swal from 'sweetalert2'
 
 function AddStudentData() {
 
-
+  const location = useLocation();
   const [availableMonth, setAvailableMonth] = useState([])
   const [formNoOfDays, setFormNoOfDays] = useState({ noOfDaysPresent: "" })
-  const [formMonth, setFormMonth] = useState({ month: "", workingDays:""})
+  const [formMonth, setFormMonth] = useState({ month: "", workingDays: "" })
   const [error, setErrors] = useState({})
+  const [monthData,setMonthData]=useState([])
   useEffect(() => {
     const headers = {
       headers: {
@@ -19,6 +22,20 @@ function AddStudentData() {
     }
     availableMonthAPI(headers).then((response) => {
       setAvailableMonth(response.data.availableMonth)
+    })
+  }, [])
+  useEffect(() => {
+    const headers = {
+      headers: {
+        Authorization: localStorage.getItem('teacherToken')
+      }
+    }
+    const studentId= location.state.studentData.registerId
+    attenDanceDetailsAPI(studentId,headers).then((response) => {
+      if(response.data.status){
+        console.log('hi')
+        // setMonthData(response.data.monthData)
+      }
     })
   }, [])
 
@@ -30,40 +47,83 @@ function AddStudentData() {
   }
 
 
-  const changeHandle = (e,workingDays) => {
+  const changeHandle = (e, workingDays) => {
     e.preventDefault();
-    const {name, value } = e.target;
-    setFormMonth({ month:value, workingDays:workingDays });
+    const { name, value } = e.target;
+    setFormMonth({ month: value, workingDays: workingDays });
     setErrors({ ...error, [name]: "" });
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const errors = validate(formMonth,formNoOfDays);
+    const errors = validate(formMonth, formNoOfDays);
     if (Object.keys(errors).length !== 0) {
       setErrors(errors);
-    }else{
-      const headers = {
-        headers: {
-          Authorization: localStorage.getItem('teacherToken')
-        }
-      }
-      const data ={
-        month:formMonth.month,
-        noOfDaysPresent:formNoOfDays.noOfDaysPresent
-      }
-      
-      postStudentAttendanceAPI(data,headers).then((response) => {
-        if (response.data.status) {
-          message.success('Successfully submitted the data')
+    } else {
+      Swal.fire({
+        text: "Are you sure you want to submit?",
+        showCancelButton: true,
+        confirmButtonColor: 'green',
+        cancelButtonColor: 'red',
+        confirmButtonText: 'Yes'
+
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+          const headers = {
+            headers: {
+              Authorization: localStorage.getItem('teacherToken')
+            }
+          }
+          const data = {
+            studentId: location.state.studentData.registerId,
+            month: formMonth.month,
+            noOfDaysPresent: formNoOfDays.noOfDaysPresent,
+            workingDays: formMonth.workingDays
+          }
+
+          postStudentAttendanceAPI(data, headers).then((response) => {
+            if (response.data.alert) {
+              Swal.fire({
+                text: response.data.alert,
+                confirmButtonColor: 'green',
+                confirmButtonText: 'OK'
+              })
+            } else if (response.data.status) {
+              message.success('Successfully submitted the data')
+            }
+          })
         }
       })
+
     }
-    
+
   }
 
   return (
     <div className='container'>
+
+      <div className='container ms-2 me-4 '>
+        <div className='monthParentDivss'>
+          <div className='d-flex justify-content-center align-items-center'>
+            <h5 className='titlestyle mt-3 mb-4'>Monthly attendance details</h5>
+          </div>
+
+          <div className='container d-flex flex-wrap align-items-center monthlyData' >
+            <div className='childOfMonthlyData ms-1 me-1'>
+              <div className='d-flex justify-content-center align-items-center'>
+                <p className='monthName'>fg</p>
+              </div>
+              <div className='d-flex justify-content-center align-items-center' >
+                <p className='numberworkingDays'> days</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
       <div className='d-flex flex-wrap justify-content-between align-items-center ms-4 me-4 mb-5'>
 
         <div className='flexItemsStyle'>
