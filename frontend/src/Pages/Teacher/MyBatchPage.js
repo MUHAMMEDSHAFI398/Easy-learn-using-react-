@@ -5,7 +5,7 @@ import TeacherNav from '../../Components/Teacher/TeacherNav/TeacherNav'
 
 function MyBatchPage() {
     return (
-        <div>
+        <div >
             <TeacherNav />
             <MyBatach />
             <AddWorkingDays/>

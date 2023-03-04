@@ -14,39 +14,39 @@ import EditBatch from "../Pages/Office/EditBatch";
 import EachStudent from '../Pages/Office/EachStudent';
 import TeacherLeaveApplications from '../Pages/Office/TeacherLeaveApplications';
 
-const OfficeRoutes = () => (
+const OfficeRoutes = () => {
+    return (
+        <Routes>
 
-    <Routes>
+            <Route path="/" element={<Login />} ></Route>
 
-        <Route path="/" element={<Login />} ></Route>
+            <Route path="/home" element={<OfficeHome />} ></Route>
 
-        <Route path="/home" element={<OfficeHome />} ></Route>
+            <Route path="/add-teacher" element={<AddTeacher />} ></Route>
 
-        <Route path="/add-teacher" element={<AddTeacher />} ></Route>
+            <Route path="/teachers" element={<ViewTeacher />} ></Route>
 
-        <Route path="/teachers" element={<ViewTeacher />} ></Route>
+            <Route path="/each-teacher" element={<EachTeacher />} ></Route>
 
-        <Route path="/each-teacher" element={<EachTeacher />} ></Route>
+            <Route path="/students" element={<ViewStudent />} ></Route>
 
-        <Route path="/students" element={<ViewStudent />} ></Route>
+            <Route path="/add-student" element={<AddStudent />} ></Route>
 
-        <Route path="/add-student" element={<AddStudent />} ></Route>
+            <Route path="/batches" element={<ViewBatch />} ></Route>
 
-        <Route path="/batches" element={<ViewBatch />} ></Route>
+            <Route path="/add-batch" element={<AddBatach />} ></Route>
 
-        <Route path="/add-batch" element={<AddBatach />} ></Route>
+            <Route path="/each-batch" element={<EachBatch />} ></Route>
 
-        <Route path="/each-batch" element={<EachBatch />} ></Route>
+            <Route path="/edit-batch" element={<EditBatch />} ></Route>
 
-        <Route path="/edit-batch" element={<EditBatch />} ></Route>
+            <Route path="/each-student" element={<EachStudent />} ></Route>
 
-        <Route path="/each-student" element={<EachStudent />} ></Route>
+            <Route path="/leave-applications" element={<TeacherLeaveApplications />} ></Route>
 
-        <Route path="/leave-applications" element={<TeacherLeaveApplications />} ></Route>
+        </Routes>
+    )
+};
 
-
-
-    </Routes>
-);
 
 export default OfficeRoutes;

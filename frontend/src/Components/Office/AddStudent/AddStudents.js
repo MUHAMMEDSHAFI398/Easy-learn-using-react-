@@ -43,7 +43,7 @@ function AddStudents() {
                 Authorization: localStorage.getItem("officeToken")
             }
         }
-        availableBatchAPI(headers ).then((response) => {
+        availableBatchAPI(headers).then((response) => {
             if (response.data.status) {
                 setBatches(response.data.batches);
 

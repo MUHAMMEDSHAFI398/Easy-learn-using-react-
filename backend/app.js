@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const officeRouter =require('./routes/office');
-const studentRouter =require('./routes/student');
-const teacherRouter =require('./routes/teacher');
+const officeRouter = require('./routes/office');
+const studentRouter = require('./routes/student');
+const teacherRouter = require('./routes/teacher');
 const dbconnect = require("./config/databaseConnection");
 const dotenv = require("dotenv");
 const cors = require("cors");

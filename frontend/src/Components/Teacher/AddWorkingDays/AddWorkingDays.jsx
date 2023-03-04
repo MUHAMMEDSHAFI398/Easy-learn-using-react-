@@ -13,6 +13,7 @@ function AddWorkingDays() {
   const [error, setErrors] = useState({});
   const [monthData, setMonthData] = useState([])
   const [showData, setShowData] = useState(false)
+  const [showPage, setShowPage] = useState(true)
 
   useEffect(() => {
     const headers = {
@@ -21,7 +22,12 @@ function AddWorkingDays() {
       }
     }
     batchStartEndAPI(headers).then((response) => {
-      setStartEndDate(response.data.dates)
+      if (response.data.status) {
+        setStartEndDate(response.data.dates)
+      } else if (response.data.noBatch) {
+        setShowPage(false)
+      }
+
     })
   }, [])
   useEffect(() => {
@@ -31,9 +37,12 @@ function AddWorkingDays() {
       }
     }
     getmonthlyWorkDaysAPI(headers).then((response) => {
-      setMonthData(response.data.workingDays)
+      
       if (response.data.workingDays.length !== 0) {
+        setMonthData(response.data.workingDays)
         setShowData(true)
+      }else if(response.data.noBatch){
+        showPage(false)
       }
     })
   }, [])
@@ -90,81 +99,85 @@ function AddWorkingDays() {
 
   return (
     <div className='container'>
-      <div className='container mt-5 mb-5'>
-        <div className='d-flex justify-content-center align-items-center'>
-          <div className='workDiv'>
+      {showPage ?
+        <div className='container mt-5 mb-5'>
+          <div className='d-flex justify-content-center align-items-center'>
+            <div className='workDiv'>
 
-            <div className='d-flex justify-content-center align-items-center'>
-              <h5 className='titlestyle'>Add number of working days</h5>
-            </div>
-
-            <div className='d-flex flex-wrap justify-content-between align-items-center mb-1'>
-
-              <div className='d-flex flex-column'>
-                <label className='ms-2' htmlFor="month">Select month</label>
-                <input className='workInpt ms-2 me-2 mt-2'
-                  value={formValues.month}
-                  onChange={handleChange}
-                  name='month'
-                  type="month"
-                  min={startEndDate.startDate}
-                  max={startEndDate.endDate}
-                />
-                {error.month && <p className="ms-2 text-danger">{error.month}</p>}
+              <div className='d-flex justify-content-center align-items-center'>
+                <h5 className='titlestyle'>Add number of working days</h5>
               </div>
 
-              <div className='d-flex flex-column'>
-                <label className='ms-2' htmlFor="numberOfWorkingDays">Number of working days</label>
-                <input
-                  value={formValues.numberOfWorkingDays}
-                  onChange={handleChange}
-                  name='numberOfWorkingDays'
-                  className='workInpt ms-2 me-2 mt-2'
-                  type="number"
-                />
-                {error.numberOfWorkingDays && <p className="ms-2 text-danger">{error.numberOfWorkingDays}</p>}
-              </div>
+              <div className='d-flex flex-wrap justify-content-between align-items-center mb-1'>
 
-              <button onClick={handleSubmit} className='submtbtn ms-2 me-2 '>Submit</button>
-
-            </div>
-          </div>
-        </div>
-        {
-          showData ?
-            <div className='container mt-4'>
-              <div className='monthParentDivs'>
-                <div className='d-flex justify-content-center align-items-center'>
-                  <h5 className='titlestyle mt-3 mb-4'>Monthly working days</h5>
+                <div className='d-flex flex-column'>
+                  <label className='ms-2' htmlFor="month">Select month</label>
+                  <input className='workInpt ms-2 me-2 mt-2'
+                    value={formValues.month}
+                    onChange={handleChange}
+                    name='month'
+                    type="month"
+                    min={startEndDate.startDate}
+                    max={startEndDate.endDate}
+                  />
+                  {error.month && <p className="ms-2 text-danger">{error.month}</p>}
                 </div>
 
-                <div className='container d-flex flex-wrap align-items-center monthlyData' >
-                  {
-                    monthData?.map((obj) => {
-                      const dateStr = obj.month;
-                      const date = new Date(dateStr);
-                      const formattedDate = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-                      return (
-                        <div key={obj._id} className='childOfMonthlyData ms-1 me-1'>
-                          <div className='d-flex justify-content-center align-items-center'>
-                            <p className='monthName'>{formattedDate}</p>
-                          </div>
-                          <div className='d-flex justify-content-center align-items-center' >
-                            <p className='numberworkingDays'>{obj.numberOfWorkingDays} days</p>
-                          </div>
-                        </div>
+                <div className='d-flex flex-column'>
+                  <label className='ms-2' htmlFor="numberOfWorkingDays">Number of working days</label>
+                  <input
+                    value={formValues.numberOfWorkingDays}
+                    onChange={handleChange}
+                    name='numberOfWorkingDays'
+                    className='workInpt ms-2 me-2 mt-2'
+                    type="number"
+                  />
+                  {error.numberOfWorkingDays && <p className="ms-2 text-danger">{error.numberOfWorkingDays}</p>}
+                </div>
 
-                      )
-                    })
-                  }
-                </div>               
+                <button onClick={handleSubmit} className='submtbtn ms-2 me-2 '>Submit</button>
+
               </div>
             </div>
-            :
-            <p className='mb-5'></p>
-        }
+          </div>
+          {
+            showData ?
+              <div className='container mt-4'>
+                <div className='monthParentDivs'>
+                  <div className='d-flex justify-content-center align-items-center'>
+                    <h5 className='titlestyle mt-3 mb-4'>Monthly working days</h5>
+                  </div>
 
-      </div>
+                  <div className='container d-flex flex-wrap align-items-center monthlyData' >
+                    {
+                      monthData?.map((obj) => {
+                        const dateStr = obj.month;
+                        const date = new Date(dateStr);
+                        const formattedDate = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                        return (
+                          <div key={obj._id} className='childOfMonthlyData ms-1 me-1'>
+                            <div className='d-flex justify-content-center align-items-center'>
+                              <p className='monthName'>{formattedDate}</p>
+                            </div>
+                            <div className='d-flex justify-content-center align-items-center' >
+                              <p className='numberworkingDays'>{obj.numberOfWorkingDays} days</p>
+                            </div>
+                          </div>
+
+                        )
+                      })
+                    }
+                  </div>
+                </div>
+              </div>
+              :
+              <p className='mb-5'></p>
+          }
+
+        </div>
+        :
+        <p></p>
+      }
     </div>
   )
 }

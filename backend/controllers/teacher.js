@@ -171,7 +171,7 @@ const getMyBatch = async (req, res) => {
                 availableSeat: availableSeat,
             })
         } else {
-            res.json({ status: false })
+            res.json({ noBatch: true })
         }
 
 
@@ -268,19 +268,27 @@ const batchStartEndDate = async (req, res) => {
                 }
             }
         ])
-        const startDate = new Date(batchData[0].startDate);
-        const formattedStartDate = startDate.toISOString().slice(0, 7);
-        const endDate = new Date(batchData[0].endDate);
-        const formattedEndDate = endDate.toISOString().slice(0, 7);
-        const dates = {
-            startDate: formattedStartDate,
-            endDate: formattedEndDate
+        if (batchData.length !== 0) {
+            const startDate = new Date(batchData[0].startDate);
+            const formattedStartDate = startDate.toISOString().slice(0, 7);
+            const endDate = new Date(batchData[0].endDate);
+            const formattedEndDate = endDate.toISOString().slice(0, 7);
+            const dates = {
+                startDate: formattedStartDate,
+                endDate: formattedEndDate
+            }
+            res.json({
+                status: true,
+                dates: dates
+            })
+        } else {
+            res.json({ noBatch: true })
         }
-        res.json({ dates: dates })
+
 
 
     } catch (err) {
-        console.loeg(err)
+        console.log(err)
     }
 }
 const addWorkingDays = async (req, res) => {
@@ -344,7 +352,7 @@ const addWorkingDays = async (req, res) => {
                     }
                 }
             ])
-            const workDays = workingDays[0].workingDays
+            const workDays = await workingDays[0].workingDays.sort((a, b) => a.month - b.month)
             res.json({
                 status: true,
                 workingDays: workDays
@@ -370,23 +378,30 @@ const monthlyWorkDays = async (req, res) => {
                 }
             }
         ])
-        const workingDays = await batch.aggregate([
-            {
-                $match: {
-                    registerId: teacherData[0].myBatch
+        if (teacherData[0].myBatch !== "") {
+            const workingDays = await batch.aggregate([
+                {
+                    $match: {
+                        registerId: teacherData[0].myBatch
+                    }
+                },
+                {
+                    $project: {
+                        workingDays: 1
+                    }
                 }
-            },
-            {
-                $project: {
-                    workingDays: 1
-                }
-            }
-        ])
-        const workDays = workingDays[0].workingDays
-        res.json({
-            status: true,
-            workingDays: workDays
-        })
+            ])
+            const workDays = await workingDays[0]?.workingDays?.sort((a, b) => a.month - b.month)
+            res.json({
+                status: true,
+                workingDays: workDays
+            })
+        } else {
+            res.json({ noBatch: true })
+        }
+
+
+
     } catch (err) {
         console.log(err)
     }
@@ -420,8 +435,7 @@ const availableMonth = async (req, res) => {
                 }
             }
         ])
-        const sortedAvailbleMonth = availableMonth[0].workingDays.sort((a, b) => b.month - a.month)
-
+        const sortedAvailbleMonth = await availableMonth[0]?.workingDays?.sort((a, b) => b.month - a.month)
         res.json({
             status: true,
             availableMonth: sortedAvailbleMonth
@@ -438,7 +452,7 @@ const addAttendance = async (req, res) => {
         month: data.month,
         workingDays: data.workingDays,
         noOfDaysPresent: data.noOfDaysPresent,
-        percent: Math.round(((data.noOfDaysPresent / data.workingDays) * 100)*100)/100
+        percent: Math.round(((data.noOfDaysPresent / data.workingDays) * 100) * 100) / 100
     }
     try {
         const attendanceArray = await student.aggregate([
@@ -486,7 +500,7 @@ const addAttendance = async (req, res) => {
                     }
                 }
             ])
-            const attendacearray = attendanceData[0].attendance
+            const attendacearray = await attendanceData[0]?.attendance?.sort((a, b) => a.month - b.month)
             res.json({
                 status: true,
                 attendanceData: attendacearray
@@ -500,7 +514,7 @@ const addAttendance = async (req, res) => {
 const attenDanceData = async (req, res) => {
     const id = req.params.id
     try {
-        const attendanceData = await student.aggregate([
+        const attendanceDatas = await student.aggregate([
             {
                 $match: {
                     registerId: id
@@ -512,7 +526,7 @@ const attenDanceData = async (req, res) => {
                 }
             }
         ])
-        const attendacearray = attendanceData[0].attendance.sort((a, b) => a.month - b.month)
+        const attendacearray = await attendanceDatas[0]?.attendance?.sort((a, b) => a.month - b.month)
         res.json({
             status: true,
             attendanceData: attendacearray
@@ -521,7 +535,33 @@ const attenDanceData = async (req, res) => {
         console.log(err)
     }
 }
-
+const getBatchSubjects = async (req, res) => {
+    
+    const batchId=req.params.id
+    try {
+       const subjects = await batch.aggregate([
+        {
+            $match:{
+                registerId:batchId
+            }
+        },    
+        {
+            $project:{
+                "subjects.subject":1,
+                _id:0
+            }
+        }
+       ])
+       const SubjectsArray = subjects[0].subjects
+       res.json({
+        status:true,
+        subjects:SubjectsArray
+       })
+    } catch (err) {
+        console.log(err)
+    }
+}
+ 
 module.exports = {
     login,
     getHome,
@@ -536,5 +576,6 @@ module.exports = {
     monthlyWorkDays,
     availableMonth,
     addAttendance,
-    attenDanceData
+    attenDanceData,
+    getBatchSubjects
 }   

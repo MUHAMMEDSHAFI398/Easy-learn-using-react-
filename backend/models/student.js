@@ -88,20 +88,46 @@ const studentSchema = new Schema(
       trim: true,
       uppercase: true,
     },
-    attendance: [{
-      month: {
-        type: Date
-      },
-      workingDays: {
-        type: Number
-      },
-      noOfDaysPresent: {
-        type: Number
-      },
-      percent: {
-        type: Number
-      }
-    }],
+    attendance: {
+      type: [
+        {
+          month: {
+            type: Date
+          },
+          workingDays: {
+            type: Number
+          },
+          noOfDaysPresent: {
+            type: Number
+          },
+          percent: {
+            type: Number
+          }
+        }
+      ],
+      default: [],
+
+    },
+    markdeatails: {
+      type: [
+        {
+          month:{
+            type:Date
+         },
+          subject: {
+            type: String
+          },
+          mark:{
+            type:Number
+          },
+          percentage:{
+            type:Number
+          }
+
+        }
+      ],
+      default: []
+    },
     image: [{
       url: {
         type: String

@@ -7,4 +7,4 @@ indexRouter.get("/", indexController.home);
 
 
 
-module.exports=indexRouter;
+module.exports = indexRouter;

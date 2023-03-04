@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { availableMonthAPI, postStudentAttendanceAPI,attenDanceDetailsAPI } from '../../../Services/TeacherServices'
+import { availableMonthAPI, postStudentAttendanceAPI, attenDanceDetailsAPI, getBatchSubjectsAPI } from '../../../Services/TeacherServices'
 import './AddStudentData.css'
 import { message } from 'antd'
 import validate from './validation'
@@ -13,7 +13,9 @@ function AddStudentData() {
   const [formNoOfDays, setFormNoOfDays] = useState({ noOfDaysPresent: "" })
   const [formMonth, setFormMonth] = useState({ month: "", workingDays: "" })
   const [error, setErrors] = useState({})
-  const [monthData,setMonthData]=useState([])
+  const [monthData, setMonthData] = useState([])
+  const [subjects, setSubjects] = useState([])
+
   useEffect(() => {
     const headers = {
       headers: {
@@ -30,13 +32,24 @@ function AddStudentData() {
         Authorization: localStorage.getItem('teacherToken')
       }
     }
-    const studentId= location.state.studentData.registerId
-    attenDanceDetailsAPI(studentId,headers).then((response) => {
-      if(response.data.status){
+    const studentId = location.state.studentData.registerId
+    attenDanceDetailsAPI(studentId, headers).then((response) => {
+      if (response.data.status) {
         setMonthData(response.data.attendanceData)
       }
     })
-  }, [postStudentAttendanceAPI])
+  }, [])
+  useEffect(() => {
+    const headers = {
+      headers: {
+        Authorization: localStorage.getItem('teacherToken')
+      }
+    }
+    const batchId = location.state.studentData.batch
+    getBatchSubjectsAPI(batchId, headers).then((response) => {
+      setSubjects(response.data.subjects)
+    })
+  }, [])
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -88,13 +101,13 @@ function AddStudentData() {
                 confirmButtonColor: 'green',
                 confirmButtonText: 'OK'
               })
-              
+
             } else if (response.data.status) {
               message.success('Successfully submitted the data')
               setMonthData(response.data.attendanceData)
               setFormMonth({ month: "", workingDays: "" })
               setFormNoOfDays({ noOfDaysPresent: "" })
-              
+
             }
           })
         }
@@ -115,30 +128,30 @@ function AddStudentData() {
 
           <div className='container d-flex flex-wrap align-items-center monthlyData' >
 
-          {
-                    monthData?.map((obj) => {
-                      const dateStr = obj.month;
-                      const date = new Date(dateStr);
-                      const formattedDate = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-                      return (
-                        <div key={obj._id} className='childOfMonthlyDatas ms-1 me-1'>
-                          <div className='d-flex justify-content-center align-items-center'>
-                            <p className='monthName'>{formattedDate}</p>
-                          </div>
-                          <div className='d-flex justify-content-center align-items-center' >
-                            <p className='numberworkingday'>Working days : {obj.workingDays} d</p>
-                          </div>
-                          <div className='d-flex justify-content-center align-items-center' >
-                            <p className='numberworkingday'>Present : {obj.noOfDaysPresent} d</p>
-                          </div>
-                          <div className='d-flex justify-content-center align-items-center' >
-                            <p className='numberworkingdays'>Percentage : {obj.percent} %</p>
-                          </div>
-                        </div>
+            {
+              monthData?.map((obj) => {
+                const dateStr = obj.month;
+                const date = new Date(dateStr);
+                const formattedDate = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                return (
+                  <div key={obj._id} className='childOfMonthlyDatas ms-1 me-1'>
+                    <div className='d-flex justify-content-center align-items-center'>
+                      <p className='monthName'>{formattedDate}</p>
+                    </div>
+                    <div className='d-flex justify-content-center align-items-center' >
+                      <p className='numberworkingday'>Working days : {obj.workingDays} d</p>
+                    </div>
+                    <div className='d-flex justify-content-center align-items-center' >
+                      <p className='numberworkingday'>Present days : {obj.noOfDaysPresent} d</p>
+                    </div>
+                    <div className='d-flex justify-content-center align-items-center' >
+                      <p className='numberworkingdays'>Percentage : {obj.percent} %</p>
+                    </div>
+                  </div>
 
-                      )
-                    })
-                  }
+                )
+              })
+            }
 
           </div>
         </div>
@@ -154,9 +167,9 @@ function AddStudentData() {
             <p className='leave-leter'>Add attendance</p>
           </div>
 
-          <div className='d-flex flex-wrap flex-column justify-content-center align-items-center mt-3'>
+          <div className='container d-flex flex-wrap flex-column justify-content-center align-items-center mt-3'>
 
-            <div className='d-flex flex-column mt-5 '>
+            <div className='d-flex flex-column mt-2'>
               <p className='mb-1'>Month</p>
               <select
                 onChange={(e) => changeHandle(
@@ -213,6 +226,27 @@ function AddStudentData() {
 
             <div className='d-flex justify-content-center align-items-center mt-3'>
               <p className='leave-leter'>Add marks</p>
+
+            </div>
+            <div className='container d-flex flex-column justify-content-center align-items-center mt-3'>
+              <form>
+
+              <div className='d-flex justify-content-center align-items-center mt-3'>
+               <input className='subjectFixedinput' name='monthinput' type="month" />
+                </div>
+              {
+                subjects?.map((obj) => {
+                 return(
+                  <div className='d-flex justify-content-center align-items-center mt-3'>
+                  <input value={obj.subject} className='subjectFixedinput mt-1' type="text" />
+                  <input placeholder='Mark (Out of 100)' className='markInput ms-2 mt-1' type="number" />
+                </div>
+                 ) 
+                }) 
+
+              }
+               <button type='submit' className='datasubmittbtn'>Submit</button>
+               </form>
             </div>
 
           </div>

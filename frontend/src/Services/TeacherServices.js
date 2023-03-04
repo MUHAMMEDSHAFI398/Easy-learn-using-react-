@@ -52,3 +52,7 @@ export const postStudentAttendanceAPI = (data, headers) => {
 export const attenDanceDetailsAPI = (id,headers) => {
   return axios.get(`/teacher/attendance-data/${id}`, headers)
 }
+
+export const getBatchSubjectsAPI = (batchId,headers) => {
+  return axios.get(`/teacher/batch-subjects/${batchId}`, headers)
+}

@@ -33,12 +33,12 @@ const teacherSchema = new Schema(
     gender: {
       required: true,
       type: String,
-     
+
     },
     salary: {
       required: true,
       type: Number,
-     
+
     },
     address: {
       house_name: {
@@ -84,43 +84,43 @@ const teacherSchema = new Schema(
     remarks: {
       type: String,
     },
-    myBatch:{
-      default:"",
-      type:String
+    myBatch: {
+      default: "",
+      type: String
     },
     password: {
       type: String,
       required: true,
       trim: true,
     },
-    image:[{
-      url:{
-        type:String
+    image: [{
+      url: {
+        type: String
       },
-      filename:{
-        type:String
+      filename: {
+        type: String
       }
     }],
-    myLeaves:[
+    myLeaves: [
       {
-        date:{
-          type:Date
+        date: {
+          type: Date
         },
-        letter:{
-          type:String
+        letter: {
+          type: String
         },
-        status:{
-          type:String,
-          default:"Pending"
+        status: {
+          type: String,
+          default: "Pending"
         }
       }
     ],
-    isBlocked:{
-      type:Boolean
+    isBlocked: {
+      type: Boolean
     }
   },
   { timestamps: true }
 );
 
 const teacher = mongoose.model("teacher", teacherSchema);
-module.exports=teacher
+module.exports = teacher

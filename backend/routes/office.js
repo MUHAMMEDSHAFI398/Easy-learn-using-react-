@@ -7,7 +7,7 @@ const uploadImage = require('../config/cloudinary')
 
 officeRouter.post('/login', officeController.login)
 
-officeRouter.post('/add-teacher', verifyToken.verifyTokenAdmin, uploadImage ,officeController.addTeacher)
+officeRouter.post('/add-teacher', verifyToken.verifyTokenAdmin, uploadImage, officeController.addTeacher)
 
 officeRouter.get('/teachers', verifyToken.verifyTokenAdmin, officeController.getTeachers)
 
@@ -27,7 +27,7 @@ officeRouter.get('/get-batch/:id', verifyToken.verifyTokenAdmin, officeControlle
 
 officeRouter.get('/get-edit-batch/:id', verifyToken.verifyTokenAdmin, officeController.getEditBatch)
 
-officeRouter.post('/add-student',verifyToken.verifyTokenAdmin,uploadImage,officeController.addStudent) 
+officeRouter.post('/add-student', verifyToken.verifyTokenAdmin, uploadImage, officeController.addStudent)
 
 officeRouter.patch('/edit-batch/:id', verifyToken.verifyTokenAdmin, officeController.patchEditBatch)
 
@@ -36,7 +36,7 @@ officeRouter.get('/students', verifyToken.verifyTokenAdmin, officeController.get
 officeRouter.patch('/block-student/:id', verifyToken.verifyTokenAdmin, officeController.blockStudent)
 
 officeRouter.patch('/unblock-student/:id', verifyToken.verifyTokenAdmin, officeController.unBlockStudent)
- 
+
 officeRouter.get('/student/:id', verifyToken.verifyTokenAdmin, officeController.getStudent)
 
 officeRouter.get('/available-batches', verifyToken.verifyTokenAdmin, officeController.getAvailableBatch)
@@ -52,7 +52,7 @@ officeRouter.patch('/leave-reject', verifyToken.verifyTokenAdmin, officeControll
 
 
 
- 
+
 
 
 
