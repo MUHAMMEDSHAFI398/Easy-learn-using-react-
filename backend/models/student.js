@@ -108,7 +108,7 @@ const studentSchema = new Schema(
       default: [],
 
     },
-    markdeatails: {
+    markdetails: {
       type: [
         {
           month: {

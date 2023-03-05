@@ -26,11 +26,11 @@ export const validate = (month, formNoOfDays) => {
 
 export const validateMarks = (month, marks) => {
     const errors = {};
-    if (month.month === undefined || "" ) {
+    if (month.month === undefined || month.month=== "" ) {
         errors.month = "Month is required"
     }
     for (let i = 0; i < marks.length; i++) {
-        if (marks[i].mark === undefined) {
+        if (marks[i].mark === undefined || marks[i].mark === "" ) {
             errors.mark = "Mark is required"
             break;
         } else if (isNaN(marks[i].mark)) {

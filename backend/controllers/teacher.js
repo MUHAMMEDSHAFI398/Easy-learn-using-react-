@@ -536,66 +536,89 @@ const attenDanceData = async (req, res) => {
     }
 }
 const getBatchSubjects = async (req, res) => {
-    
-    const batchId=req.params.id
+
+    const batchId = req.params.id
     try {
-       const subjects = await batch.aggregate([
-        {
-            $match:{
-                registerId:batchId
+        const subjects = await batch.aggregate([
+            {
+                $match: {
+                    registerId: batchId
+                }
+            },
+            {
+                $project: {
+                    "subjects.subject": 1,
+                    _id: 0
+                }
             }
-        },    
-        {
-            $project:{
-                "subjects.subject":1,
-                _id:0
-            }
-        }
-       ])
-       const SubjectsArray = subjects[0].subjects
-       res.json({
-        status:true,
-        subjects:SubjectsArray
-       })
+        ])
+        const SubjectsArray = subjects[0].subjects
+        res.json({
+            status: true,
+            subjects: SubjectsArray
+        })
     } catch (err) {
         console.log(err)
     }
 }
-const addStudentMark = async (req,res) =>{
-    const data=req.body
+const addStudentMark = async (req, res) => {
+    const data = req.body
     const percentage = data.subjectMarks.reduce((acc, obj) => acc + obj.mark, 0) / data.subjectMarks.length;
     const roundPercentage = percentage.toFixed(3)
-    const markdeatails ={
-        month:data.month,
-        percentage :roundPercentage,
-        subjectMarks:data.subjectMarks
+    const markdetails = {
+        month: data.month,
+        percentage: roundPercentage,
+        subjectMarks: data.subjectMarks
     }
-    try{
-     await student.updateOne(
+    const marksArray = await student.aggregate([
         {
-            registerId:data.studentId
+            $match: {
+                registerId: data.studentId
+            }
         },
         {
-          $push:{
-            markdeatails:markdeatails
-          }
+            $project: {
+                markdetails: 1
+            }
+        },
+        {
+            $unwind: "$markdetails"
+        },
+        {
+            $project: {
+                _id: 0,
+                month: "$markdetails.month"
+            }
         }
-     )
-    }catch (err){
-        console.log(err)
+    ])
+    const date = new Date(data.month);
+    const isoString = date.toISOString();
+    const month = new Date(isoString);
+    const found = await helpers.monthSearchMark(marksArray, month)
+    if (found) {
+        res.json({ alert: "Selected month's marks already added" })
+    } else {
+        try {
+            await student.updateOne(
+                {
+                    registerId: data.studentId
+                },
+                {
+                    $push: {
+                        markdetails: markdetails
+                    }
+                }
+            )
+            res.json({ status: true })
+        } catch (err) {
+            console.log(err)
+        }
     }
-    res.json({status:true})
+
+
 }
-// {
-//     studentId: 'ELST001',
-//     month: '2023-03',
-//     subjectMarks: [
-//       { subject: 'Topology', mark: 21 },
-//       { subject: 'Complex analysis', mark: 12 },
-//       { subject: 'Real analysis', mark: 44 }
-//     ]
-//   }
- 
+
+
 module.exports = {
     login,
     getHome,

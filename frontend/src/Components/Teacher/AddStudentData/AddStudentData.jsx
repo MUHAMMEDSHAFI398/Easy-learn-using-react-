@@ -24,7 +24,7 @@ function AddStudentData() {
   const [subjects, setSubjects] = useState([])
   const [startEndDate, setStartEndDate] = useState({ startDate: "", endDate: "" })
   const [subjectMarks, setSubjectMarks] = useState([{ subject: "", mark: "" }])
-  const [month, setMonth] = useState('')
+  const [month, setMonth] = useState({ month: "" })
   const [markerror, setMarkError] = useState({})
   const formRef = useRef(null);
 
@@ -162,8 +162,9 @@ function AddStudentData() {
   const handleMonthChange = (e) => {
     e.preventDefault()
     const { name, value } = e.target;
-    setMonth({ ...month, [name]: value });
+    setMonth({ month: value });
     setMarkError({ ...markerror, [name]: "" });
+
   }
 
   const handleMarkSubmit = (e) => {
@@ -192,11 +193,22 @@ function AddStudentData() {
             subjectMarks
           }
           addMarkAPI(data, headers).then((response) => {
-            if (response.data.status) {              
+            if (response.data.status) {
               message.success('Successfully submitted the data')
               formRef.current.reset()
-              setSubjectMarks([{ subject: "", mark: "" }])
-              setMonth('')
+              setMonth({ month: "" })
+              setSubjectMarks(subjectMarks.map(item => ({ ...item, mark: "" })));
+
+            } else if (response.data.alert) {
+              Swal.fire({
+                text: response.data.alert,
+                confirmButtonColor: 'green',
+                confirmButtonText: 'OK'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  setMonth({ month: "" })
+                }
+              })
             }
           })
         }
@@ -323,6 +335,7 @@ function AddStudentData() {
                     <p>Select month</p>
                     <input
                       onChange={handleMonthChange}
+                      value={month.month}
                       className='subjectFixedinput'
                       name='month'
                       type="month"

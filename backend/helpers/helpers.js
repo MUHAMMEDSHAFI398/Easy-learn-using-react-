@@ -82,9 +82,31 @@ const searchAttendanceMonth = (arr, target) => {
 
 }
 
+const monthSearchMark = (arr, target) => {
+  
+    try {
+        return new Promise(async (resolve, reject) => {
+            const n = arr.length;
+            let found = false;
+            for (let i = 0; i < n; i++) {
+                if (arr[i].month.getTime() === target.getTime()) {
+                    found = true;
+                    break;
+                }
+            }
+            resolve(found);
+        });
+    } catch (err) {
+        console.log(err);
+    }
+
+
+}
+
 
 module.exports = {
     uniqueCodeGenerator,
     searchArrayElement,
-    searchAttendanceMonth
+    searchAttendanceMonth,
+    monthSearchMark
 }   
