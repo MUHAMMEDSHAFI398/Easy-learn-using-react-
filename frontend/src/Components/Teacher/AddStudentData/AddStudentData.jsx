@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { availableMonthAPI, postStudentAttendanceAPI, attenDanceDetailsAPI, getBatchSubjectsAPI } from '../../../Services/TeacherServices'
+import React, { useEffect, useState, useRef } from 'react'
+import {
+  availableMonthAPI,
+  postStudentAttendanceAPI,
+  attenDanceDetailsAPI,
+  getBatchSubjectsAPI,
+  batchStartEndAPI,
+  addMarkAPI
+} from '../../../Services/TeacherServices'
 import './AddStudentData.css'
 import { message } from 'antd'
-import validate from './validation'
+import { validate, validateMarks } from './validation'
 import { useLocation } from "react-router-dom"
 import Swal from 'sweetalert2'
 
@@ -15,6 +22,12 @@ function AddStudentData() {
   const [error, setErrors] = useState({})
   const [monthData, setMonthData] = useState([])
   const [subjects, setSubjects] = useState([])
+  const [startEndDate, setStartEndDate] = useState({ startDate: "", endDate: "" })
+  const [subjectMarks, setSubjectMarks] = useState([{ subject: "", mark: "" }])
+  const [month, setMonth] = useState('')
+  const [markerror, setMarkError] = useState({})
+  const formRef = useRef(null);
+
 
   useEffect(() => {
     const headers = {
@@ -26,6 +39,7 @@ function AddStudentData() {
       setAvailableMonth(response.data.availableMonth)
     })
   }, [])
+
   useEffect(() => {
     const headers = {
       headers: {
@@ -39,6 +53,7 @@ function AddStudentData() {
       }
     })
   }, [])
+
   useEffect(() => {
     const headers = {
       headers: {
@@ -48,6 +63,20 @@ function AddStudentData() {
     const batchId = location.state.studentData.batch
     getBatchSubjectsAPI(batchId, headers).then((response) => {
       setSubjects(response.data.subjects)
+      setSubjectMarks(response.data.subjects)
+    })
+  }, [])
+  useEffect(() => {
+    const headers = {
+      headers: {
+        Authorization: localStorage.getItem('teacherToken')
+      }
+    }
+    batchStartEndAPI(headers).then((response) => {
+      if (response.data.status) {
+        setStartEndDate(response.data.dates)
+      }
+
     })
   }, [])
 
@@ -115,6 +144,64 @@ function AddStudentData() {
 
     }
 
+  }
+
+  const handleMarkUpdate = (e, index) => {
+    const values = [...subjectMarks];
+    const { name, value } = e.target;
+    const updatedMark = values.map((subject, i) => {
+      if (i === index) {
+        return { ...subject, mark: parseInt(value) };
+      }
+      return subject;
+    });
+    setSubjectMarks(updatedMark);
+    setMarkError({ ...markerror, [name]: "" });
+  };
+
+  const handleMonthChange = (e) => {
+    e.preventDefault()
+    const { name, value } = e.target;
+    setMonth({ ...month, [name]: value });
+    setMarkError({ ...markerror, [name]: "" });
+  }
+
+  const handleMarkSubmit = (e) => {
+    e.preventDefault()
+    const errors = validateMarks(month, subjectMarks);
+    if (Object.keys(errors).length !== 0) {
+      setMarkError(errors);
+    } else {
+      Swal.fire({
+        text: "Are you sure you want to submit?",
+        showCancelButton: true,
+        confirmButtonColor: 'green',
+        cancelButtonColor: 'red',
+        confirmButtonText: 'Yes'
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const headers = {
+            headers: {
+              Authorization: localStorage.getItem('teacherToken')
+            }
+          }
+          const data = {
+            studentId: location.state.studentData.registerId,
+            month: month.month,
+            subjectMarks
+          }
+          addMarkAPI(data, headers).then((response) => {
+            if (response.data.status) {              
+              message.success('Successfully submitted the data')
+              formRef.current.reset()
+              setSubjectMarks([{ subject: "", mark: "" }])
+              setMonth('')
+            }
+          })
+        }
+      })
+    }
   }
 
   return (
@@ -229,24 +316,49 @@ function AddStudentData() {
 
             </div>
             <div className='container d-flex flex-column justify-content-center align-items-center mt-3'>
-              <form>
+              <form ref={formRef} onSubmit={handleMarkSubmit}>
+                <div className='d-flex justify-content-center align-items-center'>
+                  <div className='d-flex flex-column  mt-3'>
 
-              <div className='d-flex justify-content-center align-items-center mt-3'>
-               <input className='subjectFixedinput' name='monthinput' type="month" />
+                    <p>Select month</p>
+                    <input
+                      onChange={handleMonthChange}
+                      className='subjectFixedinput'
+                      name='month'
+                      type="month"
+                      min={startEndDate.startDate}
+                      max={startEndDate.endDate}
+                    />
+                    {markerror?.month && <p className="mb-0 text-danger">{markerror?.month}</p>}
+                  </div>
                 </div>
-              {
-                subjects?.map((obj) => {
-                 return(
-                  <div className='d-flex justify-content-center align-items-center mt-3'>
-                  <input value={obj.subject} className='subjectFixedinput mt-1' type="text" />
-                  <input placeholder='Mark (Out of 100)' className='markInput ms-2 mt-1' type="number" />
-                </div>
-                 ) 
-                }) 
 
-              }
-               <button type='submit' className='datasubmittbtn'>Submit</button>
-               </form>
+                {
+                  subjects?.map((obj, index) => {
+
+
+
+                    return (
+                      <div key={obj._id} className='d-flex justify-content-center align-items-center mt-3'>
+                        <input value={obj.subject} readOnly name='subject' className='subjectFixedinput mt-1' type="text" />
+                        <input
+                          onChange={(e) => handleMarkUpdate(e, index)}
+                          placeholder='Mark (Out of 100)'
+                          name='mark'
+                          className='markInput ms-2 mt-1'
+                          type="number"
+                        />
+
+                      </div>
+                    )
+                  })
+
+                }
+                <div className='d-flex justify-content-center align-items-center mt-3'>
+                  {markerror?.mark && <p className=" text-danger">{markerror?.mark}</p>}
+                </div>
+                <button type='submit' className='datasubmittbtn'>Submit</button>
+              </form>
             </div>
 
           </div>

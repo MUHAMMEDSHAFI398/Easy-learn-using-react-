@@ -62,7 +62,6 @@ function EditBatches() {
       return subject;
     });
     setSubjectValues(updatedSubject);
-
   };
 
 

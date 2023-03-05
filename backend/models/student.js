@@ -111,18 +111,25 @@ const studentSchema = new Schema(
     markdeatails: {
       type: [
         {
-          month:{
-            type:Date
-         },
-          subject: {
-            type: String
+          month: {
+            type: Date
           },
-          mark:{
-            type:Number
+          percentage: {
+            type: Number
           },
-          percentage:{
-            type:Number
-          }
+          subjectMarks: {
+            type: [
+              {
+                subject: {
+                  type: String
+                },
+                mark: {
+                  type: Number
+                },
+              }
+            ]
+          },
+
 
         }
       ],

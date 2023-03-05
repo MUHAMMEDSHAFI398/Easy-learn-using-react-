@@ -56,3 +56,7 @@ export const attenDanceDetailsAPI = (id,headers) => {
 export const getBatchSubjectsAPI = (batchId,headers) => {
   return axios.get(`/teacher/batch-subjects/${batchId}`, headers)
 }
+
+export const addMarkAPI = (data,headers) => {
+  return axios.post('/teacher/add-marks',data, headers)
+}

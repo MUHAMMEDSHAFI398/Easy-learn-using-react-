@@ -561,6 +561,40 @@ const getBatchSubjects = async (req, res) => {
         console.log(err)
     }
 }
+const addStudentMark = async (req,res) =>{
+    const data=req.body
+    const percentage = data.subjectMarks.reduce((acc, obj) => acc + obj.mark, 0) / data.subjectMarks.length;
+    const roundPercentage = percentage.toFixed(3)
+    const markdeatails ={
+        month:data.month,
+        percentage :roundPercentage,
+        subjectMarks:data.subjectMarks
+    }
+    try{
+     await student.updateOne(
+        {
+            registerId:data.studentId
+        },
+        {
+          $push:{
+            markdeatails:markdeatails
+          }
+        }
+     )
+    }catch (err){
+        console.log(err)
+    }
+    res.json({status:true})
+}
+// {
+//     studentId: 'ELST001',
+//     month: '2023-03',
+//     subjectMarks: [
+//       { subject: 'Topology', mark: 21 },
+//       { subject: 'Complex analysis', mark: 12 },
+//       { subject: 'Real analysis', mark: 44 }
+//     ]
+//   }
  
 module.exports = {
     login,
@@ -577,5 +611,6 @@ module.exports = {
     availableMonth,
     addAttendance,
     attenDanceData,
-    getBatchSubjects
+    getBatchSubjects,
+    addStudentMark
 }   
