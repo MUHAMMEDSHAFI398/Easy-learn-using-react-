@@ -1,7 +1,8 @@
 import React from 'react'
 import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
-
+import './LeaveApplication.css'
 function LeaveApplications() {
+
     return (
         <div className='container'>
 
@@ -12,7 +13,11 @@ function LeaveApplications() {
                     <div className='d-flex justify-content-center align-items-center mt-3'>
                         <p className='leave-leter'>Apply for leave</p>
                     </div>
+                    <div className='container d-flex justify-content-between align-items-center mt-3'>
+                        <button className='btnforDate'>Click here for taking more than on leave</button>
+                        <button className='btnforDate'>Click here for taking single leave</button>
 
+                    </div>
                     <div className='d-flex justify-content-center align-items-center mt-3'>
                         <textarea
                             // onChange={handleChange}
@@ -26,7 +31,7 @@ function LeaveApplications() {
                     {/* {error.leaveLetter && (<p className="ms-2 text-danger">{error.leaveLetter}</p>)} */}
 
                     <div className='d-flex justify-content-center align-items-center mt-3'>
-                        <button className='btn btn-success'>Submit</button>
+                        <button className='submitButn'>Submit</button>
                     </div>
 
                 </div>
