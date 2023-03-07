@@ -36,6 +36,9 @@ teacherRouter.get('/batch-subjects/:id', verifyToken.verifyTokenTeacher, teacher
 
 teacherRouter.post('/add-marks', verifyToken.verifyTokenTeacher, teacherController.addStudentMark)
 
+teacherRouter.get('/mark-data/:id', verifyToken.verifyTokenTeacher, teacherController.getMarkDetails)
+
+
 
 
 module.exports = teacherRouter 

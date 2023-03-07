@@ -500,7 +500,7 @@ const addAttendance = async (req, res) => {
                     }
                 }
             ])
-            const attendacearray = await attendanceData[0]?.attendance?.sort((a, b) => a.month - b.month)
+            const attendacearray = await attendanceData[0]?.attendance?.sort((a, b) => b.month - a.month)
             res.json({
                 status: true,
                 attendanceData: attendacearray
@@ -526,7 +526,7 @@ const attenDanceData = async (req, res) => {
                 }
             }
         ])
-        const attendacearray = await attendanceDatas[0]?.attendance?.sort((a, b) => a.month - b.month)
+        const attendacearray = await attendanceDatas[0]?.attendance?.sort((a, b) => b.month - a.month)
         res.json({
             status: true,
             attendanceData: attendacearray
@@ -617,6 +617,31 @@ const addStudentMark = async (req, res) => {
 
 
 }
+const getMarkDetails = async (req, res) => {
+    const studentId = req.params.id
+    try {
+        const markdetails = await student.aggregate([
+            {
+                $match: {
+                    registerId: studentId
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    markdetails: 1
+                }
+            }
+        ])
+        const sortedMarkDeatails = markdetails[0].markdetails.sort((a, b) => b.month - a.month)
+        res.status(200).json({
+            markdetails: sortedMarkDeatails
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+}
 
 
 module.exports = {
@@ -635,5 +660,6 @@ module.exports = {
     addAttendance,
     attenDanceData,
     getBatchSubjects,
-    addStudentMark
+    addStudentMark,
+    getMarkDetails
 }   

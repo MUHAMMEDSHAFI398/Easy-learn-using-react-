@@ -10,7 +10,7 @@ import {
 import './AddStudentData.css'
 import { message } from 'antd'
 import { validate, validateMarks } from './validation'
-import { useLocation } from "react-router-dom"
+import { useLocation,useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
 
 function AddStudentData() {
@@ -20,14 +20,13 @@ function AddStudentData() {
   const [formNoOfDays, setFormNoOfDays] = useState({ noOfDaysPresent: "" })
   const [formMonth, setFormMonth] = useState({ month: "", workingDays: "" })
   const [error, setErrors] = useState({})
-  const [monthData, setMonthData] = useState([])
   const [subjects, setSubjects] = useState([])
   const [startEndDate, setStartEndDate] = useState({ startDate: "", endDate: "" })
   const [subjectMarks, setSubjectMarks] = useState([{ subject: "", mark: "" }])
   const [month, setMonth] = useState({ month: "" })
   const [markerror, setMarkError] = useState({})
   const formRef = useRef(null);
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     const headers = {
@@ -37,20 +36,6 @@ function AddStudentData() {
     }
     availableMonthAPI(headers).then((response) => {
       setAvailableMonth(response.data.availableMonth)
-    })
-  }, [])
-
-  useEffect(() => {
-    const headers = {
-      headers: {
-        Authorization: localStorage.getItem('teacherToken')
-      }
-    }
-    const studentId = location.state.studentData.registerId
-    attenDanceDetailsAPI(studentId, headers).then((response) => {
-      if (response.data.status) {
-        setMonthData(response.data.attendanceData)
-      }
     })
   }, [])
 
@@ -133,7 +118,6 @@ function AddStudentData() {
 
             } else if (response.data.status) {
               message.success('Successfully submitted the data')
-              setMonthData(response.data.attendanceData)
               setFormMonth({ month: "", workingDays: "" })
               setFormNoOfDays({ noOfDaysPresent: "" })
 
@@ -215,49 +199,21 @@ function AddStudentData() {
       })
     }
   }
+  const handleClick = () => {
+    navigate('/teacher/student-data', {
+      state: {
+        studentId: location.state.studentData.registerId,
+      }
+    })
+  }
 
   return (
     <div className='container'>
 
-      <div className='container ms-2 me-4 '>
-        <div className='monthParentDivss'>
-          <div className='d-flex justify-content-center align-items-center'>
-            <h5 className='titlestyle mt-3 mb-4'>Monthly attendance details</h5>
-          </div>
+      <div className='d-flex flex-wrap justify-content-center align-items-center ms-4 me-4 mb-5'>
+        <button onClick={handleClick} className='btns' >Click here to view student history</button>
 
-          <div className='container d-flex flex-wrap align-items-center monthlyData' >
-
-            {
-              monthData?.map((obj) => {
-                const dateStr = obj.month;
-                const date = new Date(dateStr);
-                const formattedDate = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-                return (
-                  <div key={obj._id} className='childOfMonthlyDatas ms-1 me-1'>
-                    <div className='d-flex justify-content-center align-items-center'>
-                      <p className='monthName'>{formattedDate}</p>
-                    </div>
-                    <div className='d-flex justify-content-center align-items-center' >
-                      <p className='numberworkingday'>Working days : {obj.workingDays} d</p>
-                    </div>
-                    <div className='d-flex justify-content-center align-items-center' >
-                      <p className='numberworkingday'>Present days : {obj.noOfDaysPresent} d</p>
-                    </div>
-                    <div className='d-flex justify-content-center align-items-center' >
-                      <p className='numberworkingdays'>Percentage : {obj.percent} %</p>
-                    </div>
-                  </div>
-
-                )
-              })
-            }
-
-          </div>
-        </div>
       </div>
-
-
-
       <div className='d-flex flex-wrap justify-content-between align-items-center ms-4 me-4 mb-5'>
 
         <div className='flexItemsStyle'>

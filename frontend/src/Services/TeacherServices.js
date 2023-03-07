@@ -60,3 +60,7 @@ export const getBatchSubjectsAPI = (batchId,headers) => {
 export const addMarkAPI = (data,headers) => {
   return axios.post('/teacher/add-marks',data, headers)
 }
+
+export const getMarkDetailsAPI = (id,headers) => {
+  return axios.get(`/teacher/mark-data/${id}`,headers)
+}

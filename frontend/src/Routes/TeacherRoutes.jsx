@@ -6,6 +6,7 @@ import UpdateProfile from '../Pages/Teacher/UpdateProfile';
 import EachStudentView from '../Pages/Teacher/EachStudentView';
 import MyBatchPage from '../Pages/Teacher/MyBatchPage';
 import LeaveApplicaton from '../Pages/Teacher/LeaveApplicaton';
+import StudentDataPage from '../Pages/Teacher/StudentDataPage';
 
 
 
@@ -26,6 +27,8 @@ const TeacherRoute = () => (
         <Route path="/my-batch" element={<MyBatchPage />} ></Route>
 
         <Route path="/leave-applications" element={<LeaveApplicaton/>} ></Route>
+
+        <Route path="/student-data" element={<StudentDataPage/>} ></Route>
 
 
     </Routes>
