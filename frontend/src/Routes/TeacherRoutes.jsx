@@ -7,7 +7,7 @@ import EachStudentView from '../Pages/Teacher/EachStudentView';
 import MyBatchPage from '../Pages/Teacher/MyBatchPage';
 import LeaveApplicaton from '../Pages/Teacher/LeaveApplicaton';
 import StudentDataPage from '../Pages/Teacher/StudentDataPage';
-
+import TeacherVarification from '../Varification/TeacherVarification';
 
 
 const TeacherRoute = () => (
@@ -16,19 +16,19 @@ const TeacherRoute = () => (
 
         <Route path="/" element={<LoginTeacher />} ></Route>
 
-        <Route path="/home" element={<HomeTeacher />} ></Route>
+        <Route path="/home" element={<TeacherVarification><HomeTeacher /></TeacherVarification>} ></Route>
 
-        <Route path="/update-profile" element={<UpdateProfile />} ></Route>
+        <Route path="/update-profile" element={<TeacherVarification><UpdateProfile /></TeacherVarification>} ></Route>
 
-        <Route path="/my-students" element={<MyStudent />} ></Route>
+        <Route path="/my-students" element={<TeacherVarification><MyStudent /></TeacherVarification>} ></Route>
 
-        <Route path="/each-student" element={<EachStudentView />} ></Route>
+        <Route path="/each-student" element={<TeacherVarification><EachStudentView /></TeacherVarification>} ></Route>
 
-        <Route path="/my-batch" element={<MyBatchPage />} ></Route>
+        <Route path="/my-batch" element={<TeacherVarification><MyBatchPage /></TeacherVarification>} ></Route>
 
-        <Route path="/leave-applications" element={<LeaveApplicaton/>} ></Route>
+        <Route path="/leave-applications" element={<TeacherVarification><LeaveApplicaton /></TeacherVarification>} ></Route>
 
-        <Route path="/student-data" element={<StudentDataPage/>} ></Route>
+        <Route path="/student-data" element={<TeacherVarification><StudentDataPage /></TeacherVarification>} ></Route>
 
 
     </Routes>

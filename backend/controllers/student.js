@@ -55,7 +55,59 @@ const getHome = async (req, res) => {
         console.log(err)
     }
 }
+const getMarkDetails = async (req, res) => {
+    const studentId = req.registerId
+    try {
+        const markdetails = await student.aggregate([
+            {
+                $match: {
+                    registerId: studentId
+                }
+            },   
+            {
+                $project: {
+                    _id: 0,
+                    markdetails: 1
+                }
+            }
+        ])
+        const sortedMarkDeatails = markdetails[0].markdetails.sort((a, b) => b.month - a.month)
+        res.status(200).json({
+            markdetails: sortedMarkDeatails
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+}
+const attenDanceData = async (req, res) => {
+    const id = req.registerId
+    try {
+        const attendanceDatas = await student.aggregate([
+            {
+                $match: {
+                    registerId: id
+                }
+            },
+            {
+                $project: {
+                    attendance: 1
+                }
+            }
+        ])
+        const attendacearray = await attendanceDatas[0]?.attendance?.sort((a, b) => b.month - a.month)
+        res.json({
+            status: true,
+            attendanceData: attendacearray
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 module.exports={
     login,
-    getHome
+    getHome,
+    getMarkDetails,
+    attenDanceData
 }

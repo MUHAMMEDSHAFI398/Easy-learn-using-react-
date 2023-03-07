@@ -6,8 +6,8 @@ import OfficeRoutes from "./Routes/OfficeRoutes";
 import StudentRoutes from "./Routes/StudentRoutes";
 import TeacherRoutes from "./Routes/TeacherRoutes";
 import AdminVerification from "./Varification/AdminVerification";
-import TeacherVarification from "./Varification/TeacherVarification";
-import StudentVerification from "./Varification/StudentVerification";
+// import TeacherVarification from "./Varification/TeacherVarification";
+// import StudentVerification from "./Varification/StudentVerification";
 function App() {
   return (
     <div className="App">
@@ -16,8 +16,8 @@ function App() {
 
           <Route path='/' element={<Landing />} />
           <Route path='/office/*' element={<AdminVerification><OfficeRoutes /></AdminVerification>} />
-          <Route path='/teacher/*' element={<TeacherVarification><TeacherRoutes /></TeacherVarification>} />
-          <Route path='/student/*' element={<StudentVerification><StudentRoutes /></StudentVerification>} />
+          <Route path='/teacher/*' element={<TeacherRoutes />} />
+          <Route path='/student/*' element={<StudentRoutes />} />
 
         </Routes>
       </Router>

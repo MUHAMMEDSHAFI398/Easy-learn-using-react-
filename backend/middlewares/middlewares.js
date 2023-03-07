@@ -53,7 +53,7 @@ const verifyTokenStudent = (req, res, next) => {
     }
     else return 'invalid token'
   } catch (error) {
-    console.log(error)
+    console.log(error) 
   }
 }; 
 

@@ -13,6 +13,7 @@ export default function TeacherVarification({ children }) {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log('bibibi')
         if (!localStorage.getItem('teacherToken')) {
             navigate('/teacher')
         }

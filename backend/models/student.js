@@ -113,6 +113,26 @@ const studentSchema = new Schema(
       default: [],
 
     },
+    myLeaves: {
+      type: [
+        {
+          from: {
+            type: Date
+          },
+          to:{
+            type:Date
+          },
+          letter: {
+            type: String
+          },
+          status: {
+            type: String,
+            default: "Pending"
+          }
+        }
+      ],
+      default: [],
+    },
     markdetails: {
       type: [
         {

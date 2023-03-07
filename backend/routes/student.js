@@ -8,5 +8,10 @@ studentRouter.post('/login', studentController.login)
 
 studentRouter.get('/home',verifyToken.verifyTokenStudent, studentController.getHome)
 
+studentRouter.get('/attendance-data', verifyToken.verifyTokenStudent, studentController.attenDanceData)
+
+studentRouter.get('/mark-data', verifyToken.verifyTokenStudent, studentController.getMarkDetails)
+
+
 
 module.exports = studentRouter 

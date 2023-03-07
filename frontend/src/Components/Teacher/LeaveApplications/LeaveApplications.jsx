@@ -16,9 +16,11 @@ function LeaveApplications() {
   const [modalvalues, setModalValues] = useState({ date: "", status: "", letter: "" })
 
   useEffect(() => {
-    const headers = { headers: {
-      Authorization: localStorage.getItem('teacherToken')
-    }}
+    const headers = {
+      headers: {
+        Authorization: localStorage.getItem('teacherToken')
+      }
+    }
     leaveHistoryAPI(headers).then((response) => {
       if (response.data.status) {
         setLeaveHistory(response.data.leaveHistory)
@@ -57,26 +59,28 @@ function LeaveApplications() {
         cancelButtonColor: 'red',
         confirmButtonText: 'Yes'
 
-    }).then((result)=>{
+      }).then((result) => {
 
-      if(result.isConfirmed){
-        const headers = { headers: {
-          Authorization: localStorage.getItem('teacherToken')
-        }}
-        postLetterAPI(letter,headers).then((response) => {
-          if (response.data.status) {
-            message.success('Successfully sent leave application?')
-            setLetter({ leaveLetter: "" });
-            leaveHistoryAPI(headers).then((response) => {
-              if (response.data.status) {
-                setLeaveHistory(response.data.leaveHistory)
-              }
-            })
+        if (result.isConfirmed) {
+          const headers = {
+            headers: {
+              Authorization: localStorage.getItem('teacherToken')
+            }
           }
-        })
-      }
-    })
-      
+          postLetterAPI(letter, headers).then((response) => {
+            if (response.data.status) {
+              message.success('Successfully sent leave application?')
+              setLetter({ leaveLetter: "" });
+              leaveHistoryAPI(headers).then((response) => {
+                if (response.data.status) {
+                  setLeaveHistory(response.data.leaveHistory)
+                }
+              })
+            }
+          })
+        }
+      })
+
     }
   }
 
@@ -213,8 +217,8 @@ function LeaveApplications() {
                       scrollX
                       data={data()}
                       materialSearch
-                      entriesOptions={[3,4,5,6]}
-                      entries={5} 
+                      entriesOptions={[3, 4, 5, 6]}
+                      entries={5}
                     />
                   </CDBCardBody>
                 </div>
