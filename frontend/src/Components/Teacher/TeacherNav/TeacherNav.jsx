@@ -8,7 +8,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 function TeacherNav() {
 
   const navigate = useNavigate()
-  const handleLogout = () => {
+  const handleLogout = () => {  
     localStorage.removeItem("teacherToken")
     message.success("Successfully logged out")
     navigate('/teacher')

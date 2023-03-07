@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/office", officeRouter);
 app.use("/teacher", teacherRouter);
-// app.use("/student",  studentRouter);
+app.use("/student",  studentRouter);
 
 app.listen(process.env.PORTNO, () => {
     console.log("server started listening to port 5000");

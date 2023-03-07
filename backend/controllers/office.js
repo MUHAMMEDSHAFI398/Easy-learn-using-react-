@@ -407,6 +407,8 @@ module.exports = {
             url: req.file.path,
             filename: req.file.filename
         }
+        const password = data.dateOfBirth
+        const hashedPassword = await bcrypt.hash(password, 10);
         await batch.updateOne(
             {
                 registerId: data.batch
@@ -429,6 +431,7 @@ module.exports = {
                 institute: data.institute,
                 batch: data.batch,
                 isBlocked: false,
+                password:hashedPassword,
                 image: image,
                 address: {
                     house_name: data.house_name,

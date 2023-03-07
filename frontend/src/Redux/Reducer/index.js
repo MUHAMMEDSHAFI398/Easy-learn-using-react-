@@ -1,10 +1,11 @@
 import { combineReducers } from "redux";
-import Reducer from './Reducer';
+import studentReducer from "./StudentReducer";
+import teacherReducer from './TeacherReducer';
 
 
 const reducers = combineReducers({
-    teacherData:Reducer,
-    
+    teacherData:teacherReducer,
+    studentData:studentReducer 
 });
 
 export default reducers;

@@ -6,4 +6,11 @@ export const storeTeacherData =(teacherData)=>{
         })
     }
 }
-
+export const storeStudentData =(studentData)=>{
+    return (dispatch)=>{
+        dispatch({
+            type:"storeStudentData",
+            studentData:studentData,
+        })
+    }
+}

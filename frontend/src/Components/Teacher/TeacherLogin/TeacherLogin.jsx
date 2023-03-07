@@ -20,7 +20,7 @@ function TeacherLogin() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        axios.post('teacher/login', {
+        axios.post('/teacher/login', {
 
             registerId: formValues.registerId,
             password: formValues.password,

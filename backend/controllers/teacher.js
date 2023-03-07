@@ -47,24 +47,22 @@ const login = async (req, res) => {
 }
 
 const getHome = async (req, res) => {
-    const token = req.headers.authorization;
-    const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
+    const id = req.registerId
     try {
-        const teacherData = await teacher.findOne({ registerId: decoded.registerId })
+        const teacherData = await teacher.findOne({ registerId:id })
         res.json({ teacherData: teacherData })
     } catch (err) {
         console.log(err)
     }
 }
 const updateProfile = async (req, res) => {
-    const token = req.headers.authorization;
-    const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
+    const id = req.registerId
     const address = req.body.address
     const data = req.body.teacherData
     try {
         await teacher.updateOne(
 
-            { registerId: decoded.registerId },
+            { registerId:id },
             {
                 $set: {
                     phone: data.phone,
@@ -87,13 +85,12 @@ const updateProfile = async (req, res) => {
 }
 const getMyStudents = async (req, res) => {
 
-    const token = req.headers.authorization;
-    const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
+    const id = req.registerId
     try {
         const teacherData = await teacher.aggregate([
             {
                 $match: {
-                    registerId: decoded.registerId
+                    registerId: id
                 }
             },
             {
@@ -130,14 +127,12 @@ const eachStudent = async (req, res) => {
     }
 }
 const getMyBatch = async (req, res) => {
-    const token = req.headers.authorization;
-    const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
-
+    const id = req.registerId
     try {
         const teacherData = await teacher.aggregate([
             {
                 $match: {
-                    registerId: decoded.registerId
+                    registerId: id
                 }
             },
             {

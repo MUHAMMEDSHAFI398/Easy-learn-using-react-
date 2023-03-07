@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Landing from "./Pages/Landing/Landing";
 import OfficeRoutes from "./Routes/OfficeRoutes";
+import StudentRoutes from "./Routes/StudentRoutes";
 import TeacherRoutes from "./Routes/TeacherRoutes";
 import AdminVerification from "./Varification/AdminVerification";
-// import StudentRoutes from "./Routes/StudentRoutes";
 import TeacherVarification from "./Varification/TeacherVarification";
+import StudentVerification from "./Varification/StudentVerification";
 function App() {
   return (
     <div className="App">
@@ -16,7 +17,7 @@ function App() {
           <Route path='/' element={<Landing />} />
           <Route path='/office/*' element={<AdminVerification><OfficeRoutes /></AdminVerification>} />
           <Route path='/teacher/*' element={<TeacherVarification><TeacherRoutes /></TeacherVarification>} />
-          {/* <Route path='/student/*' element={<StudentRoutes />} /> */}
+          <Route path='/student/*' element={<StudentVerification><StudentRoutes /></StudentVerification>} />
 
         </Routes>
       </Router>

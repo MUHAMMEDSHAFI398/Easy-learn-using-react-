@@ -37,7 +37,28 @@ const verifyTokenTeacher = (req, res, next) => {
   }
 }; 
 
+
+const verifyTokenStudent = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(401).send({  
+      message: 'No token provided'
+    });
+  } 
+  try {
+    const decoded = jwt.verify(token.split(' ')[1], process.env.STUNDENT_SECRET);
+    if(decoded){
+      req.registerId = decoded.registerId;
+      next();
+    }
+    else return 'invalid token'
+  } catch (error) {
+    console.log(error)
+  }
+}; 
+
 module.exports={
     verifyTokenAdmin,
-    verifyTokenTeacher
+    verifyTokenTeacher,
+    verifyTokenStudent
 }  

@@ -88,6 +88,11 @@ const studentSchema = new Schema(
       trim: true,
       uppercase: true,
     },
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     attendance: {
       type: [
         {

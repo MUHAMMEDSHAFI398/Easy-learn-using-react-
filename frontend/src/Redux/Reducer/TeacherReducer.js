@@ -2,7 +2,7 @@ const initialState = {
   teacherData: {},
   };
   
-  const Reducer = (prevState = initialState, action) => {
+  const teacherReducer = (prevState = initialState, action) => {
     switch (action.type) {
       case "storeTeacherData":
         return {
@@ -16,4 +16,4 @@ const initialState = {
     }
   };
   
-  export default Reducer;
+  export default teacherReducer;
