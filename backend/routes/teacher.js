@@ -38,6 +38,10 @@ teacherRouter.post('/add-marks', verifyToken.verifyTokenTeacher, teacherControll
 
 teacherRouter.get('/mark-data/:id', verifyToken.verifyTokenTeacher, teacherController.getMarkDetails)
 
+teacherRouter.get('/student-Leaves', verifyToken.verifyTokenTeacher, teacherController.studenLeaves)
+
+teacherRouter.patch('/leave-approve', verifyToken.verifyTokenTeacher, teacherController.studenLeavApprove)
+
 
 
 

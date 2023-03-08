@@ -64,3 +64,11 @@ export const addMarkAPI = (data,headers) => {
 export const getMarkDetailsAPI = (id,headers) => {
   return axios.get(`/teacher/mark-data/${id}`,headers)
 }
+
+export const StudentleaveApplcationsAPI = (headers) => {
+  return axios.get('/teacher/student-Leaves',headers)
+}
+
+export const leaveApproveAPI = (data,headers) => {
+  return axios.patch('/teacher/leave-approve',data, headers)
+}

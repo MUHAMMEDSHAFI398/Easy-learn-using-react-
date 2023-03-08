@@ -67,7 +67,7 @@ function AddStudents() {
         data.append("parentName", formValues.parentName);
         data.append("parentPhone", formValues.parentPhone);
         data.append("education", formValues.education);
-        data.append("institute", formValues.institute);
+        data.append("institute", formValues.institute); 
         data.append("batch", formValues.batch);
         data.append("house_name", formValues.house_name);
         data.append("place", formValues.place);

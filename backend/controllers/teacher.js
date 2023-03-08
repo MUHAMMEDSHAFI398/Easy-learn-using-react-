@@ -637,6 +637,60 @@ const getMarkDetails = async (req, res) => {
     }
 
 }
+const studenLeaves = async (req,res)=>{
+    try {
+        const leaveData = await student.aggregate([
+            {
+                $match: {
+                    myLeaves: { $exists: true }
+                }
+            },
+            {
+                $unwind: "$myLeaves"
+            },
+            {
+                $project: {
+                    _id: 0,
+                    myLeaves: 1,
+                    registerId: 1,
+                    name: 1
+                }
+            },
+            {
+                $sort: {
+                    "myLeaves.date": -1
+                }
+            }
+        ])
+
+        res.json({
+            status: true,
+            leaveData: leaveData
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const studenLeavApprove = async(req,res)=>{
+    try {
+        const data = req.body
+        await student.updateOne(
+            {
+                registerId: data.id,
+                "myLeaves._id": data.arrayElementId
+            },
+            {
+                $set: {
+                    "myLeaves.$.status": "Approved"
+                }
+            }
+        )
+        res.json({ status: true })
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 
 module.exports = {
@@ -656,5 +710,7 @@ module.exports = {
     attenDanceData,
     getBatchSubjects,
     addStudentMark,
-    getMarkDetails
+    getMarkDetails,
+    studenLeaves,
+    studenLeavApprove
 }   
