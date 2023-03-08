@@ -8,6 +8,7 @@ import MyBatchPage from '../Pages/Teacher/MyBatchPage';
 import LeaveApplicaton from '../Pages/Teacher/LeaveApplicaton';
 import StudentDataPage from '../Pages/Teacher/StudentDataPage';
 import TeacherVarification from '../Varification/TeacherVarification';
+import StudentLeaveApplications from '../Pages/Teacher/StudentLeaveApplications';
 
 
 const TeacherRoute = () => (
@@ -29,6 +30,9 @@ const TeacherRoute = () => (
         <Route path="/leave-applications" element={<TeacherVarification><LeaveApplicaton /></TeacherVarification>} ></Route>
 
         <Route path="/student-data" element={<TeacherVarification><StudentDataPage /></TeacherVarification>} ></Route>
+
+        <Route path="/student-leaves" element={<TeacherVarification><StudentLeaveApplications /></TeacherVarification>} ></Route>
+
 
 
     </Routes>

@@ -104,10 +104,72 @@ const attenDanceData = async (req, res) => {
         console.log(err)
     }
 }
+const postLetter = async (req,res)=>{ 
+    const id =req.registerId
+    const today = new Date();
+    const data = {
+        appliedDate: today,
+        from:req.body.from,
+        to:req.body.to,
+        letter: req.body.leaveLetter,
+        status: "Pending",
+        reason:""
+    }
+    try {
+        await student.updateOne(
+            {
+                registerId: id
+            },
+            {
+                $push: {
+                    myLeaves: data
+                }
+            }
+        )
+        res.json({
+            status: true,
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
+const getLeaveHistory = async (req,res)=>{
+    const id = req.registerId
+    try {
+        const leaveHistory = await student.aggregate([
+            {
+                $match: {
+                    registerId: id
+                }
+            },
+            {
+                $unwind: "$myLeaves"
+            },
+            {
+                $project: {
+                    myLeaves: 1,
+                }
+            },
+            {
+                $sort: {
+                    "myLeaves.appliedDate": -1,
+                }
+            }
+        ])
+        res.json({
+            status: true,
+            leaveHistory: leaveHistory
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 module.exports={
     login,
     getHome,
     getMarkDetails,
-    attenDanceData
+    attenDanceData,
+    postLetter,
+    getLeaveHistory
 }

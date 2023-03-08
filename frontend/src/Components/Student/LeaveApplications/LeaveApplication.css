@@ -3,8 +3,17 @@
     border-radius: 10px;
     border: 1px solid green;
     background-color: green;
+    height: 35px;
 }
-.submitButn{
+.fromToInput{
+    background-color: rgb(244, 243, 242);
+    border: 1px solid black;
+    border-radius: 7px;
+}
+.errorChild{
+    width: 138px;
+}
+.submitbutn{
     color: white;
     border-radius: 10px;
     border: 1px solid green;
@@ -16,9 +25,9 @@
     padding-top: 130px;
 }
 
-.flexItem{
+.flexItm{
     width: 600px;
-    height: 550px;
+    height: 590px;
     border: 1px solid black;
     border-radius: 15px;
   
@@ -28,12 +37,12 @@
     font-size: 18px;
     text-decoration: underline;
 }
-.inputLeave{
+.inputLeavediv{
     border: none;
     background-color: rgb(244, 243, 242);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     width: 570px;
-    height: 370px;
+    height: 260px;
     border-radius: 15px;
     resize: none;
 }

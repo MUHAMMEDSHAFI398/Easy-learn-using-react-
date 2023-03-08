@@ -35,6 +35,10 @@ function StudentNav() {
                                 <p className="ms-4"  >My history</p>
                             </Link>
 
+                            <Link className={location.pathname === '/student/leave-applications' ? 'hilites' : 'non-hilites'} to='/student/leave-applications'>
+                                <p className="ms-4"  >Leave history</p>
+                            </Link>
+
 
 
                             <p className="non-hilites ms-4" style={{ cursor: "pointer" }} onClick={handleLogout} >Logout</p>

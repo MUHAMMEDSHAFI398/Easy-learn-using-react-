@@ -116,6 +116,9 @@ const studentSchema = new Schema(
     myLeaves: {
       type: [
         {
+          appliedDate:{
+            type: Date
+          },
           from: {
             type: Date
           },
@@ -128,6 +131,10 @@ const studentSchema = new Schema(
           status: {
             type: String,
             default: "Pending"
+          },
+          reason:{
+           type:String,
+           default:""
           }
         }
       ],

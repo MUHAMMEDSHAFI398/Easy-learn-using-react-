@@ -46,6 +46,10 @@ function TeacherNav() {
               <p className="ms-4" >Leave history</p>
             </Link>
 
+            <Link className={location.pathname === '/teacher/student-leaves' ? 'hilite' : 'non-hilite'} to='/teacher/student-leaves'>
+              <p className="ms-4" >Student leaves</p>
+            </Link>
+
             <p className="non-hilite ms-4" style={{ cursor: "pointer" }} onClick={handleLogout}  >Logout</p>
 
           </div>

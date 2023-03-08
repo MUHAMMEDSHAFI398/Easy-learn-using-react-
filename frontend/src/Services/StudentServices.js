@@ -12,3 +12,10 @@ export const attenDanceDetailsAPI = (headers) => {
   return axios.get('/student/attendance-data', headers)
 }
 
+export const postLetterAPI = (data,headers) => {
+  return axios.post('/student/letter',data, headers)
+}
+
+export const leaveHistoryAPI = (headers) => {
+  return axios.get('/student/leave-history', headers)
+}
