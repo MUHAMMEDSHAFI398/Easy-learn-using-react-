@@ -72,3 +72,7 @@ export const StudentleaveApplcationsAPI = (headers) => {
 export const leaveApproveAPI = (data,headers) => {
   return axios.patch('/teacher/leave-approve',data, headers)
 }
+
+export const leaveRejectAPI = (data,headers) => {
+  return axios.patch('/teacher/leave-reject',data, headers)
+}   

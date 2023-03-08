@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CDBCardBody, CDBDataTable, CDBContainer } from 'cdbreact';
 import './StudentLeaveApplication.css'
-import { StudentleaveApplcationsAPI, leaveApproveAPI } from '../../../Services/TeacherServices';
+import { StudentleaveApplcationsAPI, leaveApproveAPI, leaveRejectAPI } from '../../../Services/TeacherServices';
 import { message } from 'antd';
 import Swal from 'sweetalert2'
 
@@ -11,9 +11,14 @@ function StudentsLeaveApplication() {
     const [leaveData, setLeaveData] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isRejectModalOpen, setIsRejectModalOpen] = useState(false)
-    const [modalvalues, setModalValues] = useState({ date: "", status: "", letter: "", registerId: "", id: "" })
+    const [modalvalues, setModalValues] = useState({
+         appliedDate: "", status: "", 
+         letter: "", registerId: "", id: "",
+         fromDate:"", toDate: ""
+         })
     const [rejectmodalValues, setRejectModalvalues] = useState({ registerId: "", id: "" })
     const [singleDate, setSingleDate] = useState(false)
+    const [formValue,setFormValue]=useState({reason:""})
 
 
     useEffect(() => {
@@ -43,14 +48,21 @@ function StudentsLeaveApplication() {
         })
     }
     const RejectReasonModalClick = (registerId, id) => {
-        setIsModalOpen(false)
-        setIsRejectModalOpen(true)
-        setModalValues({
+        setRejectModalvalues({
             registerId: registerId,
             id: id
         })
+        setIsModalOpen(false)
+        setIsRejectModalOpen(true)
+        
     }
 
+    const handleReasonChange = (e)=>{
+        e.preventDefault();
+        const { name, value } = e.target;
+        setFormValue({ ...formValue, [name]: value });
+    }
+  
     const handleApprove = (id, arrayElementId) => {
         Swal.fire({
 
@@ -84,12 +96,59 @@ function StudentsLeaveApplication() {
                         setLeaveData(data)
                         message.success('Application has been approved')
                         setIsModalOpen(false)
+
                     }
                 })
             }
         })
 
     }
+
+    const handleReject = (e,id, arrayElementId) => {
+        e.preventDefault() 
+        Swal.fire({
+
+            text: "Are you sure you want to reject this application ? Once Rejected can not be edited later",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'green',
+            cancelButtonColor: 'red',
+            confirmButtonText: 'Confirm'
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const data = {
+                    id: id,
+                    arrayElementId: arrayElementId,
+                    reason:formValue.reason
+                }
+                
+                const headers = { 
+                    headers: {
+                        Authorization: localStorage.getItem("teacherToken")
+                    }
+                }
+                leaveRejectAPI(data,headers).then((response) => {
+
+                    if (response.data.status) {
+                        const data = leaveData.filter((value) => {
+                            if (value.myLeaves._id === arrayElementId) {
+                                value.myLeaves.status = "Rejected"
+                            }
+                            return value;
+                        })
+                        setLeaveData(data)
+                        message.success('Application has been rejected')
+                        setIsRejectModalOpen(false)
+                        setFormValue({reason:""})
+                        
+                    }
+
+                })
+            }
+        })
+
+    } 
 
 
     const data = () => {
@@ -193,7 +252,7 @@ function StudentsLeaveApplication() {
                                                     <p className='ms-3'>{modalvalues.fromDate} to {modalvalues.toDate}</p>
                                                 </>}
                                         </div>
-
+ 
                                         <div className='d-flex mt-1'>
                                             {modalvalues.status === "Pending" ?
                                                 <>
@@ -231,10 +290,24 @@ function StudentsLeaveApplication() {
                                             <div className='d-flex justify-content-center'>
                                                 <h5><strong>Add rejection reason</strong></h5>
                                             </div>
-                                            <form>
-                                                <textarea className='rejectionReasonInput mt-3' placeholder='Type here' name="" id="" cols="30" rows="10"></textarea>
-                                                <button className='btn btn-success mt-4 closebtn'>Reject application</button>
-                                            </form>
+                                          
+                                                <textarea 
+                                                onChange={handleReasonChange}
+                                                value={formValue.reason}
+                                                className='rejectionReasonInput mt-3' 
+                                                placeholder='Type here'
+                                                name='reason'
+                                                type="text"
+                                                >  
+                                                </textarea>
+                                                
+                                                <button
+                                                onClick={(e) => handleReject(e,rejectmodalValues.registerId, rejectmodalValues.id)}
+                                                 type='submit' 
+                                                 className='btn btn-success mt-4 closebtn'
+                                                 >Reject application
+                                                 </button>
+                                   
 
                                         </div>
                                     </div>

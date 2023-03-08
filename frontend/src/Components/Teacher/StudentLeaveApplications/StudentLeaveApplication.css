@@ -37,4 +37,6 @@
     border: 1px solid black;
     height: 150px;
     resize: none;
+    position: relative;
+    z-index: 1;
   }

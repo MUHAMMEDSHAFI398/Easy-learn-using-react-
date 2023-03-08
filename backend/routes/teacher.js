@@ -42,6 +42,9 @@ teacherRouter.get('/student-Leaves', verifyToken.verifyTokenTeacher, teacherCont
 
 teacherRouter.patch('/leave-approve', verifyToken.verifyTokenTeacher, teacherController.studenLeavApprove)
 
+teacherRouter.patch('/leave-reject', verifyToken.verifyTokenTeacher, teacherController.studentLeaveReject)
+
+
 
 
 

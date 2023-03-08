@@ -692,6 +692,31 @@ const studenLeavApprove = async(req,res)=>{
     }
 }
 
+const studentLeaveReject = async(req,res)=>{
+
+    try {
+        const data = req.body
+        await student.updateOne(
+            {
+                registerId: data.id,
+                "myLeaves._id": data.arrayElementId
+            },
+            {
+                $set: {
+                    "myLeaves.$.status": "Rejected",
+                    "myLeaves.$.reason":data.reason
+
+                }
+            }
+        )
+
+        res.json({ status: true })
+    } catch (err) {
+        console.log(err)
+    }
+
+}
+
 
 module.exports = {
     login,
@@ -712,5 +737,6 @@ module.exports = {
     addStudentMark,
     getMarkDetails,
     studenLeaves,
-    studenLeavApprove
+    studenLeavApprove,
+    studentLeaveReject
 }   
