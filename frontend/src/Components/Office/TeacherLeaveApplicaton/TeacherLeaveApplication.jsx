@@ -10,7 +10,16 @@ function TeacherLeaveApplication() {
 
     const [leaveData, setLeaveData] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalvalues, setModalValues] = useState({ date: "", status: "", letter: "", registerId: "", id: "" })
+    const [isRejectModalOpen, setIsRejectModalOpen] = useState(false)
+    const [modalvalues, setModalValues] = useState({
+        appliedDate: "", status: "",
+        letter: "", registerId: "", id: "",
+        fromDate: "", toDate: "", reason: ""
+    })
+    const [rejectmodalValues, setRejectModalvalues] = useState({ registerId: "", id: "" })
+    const [singleDate, setSingleDate] = useState(false)
+    const [formValue, setFormValue] = useState({ reason: "" })
+    const [isReason, setIsReason] = useState(false)
 
 
     useEffect(() => {
@@ -23,6 +32,43 @@ function TeacherLeaveApplication() {
             setLeaveData(response.data.leaveData)
         })
     }, [])
+
+    const handleModalClick = (appliedDate, fromDate, toDate, status, letter, reason, registerId, objectId) => {
+        if (fromDate === toDate) {
+            setSingleDate(true)
+        }
+        
+        setIsModalOpen(true)
+        if (reason !== "") {
+            setIsReason(true)
+        }
+        
+        setModalValues({
+            appliedDate: appliedDate,
+            status: status,
+            letter: letter,
+            fromDate: fromDate,
+            toDate: toDate,
+            reason: reason,
+            registerId: registerId,
+            id: objectId
+        })
+    }
+    const RejectReasonModalClick = (registerId, id) => {
+        setRejectModalvalues({
+            registerId: registerId,
+            id: id
+        })
+        setIsModalOpen(false)
+        setIsRejectModalOpen(true)
+
+    }
+
+    const handleReasonChange = (e) => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        setFormValue({ ...formValue, [name]: value });
+    }
 
     const handleApprove = (id, arrayElementId) => {
         Swal.fire({
@@ -46,7 +92,7 @@ function TeacherLeaveApplication() {
                         Authorization: localStorage.getItem("officeToken")
                     }
                 }
-                leaveApproveAPI(data,headers ).then((response) => {
+                leaveApproveAPI(data, headers).then((response) => {
                     if (response.data.status) {
                         const data = leaveData.filter((value) => {
                             if (value.myLeaves._id === arrayElementId) {
@@ -57,13 +103,16 @@ function TeacherLeaveApplication() {
                         setLeaveData(data)
                         message.success('Application has been approved')
                         setIsModalOpen(false)
+
                     }
                 })
             }
         })
 
     }
-    const handleReject = (id, arrayElementId) => {
+
+    const handleReject = (e, id, arrayElementId) => {
+        e.preventDefault()
         Swal.fire({
 
             text: "Are you sure you want to reject this application ? Once Rejected can not be edited later",
@@ -77,14 +126,16 @@ function TeacherLeaveApplication() {
             if (result.isConfirmed) {
                 const data = {
                     id: id,
-                    arrayElementId: arrayElementId
+                    arrayElementId: arrayElementId,
+                    reason: formValue.reason
                 }
+
                 const headers = {
                     headers: {
                         Authorization: localStorage.getItem("officeToken")
                     }
                 }
-                leaveRejectAPI(data,headers).then((response) => {
+                leaveRejectAPI(data, headers).then((response) => {
 
                     if (response.data.status) {
                         const data = leaveData.filter((value) => {
@@ -95,7 +146,9 @@ function TeacherLeaveApplication() {
                         })
                         setLeaveData(data)
                         message.success('Application has been rejected')
-                        setIsModalOpen(false)
+                        setIsRejectModalOpen(false)
+                        setFormValue({ reason: "" })
+
                     }
 
                 })
@@ -103,10 +156,14 @@ function TeacherLeaveApplication() {
         })
 
     }
-    const handleModalClick = (date, status, letter, registerId, id) => {
-        setIsModalOpen(true)
-        setModalValues({ date: date, status: status, letter: letter, registerId: registerId, id: id })
+
+    const handleModalClose = () => {
+        setIsModalOpen(false)
+        setSingleDate(false)
+        setIsReason(false)
     }
+
+
     const data = () => {
         return {
             columns: [
@@ -150,9 +207,19 @@ function TeacherLeaveApplication() {
             ],
 
             rows: leaveData.map((obj, index) => {
-                const appliedDate = new Date(obj.myLeaves.date);
+                const appliedDate = new Date(obj.myLeaves.appliedDate);
                 const options = { year: 'numeric', month: 'long', day: 'numeric' };
                 const readableDate = appliedDate.toLocaleDateString('en-US', options);
+
+                const stringDate = obj.myLeaves.from
+                const fromdate = new Date(stringDate);
+                const fromdateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedFromDate = fromdate.toLocaleDateString('en-US', fromdateOptions);
+
+                const dateStrings = obj.myLeaves.to
+                const todate = new Date(dateStrings);
+                const todateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedToDate = todate.toLocaleDateString('en-US', todateOptions);
 
                 return {
                     slno: index + 1,
@@ -161,13 +228,17 @@ function TeacherLeaveApplication() {
                     appliedDate: readableDate,
                     status: obj.myLeaves.status,
                     view: (
-                        <div>
-                            <i onClick={() =>
-                                handleModalClick(
-                                    readableDate, obj.myLeaves.status,
-                                    obj.myLeaves.letter, obj.registerId,
-                                    obj.myLeaves._id
-                                )}
+                        <><div>
+                            <i onClick={() => handleModalClick(
+                                readableDate,
+                                formattedFromDate,
+                                formattedToDate,
+                                obj.myLeaves.status,
+                                obj.myLeaves.letter,
+                                obj.myLeaves.reason,
+                                obj.registerId,
+                                obj.myLeaves._id,
+                            )}
                                 className="i-tags ms-4 fa fa-chevron-circle-right">
 
                             </i>
@@ -182,23 +253,41 @@ function TeacherLeaveApplication() {
 
                                         <div className='d-flex mt-3'>
                                             <strong>Applied date :</strong>
-                                            <p className='ms-3'>{modalvalues.date}</p>
+                                            <p className='ms-3'>{modalvalues.appliedDate}</p>
+                                        </div>
+                                        <div className='d-flex mt-3'>
+                                            {singleDate ?
+                                                <>
+                                                    <strong>Leave date</strong>
+                                                    <p className='ms-3'>{modalvalues.fromDate}</p>
+                                                </>
+                                                :
+                                                <>
+                                                    <strong>Leave period :</strong>
+                                                    <p className='ms-3'>{modalvalues.fromDate} to {modalvalues.toDate}</p>
+                                                </>}
                                         </div>
 
                                         <div className='d-flex mt-1'>
                                             {modalvalues.status === "Pending" ?
                                                 <>
                                                     <button onClick={() => handleApprove(modalvalues.registerId, modalvalues.id)} className='btn btn-success aproveRejectbtn'>Approve</button>
-                                                    <button onClick={() => handleReject(modalvalues.registerId, modalvalues.id)} className='btn btn-danger ms-3 aproveRejectbtn'>Reject</button>
+                                                    <button onClick={() => RejectReasonModalClick(modalvalues.registerId, modalvalues.id)} className='btn btn-danger ms-3 aproveRejectbtn'>Reject</button>
                                                 </>
                                                 :
                                                 <>
                                                     <strong>Status :</strong>
                                                     <p className='ms-3'>{modalvalues.status}</p>
-                                                </>
-
-                                            }
+                                                </>}
                                         </div>
+
+                                        {isReason && (
+                                            <div className='d-flex mt-1'>
+                                                <strong>Rejecton reason :</strong>
+                                                <p className='ms-3'>{modalvalues.reason}</p>
+                                            </div>
+                                        )
+                                        }
 
                                         <div className='d-flex justify-content-center mt-3'>
                                             <strong>Letter</strong>
@@ -206,7 +295,7 @@ function TeacherLeaveApplication() {
 
                                         <p className='mt-1'>{modalvalues.letter}</p>
                                         <div className='d-flex justify-content-center mt-3'>
-                                            <button className='btn btn-success mt-4 closebtn' onClick={() => setIsModalOpen(false)}>Close</button>
+                                            <button className='btn btn-success mt-4 closebtn' onClick={handleModalClose}>Close</button>
                                         </div>
 
                                     </div>
@@ -214,6 +303,40 @@ function TeacherLeaveApplication() {
                                 </div>
                             )}
                         </div>
+                            {
+                                isRejectModalOpen && (
+                                    <div className="Modal">
+                                        <div className="Modal-Content">
+                                            <div className='d-flex justify-content-end'>
+                                                <i onClick={() => setIsRejectModalOpen(false)} style={{ cursor: "pointer" }} className="fas fa-times"></i>
+                                            </div>
+                                            <div className='d-flex justify-content-center'>
+                                                <h5><strong>Add rejection reason</strong></h5>
+                                            </div>
+
+                                            <textarea
+                                                onChange={handleReasonChange}
+                                                value={formValue.reason}
+                                                className='rejectionReasonInput mt-3'
+                                                placeholder='Type here'
+                                                name='reason'
+                                                type="text"
+                                            >
+                                            </textarea>
+
+                                            <button
+                                                onClick={(e) => handleReject(e, rejectmodalValues.registerId, rejectmodalValues.id)}
+                                                type='submit'
+                                                className='btn btn-success mt-4 closebtn'
+                                            >Reject application
+                                            </button>
+
+
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </>
                     )
 
 
@@ -223,13 +346,15 @@ function TeacherLeaveApplication() {
 
         };
     };
+
     return (
         <div className='container'>
-            <div className='container mt-4'>
+
+            <div className='container ParentMain'>
                 <CDBContainer>
-                    <div className='container mains-div'>
+                    <div className='container DivMain'>
                         <div className='d-flex align-items-center justify-content-center'>
-                            <h5 className='headTable'>Teachers leave applicatons</h5>
+                            <h5 className='headingtable'>Leave applications</h5>
                         </div>
                         <CDBCardBody>
                             <CDBDataTable

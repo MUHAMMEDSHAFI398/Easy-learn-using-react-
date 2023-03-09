@@ -175,12 +175,15 @@ const getMyBatch = async (req, res) => {
     }
 }
 const postLetter = async (req, res) => {
-    const id = req.registerId
+    const id =req.registerId
     const today = new Date();
     const data = {
-        date: today,
+        appliedDate: today,
+        from:req.body.from,
+        to:req.body.to,
         letter: req.body.leaveLetter,
-        status: "Pending"
+        status: "Pending",
+        reason:""
     }
     try {
         await teacher.updateOne(
@@ -206,7 +209,7 @@ const getLeaveHistory = async (req, res) => {
         const leaveHistory = await teacher.aggregate([
             {
                 $match: {
-                    registerId: id
+                    registerId: id      
                 }
             },
             {

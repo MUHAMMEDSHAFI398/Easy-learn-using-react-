@@ -101,20 +101,33 @@ const teacherSchema = new Schema(
         type: String
       }
     }],
-    myLeaves: [
-      {
-        date: {
-          type: Date
-        },
-        letter: {
-          type: String
-        },
-        status: {
-          type: String,
-          default: "Pending"
+    myLeaves: {
+      type: [
+        {
+          appliedDate:{
+            type: Date
+          },
+          from: {
+            type: Date
+          },
+          to:{
+            type:Date
+          },
+          letter: {
+            type: String
+          },
+          status: {
+            type: String,
+            default: "Pending"
+          },
+          reason:{
+           type:String,
+           default:""
+          }
         }
-      }
-    ],
+      ],
+      default: [],
+    },
     isBlocked: {
       type: Boolean
     }

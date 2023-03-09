@@ -34,9 +34,11 @@ function StudentsLeaveApplication() {
     }, [])
 
     const handleModalClick = (appliedDate, fromDate, toDate, status, letter, reason, registerId, objectId) => {
+        
         if (fromDate === toDate) {
             setSingleDate(true)
         }
+        
         setIsModalOpen(true)
         if (reason !== "") {
             setIsReason(true)
@@ -352,7 +354,7 @@ function StudentsLeaveApplication() {
                 <CDBContainer>
                     <div className='container DivMain'>
                         <div className='d-flex align-items-center justify-content-center'>
-                            <h5 className='headingtable'>Students</h5>
+                            <h5 className='headingtable'>Leave applications</h5>
                         </div>
                         <CDBCardBody>
                             <CDBDataTable

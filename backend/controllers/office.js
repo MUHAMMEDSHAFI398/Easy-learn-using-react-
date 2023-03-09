@@ -562,11 +562,13 @@ module.exports = {
                 },
                 {
                     $set: {
-                        "myLeaves.$.status": "Rejected"
+                        "myLeaves.$.status": "Rejected",
+                        "myLeaves.$.reason":data.reason
+    
                     }
                 }
             )
-
+    
             res.json({ status: true })
         } catch (err) {
             console.log(err)
@@ -575,6 +577,4 @@ module.exports = {
 
 }
 
-
-// dfdjf
-
+ 
