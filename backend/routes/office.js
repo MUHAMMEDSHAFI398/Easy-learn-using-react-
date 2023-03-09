@@ -1,7 +1,7 @@
 const express = require('express');
 const officeRouter = express();
 const officeController = require('../controllers/office');
-const verifyToken = require('../middlewares/middlewares')
+const verifyToken = require('../middlewares/Authorization')
 const uploadImage = require('../config/cloudinary')
 
 

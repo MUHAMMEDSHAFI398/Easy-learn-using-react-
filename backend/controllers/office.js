@@ -77,7 +77,7 @@ module.exports = {
             res.json({ success: true })
         } catch (err) {
 
-            console.log(err)
+            next(err)
         }
 
 
@@ -171,7 +171,7 @@ module.exports = {
             })
         } catch (err) {
 
-            console.log(err)
+            next(err)
         }
     },
 
@@ -222,7 +222,7 @@ module.exports = {
                 batches: batchData
             })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
 
 
@@ -259,7 +259,7 @@ module.exports = {
             })
 
         } catch (err) {
-            console.log(err)
+            next(err)
         }
 
     },
@@ -325,7 +325,7 @@ module.exports = {
 
 
         } catch (err) {
-            console.log(err)
+            next(err)
         }
 
 
@@ -351,7 +351,7 @@ module.exports = {
 
                 )
             } catch (err) {
-                console.log(err)
+                next(err)
             }
         }
         await teacher.updateOne(
@@ -377,7 +377,7 @@ module.exports = {
             )
             res.json({ status: true })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     },
     getAvailableBatch: async (req, res) => {
@@ -395,7 +395,7 @@ module.exports = {
                 batches: availableBatches
             })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
 
     },
@@ -445,7 +445,7 @@ module.exports = {
             })
             res.json({ success: true })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
 
 
@@ -458,7 +458,7 @@ module.exports = {
                 students: students
             })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     },
     blockStudent: async (req, res) => {
@@ -471,7 +471,7 @@ module.exports = {
             )
             res.json({ status: true })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     },
     unBlockStudent: async (req, res) => {
@@ -484,7 +484,7 @@ module.exports = {
             )
             res.json({ status: true })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     },
     getStudent: async (req, res) => {
@@ -496,7 +496,7 @@ module.exports = {
                 studentData: studentData
             })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     },
     getLeaveApplications: async (req, res) => {
@@ -520,7 +520,7 @@ module.exports = {
                 },
                 {
                     $sort: {
-                        "myLeaves.date": -1
+                        "myLeaves.appliedDate": -1
                     }
                 }
             ])
@@ -530,7 +530,7 @@ module.exports = {
                 leaveData: leaveData
             })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     },
     leaveApprove: async (req, res) => {
@@ -549,7 +549,7 @@ module.exports = {
             )
             res.json({ status: true })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     },
     leaveReject: async (req, res) => {
@@ -571,7 +571,7 @@ module.exports = {
     
             res.json({ status: true })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     }
 

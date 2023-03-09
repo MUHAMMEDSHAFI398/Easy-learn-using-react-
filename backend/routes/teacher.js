@@ -1,7 +1,7 @@
 const express = require('express');
 const teacherRouter = express();
 const teacherController = require('../controllers/teacher');
-const verifyToken = require('../middlewares/middlewares')
+const verifyToken = require('../middlewares/Authorization')
 
 
 teacherRouter.post('/login', teacherController.login)

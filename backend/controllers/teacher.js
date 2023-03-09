@@ -223,7 +223,7 @@ const getLeaveHistory = async (req, res) => {
             },
             {
                 $sort: {
-                    "myLeaves.date": -1,
+                    "myLeaves.appliedDate": -1,
                 }
             }
 
@@ -661,11 +661,10 @@ const studenLeaves = async (req,res)=>{
             },
             {
                 $sort: {
-                    "myLeaves.date": -1
+                    "myLeaves.appliedDate": -1
                 }
             }
         ])
-
         res.json({
             status: true,
             leaveData: leaveData

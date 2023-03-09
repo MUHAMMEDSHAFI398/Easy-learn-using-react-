@@ -19,7 +19,7 @@ function LeaveApplications() {
     useEffect(() => {
         const headers = {
             headers: {
-                Authorization: localStorage.getItem('studentToken')
+                Authorization: localStorage.getItem('udentToken')
             }
         }
         leaveHistoryAPI(headers).then((response) => {

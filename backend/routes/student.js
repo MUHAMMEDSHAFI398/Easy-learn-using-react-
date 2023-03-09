@@ -1,7 +1,7 @@
 const express = require('express');
 const studentRouter = express();
 const studentController = require('../controllers/student');
-const verifyToken = require('../middlewares/middlewares')
+const verifyToken = require('../middlewares/Authorization')
 
 
 studentRouter.post('/login', studentController.login)

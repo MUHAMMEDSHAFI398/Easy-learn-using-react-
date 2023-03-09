@@ -1,29 +1,27 @@
 const jwt = require('jsonwebtoken');
 
-const secret = 'secret';
 
 const verifyTokenAdmin = (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
-    return res.status(401).send({  
-      message: 'No token provided'
-    });
+    const error = new Error('No token provided');
+    error.statusCode = 401;
+    return next(error);
   }
   try {
     const decoded = jwt.verify(token.split(' ')[1], process.env.ADMIN_SECRET);
     if(decoded) next();
-    else return 'invalid token'
   } catch (error) {
-    console.log(error)
+    next(err)
   }
 };
 
 const verifyTokenTeacher = (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
-    return res.status(401).send({  
-      message: 'No token provided'
-    });
+    const error = new Error('No token provided');
+    error.statusCode = 401;
+    return next(error);
   } 
   try {
     const decoded = jwt.verify(token.split(' ')[1], process.env.TEACHER_SECRET);
@@ -31,9 +29,9 @@ const verifyTokenTeacher = (req, res, next) => {
       req.registerId = decoded.registerId;
       next();
     }
-    else return 'invalid token'
+    
   } catch (error) {
-    console.log(error)
+    next(err)
   }
 }; 
 
@@ -41,9 +39,9 @@ const verifyTokenTeacher = (req, res, next) => {
 const verifyTokenStudent = (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
-    return res.status(401).send({  
-      message: 'No token provided'
-    });
+    const error = new Error('No token provided');
+    error.statusCode = 401;
+    return next(error);
   } 
   try {
     const decoded = jwt.verify(token.split(' ')[1], process.env.STUNDENT_SECRET);
@@ -51,9 +49,8 @@ const verifyTokenStudent = (req, res, next) => {
       req.registerId = decoded.registerId;
       next();
     }
-    else return 'invalid token'
-  } catch (error) {
-    console.log(error) 
+  } catch (err) {
+    next(err) 
   }
 }; 
 
