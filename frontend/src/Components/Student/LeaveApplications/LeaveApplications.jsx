@@ -13,8 +13,9 @@ function LeaveApplications() {
     const [error, setErrors] = useState({});
     const [leaveHistory, setLeaveHistory] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalvalues, setModalValues] = useState({ applieddate: "", status: "", letter: "", fromDate: "", toDate: "" })
+    const [modalvalues, setModalValues] = useState({ appliedDate: "", status: "", letter: "", fromDate: "", toDate: "" })
     const [singleDate, setSingleDate] = useState(false)
+    const [isReason, setIsReason] = useState(false)
     useEffect(() => {
         const headers = {
             headers: {
@@ -102,16 +103,27 @@ function LeaveApplications() {
         }
     }
 
-    const handleModalClick = (applieddate, fromDate, toDate, status, letter) => {
+    const handleModalClick = (appliedDate, fromDate, toDate, status, letter, reason) => {
         if (fromDate === toDate) {
             setSingleDate(true)
         }
         setIsModalOpen(true)
-        setModalValues({ applieddate: applieddate, status: status, letter: letter, fromDate: fromDate, toDate: toDate })
+        if (reason !== "") {
+            setIsReason(true)
+        }
+        setModalValues({ 
+            appliedDate: appliedDate, 
+            status: status, 
+            letter: letter, 
+            fromDate: fromDate, 
+            toDate: toDate, 
+            reason: reason 
+        })
     }
     const handleModalClose = () => {
         setIsModalOpen(false)
         setSingleDate(false)
+        setIsReason(false)
     }
 
 
@@ -125,7 +137,7 @@ function LeaveApplications() {
                 },
                 {
                     label: 'Applied date',
-                    field: 'AppliedDate',
+                    field: 'appliedDate',
                     width: 100,
                     attributes: {
                         'aria-controls': 'DataTable',
@@ -163,7 +175,7 @@ function LeaveApplications() {
 
                 return {
                     slno: index + 1,
-                    AppliedDate: formattedDate,
+                    appliedDate: formattedDate,
                     status: leave.myLeaves.status,
                     view:
                         (
@@ -174,6 +186,7 @@ function LeaveApplications() {
                                     formattedToDate,
                                     leave.myLeaves.status,
                                     leave.myLeaves.letter,
+                                    leave.myLeaves.reason,
                                 )}
                                     className="i-tags ms-4 fa fa-chevron-circle-right">
 
@@ -189,13 +202,13 @@ function LeaveApplications() {
 
                                             <div className='d-flex mt-3'>
                                                 <strong>Applied date :</strong>
-                                                <p className='ms-3'>{modalvalues.applieddate}</p>
+                                                <p className='ms-3'>{modalvalues.appliedDate}</p>
                                             </div>
 
                                             <div className='d-flex mt-3'>
                                                 {singleDate ?
                                                     <>
-                                                        <strong>Leave date</strong>
+                                                        <strong>Leave date :</strong>
                                                         <p className='ms-3'>{modalvalues.fromDate}</p>
                                                     </>
                                                     :
@@ -210,7 +223,13 @@ function LeaveApplications() {
                                                 <strong>Status :</strong>
                                                 <p className='ms-3'>{modalvalues.status}</p>
                                             </div>
-
+                                            {isReason && (
+                                                <div className='d-flex mt-1'>
+                                                    <strong>Rejecton reason :</strong>
+                                                    <p className='ms-3'>{modalvalues.reason}</p>
+                                                </div>
+                                            )
+                                            }
                                             <div className='d-flex justify-content-center mt-3'>
                                                 <strong>Your letter</strong>
                                             </div>

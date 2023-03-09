@@ -12,13 +12,14 @@ function StudentsLeaveApplication() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isRejectModalOpen, setIsRejectModalOpen] = useState(false)
     const [modalvalues, setModalValues] = useState({
-         appliedDate: "", status: "", 
-         letter: "", registerId: "", id: "",
-         fromDate:"", toDate: ""
-         })
+        appliedDate: "", status: "",
+        letter: "", registerId: "", id: "",
+        fromDate: "", toDate: "", reason: ""
+    })
     const [rejectmodalValues, setRejectModalvalues] = useState({ registerId: "", id: "" })
     const [singleDate, setSingleDate] = useState(false)
-    const [formValue,setFormValue]=useState({reason:""})
+    const [formValue, setFormValue] = useState({ reason: "" })
+    const [isReason, setIsReason] = useState(false)
 
 
     useEffect(() => {
@@ -32,19 +33,23 @@ function StudentsLeaveApplication() {
         })
     }, [])
 
-    const handleModalClick = (appliedDate, status, letter, registerId, id, fromDate, toDate) => {
+    const handleModalClick = (appliedDate, fromDate, toDate, status, letter, reason, registerId, objectId) => {
         if (fromDate === toDate) {
             setSingleDate(true)
         }
         setIsModalOpen(true)
+        if (reason !== "") {
+            setIsReason(true)
+        }
         setModalValues({
             appliedDate: appliedDate,
             status: status,
             letter: letter,
-            registerId: registerId,
-            id: id,
             fromDate: fromDate,
-            toDate: toDate
+            toDate: toDate,
+            reason: reason,
+            registerId: registerId,
+            id: objectId
         })
     }
     const RejectReasonModalClick = (registerId, id) => {
@@ -54,15 +59,15 @@ function StudentsLeaveApplication() {
         })
         setIsModalOpen(false)
         setIsRejectModalOpen(true)
-        
+
     }
 
-    const handleReasonChange = (e)=>{
+    const handleReasonChange = (e) => {
         e.preventDefault();
         const { name, value } = e.target;
         setFormValue({ ...formValue, [name]: value });
     }
-  
+
     const handleApprove = (id, arrayElementId) => {
         Swal.fire({
 
@@ -104,8 +109,8 @@ function StudentsLeaveApplication() {
 
     }
 
-    const handleReject = (e,id, arrayElementId) => {
-        e.preventDefault() 
+    const handleReject = (e, id, arrayElementId) => {
+        e.preventDefault()
         Swal.fire({
 
             text: "Are you sure you want to reject this application ? Once Rejected can not be edited later",
@@ -120,15 +125,15 @@ function StudentsLeaveApplication() {
                 const data = {
                     id: id,
                     arrayElementId: arrayElementId,
-                    reason:formValue.reason
+                    reason: formValue.reason
                 }
-                
-                const headers = { 
+
+                const headers = {
                     headers: {
                         Authorization: localStorage.getItem("teacherToken")
                     }
                 }
-                leaveRejectAPI(data,headers).then((response) => {
+                leaveRejectAPI(data, headers).then((response) => {
 
                     if (response.data.status) {
                         const data = leaveData.filter((value) => {
@@ -140,15 +145,21 @@ function StudentsLeaveApplication() {
                         setLeaveData(data)
                         message.success('Application has been rejected')
                         setIsRejectModalOpen(false)
-                        setFormValue({reason:""})
-                        
+                        setFormValue({ reason: "" })
+
                     }
 
                 })
             }
         })
 
-    } 
+    }
+
+    const handleModalClose = () => {
+        setIsModalOpen(false)
+        setSingleDate(false)
+        setIsReason(false)
+    }
 
 
     const data = () => {
@@ -217,12 +228,14 @@ function StudentsLeaveApplication() {
                     view: (
                         <><div>
                             <i onClick={() => handleModalClick(
-                                readableDate, obj.myLeaves.status,
+                                readableDate,
+                                formattedFromDate,
+                                formattedToDate,
+                                obj.myLeaves.status,
                                 obj.myLeaves.letter,
+                                obj.myLeaves.reason,
                                 obj.registerId,
                                 obj.myLeaves._id,
-                                formattedFromDate,
-                                formattedToDate
                             )}
                                 className="i-tags ms-4 fa fa-chevron-circle-right">
 
@@ -252,7 +265,7 @@ function StudentsLeaveApplication() {
                                                     <p className='ms-3'>{modalvalues.fromDate} to {modalvalues.toDate}</p>
                                                 </>}
                                         </div>
- 
+
                                         <div className='d-flex mt-1'>
                                             {modalvalues.status === "Pending" ?
                                                 <>
@@ -266,13 +279,21 @@ function StudentsLeaveApplication() {
                                                 </>}
                                         </div>
 
+                                        {isReason && (
+                                            <div className='d-flex mt-1'>
+                                                <strong>Rejecton reason :</strong>
+                                                <p className='ms-3'>{modalvalues.reason}</p>
+                                            </div>
+                                        )
+                                        }
+
                                         <div className='d-flex justify-content-center mt-3'>
                                             <strong>Letter</strong>
                                         </div>
 
                                         <p className='mt-1'>{modalvalues.letter}</p>
                                         <div className='d-flex justify-content-center mt-3'>
-                                            <button className='btn btn-success mt-4 closebtn' onClick={() => setIsModalOpen(false)}>Close</button>
+                                            <button className='btn btn-success mt-4 closebtn' onClick={handleModalClose}>Close</button>
                                         </div>
 
                                     </div>
@@ -290,24 +311,24 @@ function StudentsLeaveApplication() {
                                             <div className='d-flex justify-content-center'>
                                                 <h5><strong>Add rejection reason</strong></h5>
                                             </div>
-                                          
-                                                <textarea 
+
+                                            <textarea
                                                 onChange={handleReasonChange}
                                                 value={formValue.reason}
-                                                className='rejectionReasonInput mt-3' 
+                                                className='rejectionReasonInput mt-3'
                                                 placeholder='Type here'
                                                 name='reason'
                                                 type="text"
-                                                >  
-                                                </textarea>
-                                                
-                                                <button
-                                                onClick={(e) => handleReject(e,rejectmodalValues.registerId, rejectmodalValues.id)}
-                                                 type='submit' 
-                                                 className='btn btn-success mt-4 closebtn'
-                                                 >Reject application
-                                                 </button>
-                                   
+                                            >
+                                            </textarea>
+
+                                            <button
+                                                onClick={(e) => handleReject(e, rejectmodalValues.registerId, rejectmodalValues.id)}
+                                                type='submit'
+                                                className='btn btn-success mt-4 closebtn'
+                                            >Reject application
+                                            </button>
+
 
                                         </div>
                                     </div>
