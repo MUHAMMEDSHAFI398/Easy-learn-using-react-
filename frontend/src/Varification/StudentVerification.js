@@ -14,7 +14,7 @@ export default function StudentVerification({ children }) {
 
     useEffect(() => {
         if (!localStorage.getItem('studentToken')) {
-            navigate('/student')
+            navigate('/student',{replace:true})
         }
     }, [])
     useEffect(() => {

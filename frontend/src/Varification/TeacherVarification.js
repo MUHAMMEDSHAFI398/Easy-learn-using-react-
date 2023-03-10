@@ -14,7 +14,7 @@ export default function TeacherVarification({ children }) {
 
     useEffect(() => {
         if (!localStorage.getItem('teacherToken')) {
-            navigate('/teacher')
+            navigate('/teacher',{replace:true})
         }
     }, [])
     useEffect(() => {

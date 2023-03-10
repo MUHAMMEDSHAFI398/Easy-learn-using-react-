@@ -13,8 +13,8 @@ const storage = new CloudinaryStorage({
     folder: "Easy learn",
     allowedFormats: ["jpeg", "png", "jpg"],
   },
-});
-
+});           
+  
 
 
 const multer = require("multer");

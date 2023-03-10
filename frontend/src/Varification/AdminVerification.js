@@ -6,7 +6,7 @@ export default function AdminVerification({ children }) {
     const navigate = useNavigate();
     useEffect(() => {
         if (!localStorage.getItem('officeToken')) {
-            navigate('/office')
+            navigate('/office',{replace:true})
         }
     }, [])
     return children
