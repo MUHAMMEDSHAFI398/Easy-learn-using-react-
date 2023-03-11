@@ -12,7 +12,7 @@ const verifyTokenAdmin = (req, res, next) => {
     const decoded = jwt.verify(token.split(' ')[1], process.env.ADMIN_SECRET);
     if(decoded) next();
   } catch (error) {
-    next(err)
+    next(error)
   }
 };
 
@@ -31,7 +31,7 @@ const verifyTokenTeacher = (req, res, next) => {
     }
     
   } catch (error) {
-    next(err)
+    next(error)
   }
 }; 
 

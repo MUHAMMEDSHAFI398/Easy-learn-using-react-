@@ -19,3 +19,15 @@ export const postLetterAPI = (data,headers) => {
 export const leaveHistoryAPI = (headers) => {
   return axios.get('/student/leave-history', headers)
 }
+
+export const getFeeDetailsAPI = (batchId,headers) => {
+  return axios.get(`/student/get-fee/${batchId}`, headers)
+}
+
+export const feePaymentAPI = (batchId,data,headers) => {
+  return axios.post(`/student/fee-payment/${batchId}`,data, headers)
+}
+
+export const verifyPaymentAPI = (batchId,data,headers) => {
+  return axios.post(`/student/fee-payment/${batchId}`,data, headers)
+}

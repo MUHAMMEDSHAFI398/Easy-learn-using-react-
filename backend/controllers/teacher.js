@@ -720,6 +720,8 @@ const studentLeaveReject = async(req,res)=>{
 }
 
 
+
+
 module.exports = {
     login,
     getHome,
@@ -740,5 +742,5 @@ module.exports = {
     getMarkDetails,
     studenLeaves,
     studenLeavApprove,
-    studentLeaveReject
+    studentLeaveReject,
 }   

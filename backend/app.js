@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/office", officeRouter);
 app.use("/teacher", teacherRouter);
 app.use("/student",  studentRouter);
-
+   
 app.use(errorHandler);
 
 app.listen(process.env.PORTNO, () => {

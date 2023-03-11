@@ -16,6 +16,12 @@ studentRouter.post('/letter', verifyToken.verifyTokenStudent, studentController.
 
 studentRouter.get('/leave-history' , verifyToken.verifyTokenStudent, studentController.getLeaveHistory)
 
+studentRouter.get('/get-fee/:id', verifyToken.verifyTokenStudent, studentController.getFeeDetails)
+
+studentRouter.post('/fee-payment/:id', verifyToken.verifyTokenStudent, studentController.feePayment)
+
+// studentRouter.post('/verify-payment', verifyToken.verifyTokenStudent, studentController.verifyFeePayment)
+
 
 
 

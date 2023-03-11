@@ -23,7 +23,6 @@ function StudentHome() {
     }, [])
 
     const details = useSelector(state => state.studentData)
-    console.log(details)
     const dateOfBirth = details.studentData.dateOfBirth
     const birthDate = new Date(dateOfBirth);
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -36,8 +35,10 @@ function StudentHome() {
         
             <div className='d-flex justify-content-end'>
                 <Link to='/student/leave-applications'>
-                <button className='btn btn-success'> Apply for leave</button>
+                <button className='btn btn-success homeBtns'> Apply for leave</button>
                 </Link>
+                <button className='btn btn-success homeBtns'> Completer your Payment</button>
+
             </div>
             <div className='batch-deatails-parent-div'>
 

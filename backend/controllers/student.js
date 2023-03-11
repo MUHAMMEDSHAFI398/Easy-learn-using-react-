@@ -7,6 +7,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const helpers = require('../helpers/helpers')
 dotenv.config();
+const crypto = require('crypto')
+const Razorpay = require('razorpay');
+
 
 
 const login = async (req, res) => {
@@ -63,7 +66,7 @@ const getMarkDetails = async (req, res) => {
                 $match: {
                     registerId: studentId
                 }
-            },   
+            },
             {
                 $project: {
                     _id: 0,
@@ -104,16 +107,16 @@ const attenDanceData = async (req, res) => {
         console.log(err)
     }
 }
-const postLetter = async (req,res)=>{ 
-    const id =req.registerId
+const postLetter = async (req, res) => {
+    const id = req.registerId
     const today = new Date();
     const data = {
         appliedDate: today,
-        from:req.body.from,
-        to:req.body.to,
+        from: req.body.from,
+        to: req.body.to,
         letter: req.body.leaveLetter,
         status: "Pending",
-        reason:""
+        reason: ""
     }
     try {
         await student.updateOne(
@@ -133,7 +136,7 @@ const postLetter = async (req,res)=>{
         console.log(err)
     }
 }
-const getLeaveHistory = async (req,res)=>{
+const getLeaveHistory = async (req, res) => {
     const id = req.registerId
     try {
         const leaveHistory = await student.aggregate([
@@ -164,12 +167,138 @@ const getLeaveHistory = async (req,res)=>{
         console.log(err)
     }
 }
+const getFeeDetails = async (req, res) => {
+    const batchId = req.params.id
+    const studentId = req.registerId
+    try {
+        const courseFee = await batch.aggregate([
+            {
+                $match: {
+                    registerId: batchId
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    fee: 1
+                }
+            }
+        ])
+        const pendingFee = await student.aggregate([
+            {
+                $match: {
+                    registerId: studentId
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    pendingFee: 1
+                }
+            }
+        ])
+        const installmentAmount = ((courseFee[0].fee) / 4).toFixed(2)
+        res.status(200).json({
+            totalFee: courseFee[0].fee,
+            pendingFee: pendingFee[0].pendingFee,
+            installmentAmount: installmentAmount
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
 
-module.exports={
+const feePayment = async (req, res) => {
+    const studentId = req.registerId
+    const batchId = req.params.id
+    let amountToPay;
+    try {
+        if (req.body.option === "One time") {
+            const pendingFee = await student.aggregate([
+                {
+                    $match: {
+                        registerId: studentId
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        pendingFee: 1
+                    }
+                }
+            ])
+            amountToPay = pendingFee[0].pendingFee
+        } else {
+            const courseFee = await batch.aggregate([
+                {
+                    $match: {
+                        registerId: batchId
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        fee: 1
+                    }
+                }
+            ])
+            const installmentAmount = ((courseFee[0].fee) / 4).toFixed(2)
+            amountToPay = installmentAmount
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
+    try {
+
+        const uniqueId = crypto.randomBytes(20).toString('hex');
+
+        const instance = new Razorpay({
+            key_id: process.env.KEYID,
+            key_secret: process.env.KEYSECRET,
+        });
+        let options = {
+            amount: amountToPay * 100, // converting  paise to rupay
+            currency: "INR",
+            receipt: uniqueId
+        };
+        instance.orders.create(options, function (err, order) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.status(200).json({ order })
+            }
+        })
+    } catch (err) {
+        console.log(err)
+    }
+}
+// const verifyFeePayment = (req,res)=>{
+//     // const {
+//     //     razorpay_order_id,
+//     //   razorpay_payment_id,
+//     //   razorpay_signature
+//     // } = req.body
+
+//     const details = req.body;
+//     let hmac = crypto.createHmac("sha256", process.env.KEYSECRET);
+//     hmac.update(details.payment.razorpay_order_id + "|" + details.payment.razorpay_payment_id);
+//     hmac = hmac.digest("hex");
+//     if (hmac == details.payment.razorpay_signature){
+//         res.status(200).json({message:"payment varified successfullly"})
+//     }else {
+//         res.status(400).json({message:"Invalid signature"})
+//     }
+// }
+
+module.exports = {
     login,
     getHome,
     getMarkDetails,
     attenDanceData,
     postLetter,
-    getLeaveHistory
-}
+    getLeaveHistory,
+    getFeeDetails,
+    feePayment,
+    // verifyFeePayment 
+}   

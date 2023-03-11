@@ -76,7 +76,6 @@ module.exports = {
             })
             res.json({ success: true })
         } catch (err) {
-
             next(err)
         }
 
@@ -409,15 +408,22 @@ module.exports = {
         }
         const password = data.dateOfBirth
         const hashedPassword = await bcrypt.hash(password, 10);
-        await batch.updateOne(
-            {
-                registerId: data.batch
-            },
-            {
-                $inc: { batchFill: 1 }
-            }
-        )
+
         try {
+
+            const batchFee = await batch.aggregate([
+                {
+                    $match:{
+                        registerId: data.batch
+                    }
+                },
+                {
+                    $project:{
+                        _id:0,
+                        fee:1
+                    }
+                }
+            ])
             await student.create({
                 registerId: registerId,
                 name: data.name,
@@ -432,6 +438,7 @@ module.exports = {
                 batch: data.batch,
                 isBlocked: false,
                 password:hashedPassword,
+                pendingFee:batchFee[0].fee,
                 image: image,
                 address: {
                     house_name: data.house_name,
@@ -443,6 +450,14 @@ module.exports = {
                 }
 
             })
+            await batch.updateOne(
+                {
+                    registerId: data.batch
+                },
+                {
+                    $inc: { batchFill: 1 }
+                }
+            )
             res.json({ success: true })
         } catch (err) {
             next(err)

@@ -93,6 +93,9 @@ const studentSchema = new Schema(
       required: true,
       trim: true,
     },
+    pendingFee: {
+     type:Number
+    },
     attendance: {
       type: [
         {
