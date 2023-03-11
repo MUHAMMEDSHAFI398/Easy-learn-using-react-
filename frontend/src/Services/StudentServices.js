@@ -29,5 +29,5 @@ export const feePaymentAPI = (batchId,data,headers) => {
 }
 
 export const verifyPaymentAPI = (batchId,data,headers) => {
-  return axios.post(`/student/fee-payment/${batchId}`,data, headers)
+  return axios.post('/student/fee-payment',data, headers)
 }

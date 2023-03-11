@@ -273,24 +273,24 @@ const feePayment = async (req, res) => {
         console.log(err)
     }
 }
-// const verifyFeePayment = (req,res)=>{
-//     // const {
-//     //     razorpay_order_id,
-//     //   razorpay_payment_id,
-//     //   razorpay_signature
-//     // } = req.body
+const verifyFeePayment = (req,res)=>{
+    // const {
+    //     razorpay_order_id,
+    //   razorpay_payment_id,
+    //   razorpay_signature
+    // } = req.body
 
-//     const details = req.body;
-//     let hmac = crypto.createHmac("sha256", process.env.KEYSECRET);
-//     hmac.update(details.payment.razorpay_order_id + "|" + details.payment.razorpay_payment_id);
-//     hmac = hmac.digest("hex");
-//     if (hmac == details.payment.razorpay_signature){
-//         res.status(200).json({message:"payment varified successfullly"})
-//     }else {
-//         res.status(400).json({message:"Invalid signature"})
-//     }
-// }
-
+    const details = req.body;
+    let hmac = crypto.createHmac("sha256", process.env.KEYSECRET);
+    hmac.update(details.payment.razorpay_order_id + "|" + details.payment.razorpay_payment_id);
+    hmac = hmac.digest("hex");
+    if (hmac == details.payment.razorpay_signature){
+        res.status(200).json({message:"payment varified successfullly"})
+    }else {
+        res.status(400).json({message:"Invalid signature"})
+    }
+}
+   
 module.exports = {
     login,
     getHome,
@@ -300,5 +300,5 @@ module.exports = {
     getLeaveHistory,
     getFeeDetails,
     feePayment,
-    // verifyFeePayment 
+    verifyFeePayment 
 }   

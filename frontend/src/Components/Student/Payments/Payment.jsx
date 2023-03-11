@@ -69,17 +69,17 @@ function Payment() {
                 Authorization: localStorage.getItem('studentToken')
             }
         }
-        feePaymentAPI(batchId,{option}, headers).then((response) => {
+        feePaymentAPI(batchId,{option}, headers).then((res) => {
             const options = {
                 key: razropaykeyId,
-                amount: response.data.order.amount,
+                amount: res.data.order.amount,
                 currency: "INR",
                 name: "Easy learn",
                 description: "Test Transaction",
                 image: "/images/logo-project.png",
-                order_id: response.data.id,
+                order_id: res.data.id,
                 handler: function (response) {
-                  verifyPaymentAPI(response, response.data);
+                    verifyPayment(response, res);
                 },
                 prefill: {
                     name: "Easy learn",   
@@ -105,8 +105,7 @@ function Payment() {
     }
 
     const verifyPayment = (payment, details) => {
-       verifyPaymentAPI().then((response) => {
-            console.log(response.data.message);
+       verifyPaymentAPI({ payment, details }).then((response) => {
             message.success("payment completed successfully");
           })
           .catch(() => {

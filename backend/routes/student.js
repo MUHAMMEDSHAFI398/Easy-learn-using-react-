@@ -20,7 +20,7 @@ studentRouter.get('/get-fee/:id', verifyToken.verifyTokenStudent, studentControl
 
 studentRouter.post('/fee-payment/:id', verifyToken.verifyTokenStudent, studentController.feePayment)
 
-// studentRouter.post('/verify-payment', verifyToken.verifyTokenStudent, studentController.verifyFeePayment)
+studentRouter.post('/verify-payment', verifyToken.verifyTokenStudent, studentController.verifyFeePayment)
 
 
 
