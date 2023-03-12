@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { feePaymentAPI, getFeeDetailsAPI, verifyPaymentAPI } from '../../../Services/StudentServices';
+import { feePaymentAPI, getFeeDetailsAPI, getpaymentDetailsAPI, verifyPaymentAPI } from '../../../Services/StudentServices';
 import { useSelector } from 'react-redux';
 // import Razorpay from 'react-razorpay';
 import useRazorpay from "react-razorpay";
@@ -19,6 +19,9 @@ function Payment() {
     const batchId = useSelector(state => state.studentData.studentData.batch)
     const [feeDetails, setFeeDetails] = useState({ totalFee: "", pendingFee: "", installmentAmount: "" })
     const [selectedOption, setSelectedOption] = useState('One time settlement');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [paymentDetails, setPaymentDetails] = useState([])
+
     const Razorpay = useRazorpay();
     const navigate = useNavigate()
 
@@ -42,8 +45,16 @@ function Payment() {
                 });
         }
     }, [batchId])
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    useEffect(() => {
+        const headers = {
+            headers: {
+                Authorization: localStorage.getItem('studentToken')
+            }
+        };
+        getpaymentDetailsAPI(headers).then((response) => {
+            setPaymentDetails(response.data.paymentDetails)
+        })
+    }, [])
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -53,7 +64,6 @@ function Payment() {
         setIsModalOpen(false);
     }
 
-
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
     };
@@ -61,16 +71,15 @@ function Payment() {
     const handlePayment = () => {
         let option;
         if (selectedOption === "One time settlement")
-            option="One time"
+            option = "One time"
         else
-        option= "Installlment"
+            option = "Installlment"
         const headers = {
             headers: {
                 Authorization: localStorage.getItem('studentToken')
             }
         }
-        feePaymentAPI(batchId,{option}, headers).then((res) => {
-            console.log(res.data)
+        feePaymentAPI(batchId, { option }, headers).then((res) => {
             const options = {
                 key: razropaykeyId,
                 amount: res.data.order.amount,
@@ -80,32 +89,30 @@ function Payment() {
                 image: "/images/logo-project.png",
                 order_id: res.data.order.id,
                 handler: function (response) {
-                    const payment = {
-                        razorpay_order_id: response.razorpay_order_id,
-                        razorpay_payment_id: response.razorpay_payment_id,
-                        razorpay_signature: response.razorpay_signature,
-                      };
-                    verifyPayment(payment, res.data);
+
+                    verifyPayment(response, res.data);
                 },
                 prefill: {
-                    name: "Easy learn",   
+                    name: "Easy learn",
                     email: "easylearn@gmail.com",
                     contact: "9999999999",
-                  },
-                  notes: {
+                },
+                notes: {
                     address: "Razorpay Corporate Office",
-                  },
-                  theme: {
+                },
+                theme: {
                     color: "#28a745",
-                  },
-                };
-                const rzp1 = new Razorpay(options);
+                },
+            };
+            const rzp1 = new Razorpay(options);
 
-                rzp1.on("payment.failed", function () {
-                    message.error("payment failed");
-                    navigate("/students/payments");
-                  });
-                  rzp1.open();
+            rzp1.on("payment.failed", function () {
+                message.error("payment failed");
+                navigate("/student/payments");
+            });
+            rzp1.open();
+            setIsModalOpen(false)
+
         })
 
     }
@@ -116,13 +123,19 @@ function Payment() {
                 Authorization: localStorage.getItem('studentToken')
             }
         }
-       verifyPaymentAPI({ payment, details },headers).then((response) => {
-            message.success("payment completed successfully");
-          })
-          .catch(() => {
-            message.error("Payment failed");
-          });
-      };
+        verifyPaymentAPI({ payment, details }, headers).then((response) => {
+            if (response.status === 200) {
+                message.success("Successfully completed payment");
+                setIsModalOpen(false)
+            }
+
+        })
+            .catch(() => {
+                message.error("Payment failed");
+                setIsModalOpen(false)
+
+            });
+    };
 
 
 
@@ -209,18 +222,77 @@ function Payment() {
                         </div>
                     )}
                 </div>
+
                 <div className='container d-flex flex-wrap justify-content-between align-items-center'>
+
                     <div className='flexchildPayment' >
                         <div className='d-flex justify-content-center align-items-center mt-3'>
                             <h5>Payment history</h5>
                         </div>
-                    </div>
-                    <div className='flexchildPayment' >
-                        <div className='d-flex justify-content-center align-items-center mt-3'>
-                            <h5>Fee sttructure</h5>
+                        <div className='container mt-4'>
+                            <p className=''>
+                                <strong>
+                                    Remaining amount to pay : ₹{feeDetails.pendingFee}
+                                </strong>
+                            </p>
+                        </div>
+                        <div className='container mt-1 table-responsive '>
+                            <table className="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">SL NO</th>
+                                        <th scope="col">Refference id</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        paymentDetails.map((obj, index) => {
+
+                                            const date = obj.createdAt
+                                            const paidDate = new Date(date);
+                                            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                                            const readableDate = paidDate.toLocaleDateString('en-US', options);
+                                            return (
+                                                <tr key={obj._id}>
+                                                    <th scope="row">{index + 1}</th>
+                                                    <td>{obj._id}</td>
+                                                    <td>{readableDate}</td>
+                                                    <td>{obj.amount}</td>
+                                                    <td className='text-success'>{obj.status}</td>
+                                                </tr>
+                                            )
+                                        })
+
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+
+                    <div className='flexchildPayment' >
+                        <div className='d-flex justify-content-center align-items-center mt-3'>
+                            <h5>Fee structure</h5>
+                        </div>
+                        <div className='container mt-4'>
+                            <p className='feeStructurepara'>
+
+                                Your entire course fee is <strong>{feeDetails.totalFee}</strong>.
+                                You can pay your fee as a one-time settlement or
+                                in installments. If you choose installments for
+                                the first time, you will have to pay the fee in
+                                four installments.If you select installments and
+                                then later decide to switch to a one-time settlement,
+                                you will have an option to pay the remaining amount.
+
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
         </div>
     )

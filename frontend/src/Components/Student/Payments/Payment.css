@@ -3,7 +3,7 @@
 }
 .flexchildPayment{
     width: 580px;
-    height: 450px;
+    height: 350px;
     border: 1px solid black;
     border-radius: 15px;
     margin-top: 10px;
@@ -27,7 +27,6 @@
     max-width: 500px;
     max-height: 80%;
     overflow: auto;
-    /* z-index: 1; */
     position: relative;
     word-wrap: break-word; /* Add this */
   }
@@ -48,4 +47,9 @@
   color: #000000;
   text-decoration: none;
   cursor: pointer;
+}
+.feeStructurepara{
+  font-size: large;
+  font-weight: 400;
+  line-height: 35px;
 }

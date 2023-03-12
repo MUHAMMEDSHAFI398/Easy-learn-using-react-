@@ -10,7 +10,7 @@ dotenv.config();
 
 
 module.exports = {
-    login: (req, res) => {
+    login: (req, res, next) => {
         const email = req.body.email;
         const password = req.body.password;
 
@@ -40,7 +40,7 @@ module.exports = {
             res.json({ errors: errors })
         }
     },
-    addTeacher: async (req, res) => {
+    addTeacher: async (req, res, next) => {
         const data = req.body
         const registerId = await helpers.uniqueCodeGenerator('teacher')
         const image = {
@@ -83,7 +83,7 @@ module.exports = {
 
 
     },
-    getTeachers: (req, res) => {
+    getTeachers: (req, res, next) => {
 
         teacher.find().then((teachers) => {
             res.json({
@@ -102,7 +102,7 @@ module.exports = {
             })
         })
     },
-    editTeacher: (req, res) => {
+    editTeacher: (req, res, next) => {
         const data = req.body
         const id = req.params.id
         teacher.findByIdAndUpdate(id,
@@ -122,7 +122,7 @@ module.exports = {
             })
         })
     },
-    blockTeacher: (req, res) => {
+    blockTeacher: (req, res, next) => {
         const id = req.params.id
         teacher.findByIdAndUpdate(
             { _id: id },
@@ -140,7 +140,7 @@ module.exports = {
             })
         })
     },
-    unBlockTeacher: (req, res) => {
+    unBlockTeacher: (req, res, next) => {
         const id = req.params.id
         teacher.findByIdAndUpdate(
             { _id: id },
@@ -174,7 +174,7 @@ module.exports = {
         }
     },
 
-    addBatch: async (req, res) => {
+    addBatch: async (req, res, next) => {
 
         const data = req.body
         const batchId = await helpers.uniqueCodeGenerator('batch')
@@ -204,7 +204,7 @@ module.exports = {
             res.json({ status: true })
         })
     },
-    getBatches: async (req, res) => {
+    getBatches: async (req, res, next) => {
         try {
             const batchData = await batch.aggregate([
                 {
@@ -226,7 +226,7 @@ module.exports = {
 
 
     },
-    getBatch: async (req, res) => {
+    getBatch: async (req, res, next) => {
         const batchId = req.params.id
 
         try {
@@ -262,7 +262,7 @@ module.exports = {
         }
 
     },
-    getEditBatch: async (req, res) => {
+    getEditBatch: async (req, res, next) => {
 
         const id = req.params.id
         const objectId = mongoose.Types.ObjectId(id);
@@ -330,7 +330,7 @@ module.exports = {
 
 
     },
-    patchEditBatch: async (req, res) => {
+    patchEditBatch: async (req, res, next) => {
 
         const id = req.params.id
         const data = req.body
@@ -371,7 +371,7 @@ module.exports = {
                         remarks: data.remarks,
                         headOfTheBatch: data.batchHeadId,
                         subjects: data.subjectValues
-                    } 
+                    }
                 }
             )
             res.json({ status: true })
@@ -379,7 +379,7 @@ module.exports = {
             next(err)
         }
     },
-    getAvailableBatch: async (req, res) => {
+    getAvailableBatch: async (req, res, next) => {
 
         try {
             const availableBatches = await batch.find(
@@ -398,7 +398,7 @@ module.exports = {
         }
 
     },
-    addStudent: async (req, res) => {
+    addStudent: async (req, res, next) => {
         const data = req.body
 
         const registerId = await helpers.uniqueCodeGenerator('student')
@@ -413,14 +413,14 @@ module.exports = {
 
             const batchFee = await batch.aggregate([
                 {
-                    $match:{
+                    $match: {
                         registerId: data.batch
                     }
                 },
                 {
-                    $project:{
-                        _id:0,
-                        fee:1
+                    $project: {
+                        _id: 0,
+                        fee: 1
                     }
                 }
             ])
@@ -437,8 +437,8 @@ module.exports = {
                 institute: data.institute,
                 batch: data.batch,
                 isBlocked: false,
-                password:hashedPassword,
-                pendingFee:batchFee[0].fee,
+                password: hashedPassword,
+                pendingFee: batchFee[0].fee,
                 image: image,
                 address: {
                     house_name: data.house_name,
@@ -465,7 +465,7 @@ module.exports = {
 
 
     },
-    getStudents: async (req, res) => {
+    getStudents: async (req, res, next) => {
         try {
             const students = await student.find()
             res.json({
@@ -489,7 +489,7 @@ module.exports = {
             next(err)
         }
     },
-    unBlockStudent: async (req, res) => {
+    unBlockStudent: async (req, res, next) => {
 
         try {
             const id = req.params.id;
@@ -502,7 +502,7 @@ module.exports = {
             next(err)
         }
     },
-    getStudent: async (req, res) => {
+    getStudent: async (req, res, next) => {
         try {
             const id = req.params.id
             const studentData = await student.findOne({ _id: id })
@@ -514,7 +514,7 @@ module.exports = {
             next(err)
         }
     },
-    getLeaveApplications: async (req, res) => {
+    getLeaveApplications: async (req, res, next) => {
         try {
             const leaveData = await teacher.aggregate([
                 {
@@ -548,7 +548,7 @@ module.exports = {
             next(err)
         }
     },
-    leaveApprove: async (req, res) => {
+    leaveApprove: async (req, res, next) => {
         try {
             const data = req.body
             await teacher.updateOne(
@@ -567,7 +567,7 @@ module.exports = {
             next(err)
         }
     },
-    leaveReject: async (req, res) => {
+    leaveReject: async (req, res, next) => {
         try {
             const data = req.body
             await teacher.updateOne(
@@ -578,12 +578,12 @@ module.exports = {
                 {
                     $set: {
                         "myLeaves.$.status": "Rejected",
-                        "myLeaves.$.reason":data.reason
-    
+                        "myLeaves.$.reason": data.reason
+
                     }
                 }
             )
-    
+
             res.json({ status: true })
         } catch (err) {
             next(err)
@@ -592,4 +592,3 @@ module.exports = {
 
 }
 
- 

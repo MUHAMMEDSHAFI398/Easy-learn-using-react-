@@ -1,14 +1,15 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const teacher = require('../models/teacher')
 const batch = require('../models/batch');
 const student = require('../models/student')
-const mongoose = require('mongoose');
+const payment = require('../models/payment')
 const bcrypt = require('bcrypt');
 const helpers = require('../helpers/helpers')
 dotenv.config();
 const crypto = require('crypto')
 const Razorpay = require('razorpay');
+const mongoose = require("mongoose");
+
 
 
 
@@ -251,49 +252,93 @@ const feePayment = async (req, res) => {
     }
     try {
 
-        const uniqueId = crypto.randomBytes(20).toString('hex');
-
+        const paymentData = await payment.create({
+            registerId: studentId,
+            batch: batchId,
+            amount: amountToPay,
+            status: "Pending"
+        })
+        const reffereceId = paymentData._id
         const instance = new Razorpay({
             key_id: process.env.KEYID,
             key_secret: process.env.KEYSECRET,
         });
         let options = {
-            amount: amountToPay*100, // converting  paise to rupay
+            amount: amountToPay * 100, // converting  paise to rupay
             currency: "INR",
-            receipt: uniqueId
+            receipt: "" + reffereceId
         };
         instance.orders.create(options, function (err, order) {
             if (err) {
                 console.log(err);
             } else {
                 console.log(order)
-                res.status(200).json({ order:order} )
+                res.status(200).json({ order: order })
             }
         })
-    } catch (err) {  
+    } catch (err) {
         console.log(err)
-    }      
-}
-const verifyFeePayment = (req,res)=>{
-    // const {
-    //     razorpay_order_id,
-    //   razorpay_payment_id,
-    //   razorpay_signature
-    // } = req.body
-
-    const details = req.body;
-    console.log(req.body)
-    let hmac = crypto.createHmac("sha256", "CqNKI5UWBEas9ICbKmPan8if");
-    hmac.update(details.payment.razorpay_order_id + "|" + details.payment.razorpay_payment_id);
-    hmac = hmac.digest("hex");
-    if (hmac == details.payment.razorpay_signature){
-        res.status(200).json({message:"payment varified successfullly"})
-    }else {
-        res.status(400).json({message:"Invalid signature"})
     }
 }
-   
-module.exports = { 
+const verifyFeePayment = async (req, res, next) => {
+    const studentId = req.registerId
+    try {
+        const details = req.body;
+        console.log(details);
+        let hmac = crypto.createHmac("sha256", process.env.KEYSECRET);
+        hmac.update(details.payment.razorpay_order_id + "|" + details.payment.razorpay_payment_id);
+        hmac = hmac.digest("hex");
+        if (hmac == details.payment.razorpay_signature) {
+
+            const objId = mongoose.Types.ObjectId(details.details.order.receipt);
+            await payment.updateOne(
+                {
+                    _id: objId
+                },
+                {
+                    $set: {
+                        status: "Paid"
+                    }
+                }
+            )
+            const paidAmount = (details.details.order.amount) / 100
+            await student.updateOne(
+                {
+                    registerId: studentId
+                },
+                {
+                    $inc: {
+                        pendingFee: -paidAmount
+                    }
+                }
+            )
+            res.status(200).json({ message: "payment varified successfullly" })
+        } else {
+            res.status(400).json({ message: "Invalid signature" })
+        }
+    } catch (err) {
+        next(err)
+    }
+
+}
+
+const paymentDetails = async (req, res, next) => {
+    const studentId = req.registerId
+    try {
+        const paymentDetails = await payment.find(
+            {
+                registerId: studentId, status: "Paid"
+            }
+        )
+        res.status(200).json({
+            paymentDetails:paymentDetails 
+        })
+    } catch (err) {
+        next(err)
+    }
+}
+
+module.exports = {
     login,
     getHome,
     getMarkDetails,
@@ -302,5 +347,6 @@ module.exports = {
     getLeaveHistory,
     getFeeDetails,
     feePayment,
-    verifyFeePayment 
+    verifyFeePayment,
+    paymentDetails
 }   

@@ -22,6 +22,9 @@ studentRouter.post('/fee-payment/:id', verifyToken.verifyTokenStudent, studentCo
 
 studentRouter.post('/verify-payment', verifyToken.verifyTokenStudent, studentController.verifyFeePayment)
 
+studentRouter.get('/payment-details', verifyToken.verifyTokenStudent, studentController.paymentDetails)
+
+
 
 
 
