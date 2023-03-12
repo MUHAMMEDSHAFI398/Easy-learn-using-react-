@@ -371,7 +371,7 @@ module.exports = {
                         remarks: data.remarks,
                         headOfTheBatch: data.batchHeadId,
                         subjects: data.subjectValues
-                    }
+                    } 
                 }
             )
             res.json({ status: true })

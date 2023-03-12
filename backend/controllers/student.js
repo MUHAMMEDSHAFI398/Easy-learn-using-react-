@@ -258,7 +258,7 @@ const feePayment = async (req, res) => {
             key_secret: process.env.KEYSECRET,
         });
         let options = {
-            amount: amountToPay * 100, // converting  paise to rupay
+            amount: amountToPay*100, // converting  paise to rupay
             currency: "INR",
             receipt: uniqueId
         };
@@ -266,12 +266,13 @@ const feePayment = async (req, res) => {
             if (err) {
                 console.log(err);
             } else {
-                res.status(200).json({ order })
+                console.log(order)
+                res.status(200).json({ order:order} )
             }
         })
-    } catch (err) {
+    } catch (err) {  
         console.log(err)
-    }
+    }      
 }
 const verifyFeePayment = (req,res)=>{
     // const {
@@ -281,7 +282,8 @@ const verifyFeePayment = (req,res)=>{
     // } = req.body
 
     const details = req.body;
-    let hmac = crypto.createHmac("sha256", process.env.KEYSECRET);
+    console.log(req.body)
+    let hmac = crypto.createHmac("sha256", "CqNKI5UWBEas9ICbKmPan8if");
     hmac.update(details.payment.razorpay_order_id + "|" + details.payment.razorpay_payment_id);
     hmac = hmac.digest("hex");
     if (hmac == details.payment.razorpay_signature){
@@ -291,7 +293,7 @@ const verifyFeePayment = (req,res)=>{
     }
 }
    
-module.exports = {
+module.exports = { 
     login,
     getHome,
     getMarkDetails,

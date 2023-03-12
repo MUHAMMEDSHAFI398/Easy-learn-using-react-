@@ -70,6 +70,7 @@ function Payment() {
             }
         }
         feePaymentAPI(batchId,{option}, headers).then((res) => {
+            console.log(res.data)
             const options = {
                 key: razropaykeyId,
                 amount: res.data.order.amount,
@@ -77,9 +78,14 @@ function Payment() {
                 name: "Easy learn",
                 description: "Test Transaction",
                 image: "/images/logo-project.png",
-                order_id: res.data.id,
+                order_id: res.data.order.id,
                 handler: function (response) {
-                    verifyPayment(response, res);
+                    const payment = {
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_signature: response.razorpay_signature,
+                      };
+                    verifyPayment(payment, res.data);
                 },
                 prefill: {
                     name: "Easy learn",   
@@ -105,7 +111,12 @@ function Payment() {
     }
 
     const verifyPayment = (payment, details) => {
-       verifyPaymentAPI({ payment, details }).then((response) => {
+        const headers = {
+            headers: {
+                Authorization: localStorage.getItem('studentToken')
+            }
+        }
+       verifyPaymentAPI({ payment, details },headers).then((response) => {
             message.success("payment completed successfully");
           })
           .catch(() => {
