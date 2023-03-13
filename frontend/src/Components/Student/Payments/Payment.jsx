@@ -21,6 +21,8 @@ function Payment() {
     const [selectedOption, setSelectedOption] = useState('One time settlement');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [paymentDetails, setPaymentDetails] = useState([])
+    const [feeClosed, setFeeClosed] = useState(false)
+
 
     const Razorpay = useRazorpay();
     const navigate = useNavigate()
@@ -37,6 +39,9 @@ function Payment() {
             getFeeDetailsAPI(batchId, headers)
                 .then(response => {
                     if (response.status === 200) {
+                        if(response.data.pendingFee < 1){
+                            setFeeClosed(true)
+                        }
                         setFeeDetails(response.data);
                     }
                 })
@@ -44,7 +49,7 @@ function Payment() {
                     console.log(error);
                 });
         }
-    }, [batchId])
+    }, [batchId,isModalOpen])
     useEffect(() => {
         const headers = {
             headers: {
@@ -54,7 +59,9 @@ function Payment() {
         getpaymentDetailsAPI(headers).then((response) => {
             setPaymentDetails(response.data.paymentDetails)
         })
-    }, [])
+    }, [isModalOpen])
+
+   
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -111,7 +118,6 @@ function Payment() {
                 navigate("/student/payments");
             });
             rzp1.open();
-            setIsModalOpen(false)
 
         })
 
@@ -143,7 +149,16 @@ function Payment() {
         <div className='container'>
             <div className='container paymentParent'>
                 <div className='d-flex justify-content-end'>
-                    <button onClick={openModal} className='btn btn-success me-3 mb-2'> Completer your Payment</button>
+                    {
+                        feeClosed ?
+                        <div className='container d-flex justify-content-center'>
+                        <h3>You successfully closed your entire course fee</h3>
+
+                        </div>
+                            :
+                            <button onClick={openModal} className='btn btn-success me-3 mb-2'> Completer your Payment</button>
+
+                    }
                     {isModalOpen && (
                         <div className="ModalPayment">
                             <div className="modalPayment-content">
@@ -184,7 +199,7 @@ function Payment() {
                                                         </div>
 
 
-                                                    </td>
+                                            </td>
 
                                                 </tr>
                                                 <tr>
@@ -213,8 +228,8 @@ function Payment() {
 
                                         <div className='d-flex justify-content-center'>
                                             <button onClick={handlePayment} className='btn btn-success'>Make payment</button>
-
                                         </div>
+
                                     </div>
 
                                 </div>
@@ -227,20 +242,25 @@ function Payment() {
 
                     <div className='flexchildPayment' >
                         <div className='d-flex justify-content-center align-items-center mt-3'>
-                            <h5>Payment history</h5>
+                            <h5 style={{textDecoration:"underline"}}>Payment history</h5>
                         </div>
                         <div className='container mt-4'>
-                            <p className=''>
+                            {
+                                feeDetails.pendingFee > 1 && (
+                            <p >
                                 <strong>
                                     Remaining amount to pay : ₹{feeDetails.pendingFee}
                                 </strong>
                             </p>
+                                )
+}
                         </div>
                         <div className='container mt-1 table-responsive '>
+                            { paymentDetails.length !==0 ?
                             <table className="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col">SL NO</th>
+                                        <th scope="col">NO</th>
                                         <th scope="col">Refference id</th>
                                         <th scope="col">Date</th>
                                         <th scope="col">Amount</th>
@@ -261,7 +281,7 @@ function Payment() {
                                                     <td>{obj._id}</td>
                                                     <td>{readableDate}</td>
                                                     <td>{obj.amount}</td>
-                                                    <td className='text-success'>{obj.status}</td>
+                                                    <td className='text-success'><strong>{obj.status}</strong></td>
                                                 </tr>
                                             )
                                         })
@@ -269,23 +289,28 @@ function Payment() {
                                     }
                                 </tbody>
                             </table>
+                            :
+                            <div className='container mt-5 d-flex justify-content-center align-items-center'>
+                                  <h3>You have no payment history</h3>
+                            </div>
+}
                         </div>
                     </div>
 
                     <div className='flexchildPayment' >
                         <div className='d-flex justify-content-center align-items-center mt-3'>
-                            <h5>Fee structure</h5>
+                            <h5 style={{textDecoration:"underline"}} >Fee structure</h5>
                         </div>
                         <div className='container mt-4'>
                             <p className='feeStructurepara'>
 
                                 Your entire course fee is <strong>{feeDetails.totalFee}</strong>.
-                                You can pay your fee as a one-time settlement or
-                                in installments. If you choose installments for
-                                the first time, you will have to pay the fee in
-                                four installments.If you select installments and
-                                then later decide to switch to a one-time settlement,
-                                you will have an option to pay the remaining amount.
+                                We offer two payment options for your fee. a one-time settlement
+                                or installment payments. If you choose to pay in installments,
+                                you will be required to make four payments in total. If you start
+                                with installment payments and later decide to switch to a one-time
+                                settlement, you will have the option to pay the remaining balance
+                                in full as a one-time payment.
 
                             </p>
                         </div>

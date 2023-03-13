@@ -7,8 +7,6 @@ import Swal from 'sweetalert2'
 import { leaveHistoryAPI, postLetterAPI } from '../../../Services/StudentServices';
 
 function LeaveApplications() {
-    const [twoDateInput, setTwoDateInput] = useState(false)
-    const [singleDateInput, setSingleDateInput] = useState(false)
     const [letter, setLetter] = useState({ leaveLetter: "", from: "", to: "" })
     const [error, setErrors] = useState({});
     const [leaveHistory, setLeaveHistory] = useState([])
@@ -28,17 +26,7 @@ function LeaveApplications() {
             }
         })
     }, [])
-    const handleTwoDateInput = (e) => {
-        e.preventDefault()
-        setSingleDateInput(false)
-        setTwoDateInput(true)
-    }
-    const handleSingleDateInput = (e) => {
-        e.preventDefault()
-        setTwoDateInput(false)
-        setSingleDateInput(true)
-
-    }
+   
 
 
     const handleChange = (e) => {
@@ -262,25 +250,9 @@ function LeaveApplications() {
                         <p className='leave-leter'>Apply for leave</p>
                     </div>
                     <form className='container' onSubmit={handleSubmit}>
-                        <div className='container d-flex flex-wrap justify-content-between align-items-center mt-3'>
-                            <button
-                                onClick={handleTwoDateInput}
-                                className='btnforDate mb-2'>
-
-                                Click here for taking more than one leave
-                            </button>
-                            <button
-                                onClick={handleSingleDateInput}
-                                className='btnforDate mb-2'>
-                                Click here for taking single leave
-                            </button>
-
-                        </div>
-                        {
-                            twoDateInput ?
-                                <>
-                                    <div className='d-flex flex-wrap justify-content-center align-items-center mt-1'>
-                                        <div className='d-flex flex-column'>
+                       
+                                    <div className='d-flex flex-wrap justify-content-center align-items-center mt-4'>
+                                        <div className='d-flex flex-column '>
                                             <label className='me-2 ms-2' htmlFor="from">From</label>
                                             <input
                                                 onChange={handleChange}
@@ -318,27 +290,8 @@ function LeaveApplications() {
                                         {error.date && (<p className="ms-2 text-danger">{error.date}</p>)}
 
                                     </div>
-                                </>
-                                : <div></div>
-                        }
-                        {singleDateInput ?
-                            <div className='d-flex justify-content-center align-items-center mt-1' >
-                                <div className='d-flex flex-column'>
-                                    <label className='ms-2 me-2' htmlFor="from">Select date</label>
-                                    <input
-                                        value={letter.from}
-                                        onChange={handleSingleDateChange}
-                                        className='fromToInput ms-2 me-2 mb-2'
-                                        name='from' type="date"
-                                        min={new Date().toISOString().split("T")[0]}
-                                    />
-                                    {error.from && (<p className="ms-2 text-danger">Date is required</p>)}
-
-                                </div>
-                            </div>
-                            : <div></div>
-                        }
-                        <div className='d-flex justify-content-center align-items-center mt-1'>
+                            
+                        <div className='d-flex justify-content-center align-items-center mt-3'>
                             <textarea
                                 onChange={handleChange}
                                 value={letter.leaveLetter}
@@ -351,7 +304,7 @@ function LeaveApplications() {
                         {error.leaveLetter && (<p className="ms-2 text-danger">{error.leaveLetter}</p>)}
 
                         <div className='d-flex justify-content-center align-items-center mt-3'>
-                            <button type='submit' className='submitbutn'>Submit</button>
+                            <button type='submit' className='submitbutn mt-3 btn btn-success'>Submit</button>
                         </div>
                     </form>
                 </div>

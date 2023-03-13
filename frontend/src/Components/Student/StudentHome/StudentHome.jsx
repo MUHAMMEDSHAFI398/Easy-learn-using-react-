@@ -37,8 +37,6 @@ function StudentHome() {
                 <Link to='/student/leave-applications'>
                 <button className='btn btn-success homeBtns'> Apply for leave</button>
                 </Link>
-                <button className='btn btn-success homeBtns'> Completer your Payment</button>
-
             </div>
             <div className='batch-deatails-parent-div'>
 
