@@ -69,3 +69,7 @@ export const leaveApproveAPI = (data,headers) => {
 export const leaveRejectAPI = (data,headers) => {
     return axios.patch('/office/leave-reject',data, headers)
 }
+
+export const getDashbordDataAPI = (headers) => {
+    return axios.get('/office/dashboard', headers)
+}

@@ -6,7 +6,7 @@
     border: 1px solid black;
     border-radius: 10px;
     margin-bottom: 20px;
-
+    
 }
 
 .titlestyling {
@@ -36,4 +36,27 @@ caption {
     font-weight: bold;
     color: black;
     text-align: center;
+}
+
+.tabsSelctbtnNonHilites{
+    width: 150px;
+    height: 35px;
+    border-radius: 8px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.tabsSelctbtnHilites{
+    width: 150px;
+    height: 35px;
+    border-radius: 8px;
+    border: 1px solid orange;
+    background-color: orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
 }

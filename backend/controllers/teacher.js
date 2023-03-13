@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const helpers = require('../helpers/helpers')
 dotenv.config();
 
-const login = async (req, res) => {
+const login = async (req, res,next) => {
     const data = req.body
     try {
         const teacherData = await teacher.findOne({ registerId: data.registerId })
@@ -42,20 +42,20 @@ const login = async (req, res) => {
         }
 
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
 
-const getHome = async (req, res) => {
+const getHome = async (req, res,next) => {
     const id = req.registerId
     try {
         const teacherData = await teacher.findOne({ registerId:id })
         res.json({ teacherData: teacherData })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const updateProfile = async (req, res) => {
+const updateProfile = async (req, res,next) => {
     const id = req.registerId
     const address = req.body.address
     const data = req.body.teacherData
@@ -80,10 +80,10 @@ const updateProfile = async (req, res) => {
         )
         res.json({ status: true })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const getMyStudents = async (req, res) => {
+const getMyStudents = async (req, res,next) => {
 
     const id = req.registerId
     try {
@@ -109,11 +109,11 @@ const getMyStudents = async (req, res) => {
             res.json({ status: false })
         }
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 
 }
-const eachStudent = async (req, res) => {
+const eachStudent = async (req, res,next) => {
     const id = req.params.id
     try {
         const studentData = await student.findOne({ registerId: id })
@@ -123,10 +123,10 @@ const eachStudent = async (req, res) => {
         })
 
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const getMyBatch = async (req, res) => {
+const getMyBatch = async (req, res,next) => {
     const id = req.registerId
     try {
         const teacherData = await teacher.aggregate([
@@ -171,10 +171,10 @@ const getMyBatch = async (req, res) => {
 
 
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const postLetter = async (req, res) => {
+const postLetter = async (req, res,next) => {
     const id =req.registerId
     const today = new Date();
     const data = {
@@ -200,10 +200,10 @@ const postLetter = async (req, res) => {
             status: true,
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const getLeaveHistory = async (req, res) => {
+const getLeaveHistory = async (req, res,next) => {
     const id = req.registerId
     try {
         const leaveHistory = await teacher.aggregate([
@@ -233,11 +233,11 @@ const getLeaveHistory = async (req, res) => {
             leaveHistory: leaveHistory
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
 
-const batchStartEndDate = async (req, res) => {
+const batchStartEndDate = async (req, res,next) => {
     const id = req.registerId
     try {
 
@@ -286,10 +286,10 @@ const batchStartEndDate = async (req, res) => {
 
 
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const addWorkingDays = async (req, res) => {
+const addWorkingDays = async (req, res,next) => {
     const id = req.registerId
     const data = req.body
     try {
@@ -357,11 +357,11 @@ const addWorkingDays = async (req, res) => {
             })
         }
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 
 }
-const monthlyWorkDays = async (req, res) => {
+const monthlyWorkDays = async (req, res,next) => {
     const id = req.registerId
     try {
         const teacherData = await teacher.aggregate([
@@ -401,11 +401,11 @@ const monthlyWorkDays = async (req, res) => {
 
 
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 
 }
-const availableMonth = async (req, res) => {
+const availableMonth = async (req, res,next) => {
     const id = req.registerId
     try {
         const teacherData = await teacher.aggregate([
@@ -439,11 +439,11 @@ const availableMonth = async (req, res) => {
             availableMonth: sortedAvailbleMonth
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 
 }
-const addAttendance = async (req, res) => {
+const addAttendance = async (req, res,next) => {
 
     const data = req.body
     const object = {
@@ -506,10 +506,10 @@ const addAttendance = async (req, res) => {
         }
 
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const attenDanceData = async (req, res) => {
+const attenDanceData = async (req, res,next) => {
     const id = req.params.id
     try {
         const attendanceDatas = await student.aggregate([
@@ -530,10 +530,10 @@ const attenDanceData = async (req, res) => {
             attendanceData: attendacearray
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const getBatchSubjects = async (req, res) => {
+const getBatchSubjects = async (req, res,next) => {
 
     const batchId = req.params.id
     try {
@@ -556,10 +556,10 @@ const getBatchSubjects = async (req, res) => {
             subjects: SubjectsArray
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const addStudentMark = async (req, res) => {
+const addStudentMark = async (req, res,next) => {
     const data = req.body
     const percentage = data.subjectMarks.reduce((acc, obj) => acc + obj.mark, 0) / data.subjectMarks.length;
     const roundPercentage = percentage.toFixed(3)
@@ -609,13 +609,13 @@ const addStudentMark = async (req, res) => {
             )
             res.json({ status: true })
         } catch (err) {
-            console.log(err)
+            next(err)
         }
     }
 
 
 }
-const getMarkDetails = async (req, res) => {
+const getMarkDetails = async (req, res,next) => {
     const studentId = req.params.id
     try {
         const markdetails = await student.aggregate([
@@ -636,11 +636,11 @@ const getMarkDetails = async (req, res) => {
             markdetails: sortedMarkDeatails
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 
 }
-const studenLeaves = async (req,res)=>{
+const studenLeaves = async (req,res,next)=>{
     try {
         const leaveData = await student.aggregate([
             {
@@ -670,11 +670,11 @@ const studenLeaves = async (req,res)=>{
             leaveData: leaveData
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
 
-const studenLeavApprove = async(req,res)=>{
+const studenLeavApprove = async(req,res,next)=>{
     try {
         const data = req.body
         await student.updateOne(
@@ -690,11 +690,11 @@ const studenLeavApprove = async(req,res)=>{
         )
         res.json({ status: true })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
 
-const studentLeaveReject = async(req,res)=>{
+const studentLeaveReject = async(req,res,next)=>{
 
     try {
         const data = req.body
@@ -714,7 +714,7 @@ const studentLeaveReject = async(req,res)=>{
 
         res.json({ status: true })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 
 }

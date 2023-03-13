@@ -13,16 +13,6 @@
     border: 1px solid black;
     background-color: rgb(244, 243, 242);
 }
-.datasubmitbtn{
-    border-radius: 10px;
-    width: 420px;
-    height: 39px;
-    border: 1px solid green;
-    background-color: green;
-    color: white;
-    margin-top: 50px;
-
-}
 .monthParentDivss{
     border: 1px solid black;
     border-radius: 10px;
@@ -69,21 +59,20 @@
     padding-left: 90px;
     padding-right: 90px;
 }
-.datasubmittbtn{
+.attendanceSubmitbtn{
     border-radius: 10px;
-    width: 504px;
+    width: 420px;
     height: 39px;
-    border: 1px solid green;
-    background-color: green;
+    color: white;
+    margin-top: 50px;
+
+}
+
+.markSubmitbtn{
+    border-radius: 10px;
+    width: 503px;
+    height: 39px;
     color: white;
     margin-top: 10px;
 
-}
-.btns{
-    border-radius: 10px;
-    width: 265px;
-    height: 36px;
-    border: 1px solid green;
-    background-color: green;
-    color: white;
 }

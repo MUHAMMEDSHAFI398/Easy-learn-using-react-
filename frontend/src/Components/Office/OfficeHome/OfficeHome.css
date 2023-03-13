@@ -3,3 +3,13 @@
     width: fit-content;
     block-size: fit-content;
 } */
+
+.headChilds{
+
+    border-radius: 10px;
+    width: 290px;
+    height: 90px;
+    background-color: white;
+    /* border: 1px solid black; */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}

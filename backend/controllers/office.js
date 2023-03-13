@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const teacher = require('../models/teacher')
 const batch = require('../models/batch');
 const student = require('../models/student')
+const payment = require('../models/payment')
 const helpers = require('../helpers/helpers')
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -588,6 +589,51 @@ module.exports = {
         } catch (err) {
             next(err)
         }
+    },
+    getDashbordData: async (req, res, next) => {
+        try {
+
+            const studentsCount = await student.countDocuments()
+            const batchCount = await batch.countDocuments()
+            const teacherCount = await teacher.countDocuments()
+
+            const activeBatchesTotalFee = await batch.aggregate([
+                {
+                  $match:{
+                    endDate: { $gte: new Date() }
+                  }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        total: { $multiply: ["$batchFill", "$fee"] }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        total: { $sum: "$total" }
+                    }
+                }
+            ])
+            const totalPaidAmount = await payment.aggregate([
+                {
+                    $group: {
+                        _id: null,
+                        total: { $sum: "$amount" }
+                    }
+                }
+            ])
+            const feeCompletionRate = ((totalPaidAmount[0].total/activeBatchesTotalFee[0].total)*100).toFixed(2)
+            res.json({
+                studentsCount, batchCount, teacherCount,feeCompletionRate
+            })
+
+        } catch (err) {
+
+            next(err)
+        }
+
     }
 
 }

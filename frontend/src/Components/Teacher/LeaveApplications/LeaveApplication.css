@@ -44,4 +44,12 @@
     border: 1px solid #888;
     width: 40%;
   }
+
+  .btnsubmt{
+    color: white;
+    border-radius: 10px;
+    border: 1px solid;
+    width: 570px;
+    height: 35px;
+}
   

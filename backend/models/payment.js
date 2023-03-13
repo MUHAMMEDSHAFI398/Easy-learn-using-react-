@@ -8,11 +8,17 @@ const paymentSchema = new mongoose.Schema(
             trim: true,
             uppercase: true,
         },
+        name:{
+            type:String
+        },
         batch:{
             type: String,
         },
         amount: {
-            type: String
+            type: Number
+        },
+        type:{
+           type:String
         },
         status:{
           type:String,

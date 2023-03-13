@@ -211,7 +211,7 @@ function AddStudentData() {
     <div className='container'>
 
       <div className='d-flex flex-wrap justify-content-center align-items-center ms-4 me-4 mb-5'>
-        <button onClick={handleClick} className='btns' >Click here to view student history</button>
+        <button onClick={handleClick} className='btn btn-success' >Click here to view student history</button>
 
       </div>
       <div className='d-flex flex-wrap justify-content-between align-items-center ms-4 me-4 mb-5'>
@@ -268,7 +268,7 @@ function AddStudentData() {
             </div>
 
             <div className='d-flex flex-column'>
-              <button onClick={handleSubmit} className='datasubmitbtn' type='submit'>Submit</button>
+              <button onClick={handleSubmit} className='attendanceSubmitbtn btn btn-success' type='submit'>Submit</button>
             </div>
 
           </div>
@@ -326,7 +326,7 @@ function AddStudentData() {
                 <div className='d-flex justify-content-center align-items-center mt-3'>
                   {markerror?.mark && <p className=" text-danger">{markerror?.mark}</p>}
                 </div>
-                <button type='submit' className='datasubmittbtn'>Submit</button>
+                <button type='submit' className='markSubmitbtn btn btn-success'>Submit</button>
               </form>
             </div>
 

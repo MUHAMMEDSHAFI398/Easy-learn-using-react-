@@ -13,7 +13,7 @@ const mongoose = require("mongoose");
 
 
 
-const login = async (req, res) => {
+const login = async (req, res,next) => {
     const data = req.body
     try {
         const studentData = await student.findOne({ registerId: data.registerId })
@@ -47,19 +47,19 @@ const login = async (req, res) => {
         }
 
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const getHome = async (req, res) => {
+const getHome = async (req, res,next) => {
     const id = req.registerId
     try {
         const studentData = await student.findOne({ registerId: id })
         res.json({ studentData: studentData })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const getMarkDetails = async (req, res) => {
+const getMarkDetails = async (req, res,next) => {
     const studentId = req.registerId
     try {
         const markdetails = await student.aggregate([
@@ -80,11 +80,11 @@ const getMarkDetails = async (req, res) => {
             markdetails: sortedMarkDeatails
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 
 }
-const attenDanceData = async (req, res) => {
+const attenDanceData = async (req, res,next) => {
     const id = req.registerId
     try {
         const attendanceDatas = await student.aggregate([
@@ -105,10 +105,10 @@ const attenDanceData = async (req, res) => {
             attendanceData: attendacearray
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const postLetter = async (req, res) => {
+const postLetter = async (req, res,next) => {
     const id = req.registerId
     const today = new Date();
     const data = {
@@ -134,10 +134,10 @@ const postLetter = async (req, res) => {
             status: true,
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const getLeaveHistory = async (req, res) => {
+const getLeaveHistory = async (req, res,next) => {
     const id = req.registerId
     try {
         const leaveHistory = await student.aggregate([
@@ -165,10 +165,10 @@ const getLeaveHistory = async (req, res) => {
             leaveHistory: leaveHistory
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
-const getFeeDetails = async (req, res) => {
+const getFeeDetails = async (req, res,next) => {
     const batchId = req.params.id
     const studentId = req.registerId
     try {
@@ -205,11 +205,11 @@ const getFeeDetails = async (req, res) => {
             installmentAmount: installmentAmount
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
 
-const feePayment = async (req, res) => {
+const feePayment = async (req, res,next) => {
     const studentId = req.registerId
     const batchId = req.params.id
     let amountToPay;
@@ -248,7 +248,7 @@ const feePayment = async (req, res) => {
         }
 
     } catch (err) {
-        console.log(err)
+        next(err)
     }
     try {
 
@@ -256,7 +256,8 @@ const feePayment = async (req, res) => {
             registerId: studentId,
             batch: batchId,
             amount: amountToPay,
-            status: "Pending"
+            status: "Pending",
+            type:req.body.option
         })
         const reffereceId = paymentData._id
         const instance = new Razorpay({
@@ -270,21 +271,19 @@ const feePayment = async (req, res) => {
         };
         instance.orders.create(options, function (err, order) {
             if (err) {
-                console.log(err);
+                next(err);
             } else {
-                console.log(order)
                 res.status(200).json({ order: order })
             }
         })
     } catch (err) {
-        console.log(err)
+        next(err)
     }
 }
 const verifyFeePayment = async (req, res, next) => {
     const studentId = req.registerId
     try {
         const details = req.body;
-        console.log(details);
         let hmac = crypto.createHmac("sha256", process.env.KEYSECRET);
         hmac.update(details.payment.razorpay_order_id + "|" + details.payment.razorpay_payment_id);
         hmac = hmac.digest("hex");

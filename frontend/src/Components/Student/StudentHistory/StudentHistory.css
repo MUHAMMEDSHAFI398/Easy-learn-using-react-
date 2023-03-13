@@ -37,3 +37,26 @@ caption {
     color: black;
     text-align: center;
 }
+.tabsSelctbtnNonHilite{
+    width: 150px;
+    height: 35px;
+    border-radius: 8px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.tabsSelctbtnHilite{
+    width: 150px;
+    height: 35px;
+    border-radius: 8px;
+    border: 1px solid orange;
+    background-color: orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+}
+

@@ -92,7 +92,7 @@ function AddBatches() {
         }
     }
       addBatchAPI(data,headers).then((response) => {
-        
+     
         if (response.data.status) {
           message.success('Successfully added new batch')
           navigate('/office/batches')
