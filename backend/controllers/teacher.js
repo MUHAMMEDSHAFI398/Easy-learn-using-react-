@@ -5,10 +5,11 @@ const batch = require('../models/batch');
 const student = require('../models/student')
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const helpers = require('../helpers/helpers')
+const helpers = require('../helpers/helpers');
+const payment = require("../models/payment");
 dotenv.config();
 
-const login = async (req, res,next) => {
+const login = async (req, res, next) => {
     const data = req.body
     try {
         const teacherData = await teacher.findOne({ registerId: data.registerId })
@@ -46,23 +47,23 @@ const login = async (req, res,next) => {
     }
 }
 
-const getHome = async (req, res,next) => {
+const getHome = async (req, res, next) => {
     const id = req.registerId
     try {
-        const teacherData = await teacher.findOne({ registerId:id })
+        const teacherData = await teacher.findOne({ registerId: id })
         res.json({ teacherData: teacherData })
     } catch (err) {
         next(err)
     }
 }
-const updateProfile = async (req, res,next) => {
+const updateProfile = async (req, res, next) => {
     const id = req.registerId
     const address = req.body.address
     const data = req.body.teacherData
     try {
         await teacher.updateOne(
 
-            { registerId:id },
+            { registerId: id },
             {
                 $set: {
                     phone: data.phone,
@@ -83,7 +84,7 @@ const updateProfile = async (req, res,next) => {
         next(err)
     }
 }
-const getMyStudents = async (req, res,next) => {
+const getMyStudents = async (req, res, next) => {
 
     const id = req.registerId
     try {
@@ -113,7 +114,7 @@ const getMyStudents = async (req, res,next) => {
     }
 
 }
-const eachStudent = async (req, res,next) => {
+const eachStudent = async (req, res, next) => {
     const id = req.params.id
     try {
         const studentData = await student.findOne({ registerId: id })
@@ -126,7 +127,7 @@ const eachStudent = async (req, res,next) => {
         next(err)
     }
 }
-const getMyBatch = async (req, res,next) => {
+const getMyBatch = async (req, res, next) => {
     const id = req.registerId
     try {
         const teacherData = await teacher.aggregate([
@@ -174,16 +175,16 @@ const getMyBatch = async (req, res,next) => {
         next(err)
     }
 }
-const postLetter = async (req, res,next) => {
-    const id =req.registerId
+const postLetter = async (req, res, next) => {
+    const id = req.registerId
     const today = new Date();
     const data = {
         appliedDate: today,
-        from:req.body.from,
-        to:req.body.to,
+        from: req.body.from,
+        to: req.body.to,
         letter: req.body.leaveLetter,
         status: "Pending",
-        reason:""
+        reason: ""
     }
     try {
         await teacher.updateOne(
@@ -203,13 +204,13 @@ const postLetter = async (req, res,next) => {
         next(err)
     }
 }
-const getLeaveHistory = async (req, res,next) => {
+const getLeaveHistory = async (req, res, next) => {
     const id = req.registerId
     try {
         const leaveHistory = await teacher.aggregate([
             {
                 $match: {
-                    registerId: id      
+                    registerId: id
                 }
             },
             {
@@ -237,7 +238,7 @@ const getLeaveHistory = async (req, res,next) => {
     }
 }
 
-const batchStartEndDate = async (req, res,next) => {
+const batchStartEndDate = async (req, res, next) => {
     const id = req.registerId
     try {
 
@@ -289,7 +290,7 @@ const batchStartEndDate = async (req, res,next) => {
         next(err)
     }
 }
-const addWorkingDays = async (req, res,next) => {
+const addWorkingDays = async (req, res, next) => {
     const id = req.registerId
     const data = req.body
     try {
@@ -361,7 +362,7 @@ const addWorkingDays = async (req, res,next) => {
     }
 
 }
-const monthlyWorkDays = async (req, res,next) => {
+const monthlyWorkDays = async (req, res, next) => {
     const id = req.registerId
     try {
         const teacherData = await teacher.aggregate([
@@ -405,7 +406,7 @@ const monthlyWorkDays = async (req, res,next) => {
     }
 
 }
-const availableMonth = async (req, res,next) => {
+const availableMonth = async (req, res, next) => {
     const id = req.registerId
     try {
         const teacherData = await teacher.aggregate([
@@ -443,7 +444,7 @@ const availableMonth = async (req, res,next) => {
     }
 
 }
-const addAttendance = async (req, res,next) => {
+const addAttendance = async (req, res, next) => {
 
     const data = req.body
     const object = {
@@ -499,6 +500,39 @@ const addAttendance = async (req, res,next) => {
                 }
             ])
             const attendacearray = await attendanceData[0]?.attendance?.sort((a, b) => b.month - a.month)
+            const avgStudentAttendance = await student.aggregate([
+                {
+                    $match: {
+                        registerId: data.studentId
+                    }
+                },
+                {
+                    $unwind: "$attendance"
+                },
+                {
+                    $group: {
+                        _id: null,
+                        total: { $sum: "$attendance.percent" },
+                        count: { $sum: 1 }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        avgAttendance: { $divide: ["$total", "$count"] }
+                    }
+                }
+            ])
+            await student.updateOne(
+                {
+                    registerId: data.studentId
+                },
+                {
+                    $set: {
+                        avgAttendance: (avgStudentAttendance[0].avgAttendance).toFixed(2)
+                    }
+                }
+            )
             res.json({
                 status: true,
                 attendanceData: attendacearray
@@ -509,7 +543,7 @@ const addAttendance = async (req, res,next) => {
         next(err)
     }
 }
-const attenDanceData = async (req, res,next) => {
+const attenDanceData = async (req, res, next) => {
     const id = req.params.id
     try {
         const attendanceDatas = await student.aggregate([
@@ -533,7 +567,7 @@ const attenDanceData = async (req, res,next) => {
         next(err)
     }
 }
-const getBatchSubjects = async (req, res,next) => {
+const getBatchSubjects = async (req, res, next) => {
 
     const batchId = req.params.id
     try {
@@ -559,7 +593,7 @@ const getBatchSubjects = async (req, res,next) => {
         next(err)
     }
 }
-const addStudentMark = async (req, res,next) => {
+const addStudentMark = async (req, res, next) => {
     const data = req.body
     const percentage = data.subjectMarks.reduce((acc, obj) => acc + obj.mark, 0) / data.subjectMarks.length;
     const roundPercentage = percentage.toFixed(3)
@@ -607,6 +641,39 @@ const addStudentMark = async (req, res,next) => {
                     }
                 }
             )
+            const studentPerformance = await student.aggregate([
+                {
+                    $match: {
+                        registerId: data.studentId
+                    }
+                },
+                {
+                    $unwind: "$markdetails"
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalMarks: { $sum: "$markdetails.percentage" },
+                        count: { $sum: 1 }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        avgMark: { $divide: ["$totalMarks", "$count"] }
+                    }
+                }
+            ])
+            await student.updateOne(
+                {
+                    registerId: data.studentId
+                },
+                {
+                    $set: {
+                        performance: (studentPerformance[0].avgMark).toFixed(2)
+                    }
+                }
+            )
             res.json({ status: true })
         } catch (err) {
             next(err)
@@ -615,7 +682,7 @@ const addStudentMark = async (req, res,next) => {
 
 
 }
-const getMarkDetails = async (req, res,next) => {
+const getMarkDetails = async (req, res, next) => {
     const studentId = req.params.id
     try {
         const markdetails = await student.aggregate([
@@ -640,7 +707,7 @@ const getMarkDetails = async (req, res,next) => {
     }
 
 }
-const studenLeaves = async (req,res,next)=>{
+const studenLeaves = async (req, res, next) => {
     try {
         const leaveData = await student.aggregate([
             {
@@ -674,7 +741,7 @@ const studenLeaves = async (req,res,next)=>{
     }
 }
 
-const studenLeavApprove = async(req,res,next)=>{
+const studenLeavApprove = async (req, res, next) => {
     try {
         const data = req.body
         await student.updateOne(
@@ -694,7 +761,7 @@ const studenLeavApprove = async(req,res,next)=>{
     }
 }
 
-const studentLeaveReject = async(req,res,next)=>{
+const studentLeaveReject = async (req, res, next) => {
 
     try {
         const data = req.body
@@ -706,7 +773,7 @@ const studentLeaveReject = async(req,res,next)=>{
             {
                 $set: {
                     "myLeaves.$.status": "Rejected",
-                    "myLeaves.$.reason":data.reason
+                    "myLeaves.$.reason": data.reason
 
                 }
             }
@@ -717,6 +784,157 @@ const studentLeaveReject = async(req,res,next)=>{
         next(err)
     }
 
+}
+
+const studentPerformance = async (req, res, next) => {
+    const studentId = req.params.id
+    const teacherId = req.registerId
+    console.log('jiji')
+    try {
+        const studentPerformance = await student.aggregate([
+            {
+                $match: {
+                    registerId: studentId
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    performance: 1,
+                    avgAttendance: 1
+                }
+            }
+        ])
+        const batchId = await teacher.aggregate([
+            {
+                $match: {
+                    registerId: teacherId
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    myBatch: 1
+                }
+            }
+        ])
+        const courseFee = await batch.aggregate([
+            {
+                $match: {
+                    registerId: batchId[0].myBatch,
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    fee: 1
+                }
+            },
+
+        ])
+        const totalPaidAmount = await payment.aggregate([
+            {
+                $match: {
+                    registerId: studentId,
+                    status: "Paid"
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: "$amount" }
+                }
+            }
+        ])
+        const feeCompletionRate = ((totalPaidAmount[0].total / courseFee[0].fee) * 100).toFixed(2)
+        res.status(200).json(
+            {
+                performance: studentPerformance[0].performance,
+                avgAttendance: studentPerformance[0].avgAttendance,
+                feeCompletionRate: parseFloat(feeCompletionRate)
+            }
+        )
+    } catch (err) {
+        next(err)
+    }
+}
+
+const batchPerformance = async (req, res, next) => {
+    const teacherId = req.registerId
+    try {
+
+        const batchId = await teacher.aggregate([
+            {
+                $match: {
+                    registerId: teacherId
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    myBatch: 1
+                }
+            }
+        ])
+        const totalFee = await batch.aggregate([
+            {
+                $match: {
+                    registerId: batchId[0].myBatch,
+                    endDate: { $gte: new Date() }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    total: { $multiply: ["$batchFill", "$fee"] }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: "$total" }
+                }
+            }
+        ])
+        const totalPaidAmount = await payment.aggregate([
+            {
+                $match: {
+                    batch: batchId[0].myBatch,
+                    status: "Paid"
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: "$amount" }
+                }
+            }
+        ])
+        const feeCompletionRate = ((totalPaidAmount[0].total / totalFee[0].total) * 100).toFixed(2)
+
+        const performance = await student.aggregate([
+            {
+                $match:{
+                    batch:batchId[0].myBatch
+                }
+            },
+            {
+              $group: {
+                _id: null,
+                avgPerformance: { $avg: "$performance" },
+                avgattendance: { $avg: "$avgAttendance" }
+              }
+            }
+          ])
+          console.log(performance );
+        res.status(200).json({
+            feeCompletionRate:parseFloat(feeCompletionRate),
+            avgPerformance:parseFloat((performance[0].avgPerformance).toFixed(2)),
+            avgattendance:parseFloat((performance[0].avgattendance).toFixed(2))
+        })
+    } catch (err) {
+        next(err)
+    }
 }
 
 
@@ -743,4 +961,10 @@ module.exports = {
     studenLeaves,
     studenLeavApprove,
     studentLeaveReject,
-}   
+    studentPerformance,
+    batchPerformance
+}
+
+
+
+

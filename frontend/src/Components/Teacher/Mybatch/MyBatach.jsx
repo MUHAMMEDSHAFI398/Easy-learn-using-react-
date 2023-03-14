@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { getMyBatchAPI } from '../../../Services/TeacherServices'
+import { getbatchPerformanceAPI, getMyBatchAPI } from '../../../Services/TeacherServices'
 import './MyBatch.css'
 
 
 function MyBatach() {
+
+    const [performance,setPerormance]=useState({feeCompletionRate: "", avgPerformance: "", avgattendance: ""})
     const [batch, setBatch] = useState([])
     const [availableSeat, setAvailableSeat] = useState('')
     const [showPage, setShowPage] = useState(true)
@@ -26,6 +28,17 @@ function MyBatach() {
             }
         })
     }, [])
+
+   useEffect(()=>{
+    const headers = {
+        headers: {
+            Authorization: localStorage.getItem('teacherToken')
+        }
+    }
+         getbatchPerformanceAPI(headers).then((response)=>{
+            setPerormance(response.data)
+         })
+    },[])
     return (
         <div className='container'>
             {showPage ?
@@ -35,19 +48,19 @@ function MyBatach() {
                         <div className='child'>
                             <div className="d-flex flex-column align-items-center">
                                 <h5>Batch performance</h5>
-                                <h4>25%</h4>
+                                <h4>{performance.avgPerformance} %</h4>
                             </div>
                         </div>
                         <div className='child'>
                             <div className="d-flex flex-column align-items-center">
                                 <h5>Avg batch attenddance</h5>
-                                <h4>25%</h4>
+                                <h4>{performance.avgattendance} %</h4>
                             </div>
                         </div>
                         <div className='child'>
                             <div className="d-flex flex-column align-items-center">
                                 <h5>Fee complition rate</h5>
-                                <h4>25%</h4>
+                                <h4>{performance.feeCompletionRate} %</h4>
                             </div>
                         </div>
                         <div className='child'>

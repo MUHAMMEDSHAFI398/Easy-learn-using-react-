@@ -44,6 +44,12 @@ teacherRouter.patch('/leave-approve', verifyToken.verifyTokenTeacher, teacherCon
 
 teacherRouter.patch('/leave-reject', verifyToken.verifyTokenTeacher, teacherController.studentLeaveReject)
 
+teacherRouter.get('/student-performance/:id', verifyToken.verifyTokenTeacher, teacherController.studentPerformance)
+
+teacherRouter.get('/batch-performance', verifyToken.verifyTokenTeacher, teacherController.batchPerformance)
+
+
+
 
 
 

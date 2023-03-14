@@ -598,10 +598,11 @@ module.exports = {
             const teacherCount = await teacher.countDocuments()
 
             const activeBatchesTotalFee = await batch.aggregate([
+                
                 {
-                  $match:{
-                    endDate: { $gte: new Date() }
-                  }
+                    $match: {
+                        endDate: { $gte: new Date() }
+                    }
                 },
                 {
                     $project: {
@@ -618,15 +619,41 @@ module.exports = {
             ])
             const totalPaidAmount = await payment.aggregate([
                 {
+                    $match:{
+                        status:"Paid"
+                    }
+                },
+                {
                     $group: {
                         _id: null,
                         total: { $sum: "$amount" }
                     }
                 }
             ])
-            const feeCompletionRate = ((totalPaidAmount[0].total/activeBatchesTotalFee[0].total)*100).toFixed(2)
+            const feeCompletionRate = ((totalPaidAmount[0].total / activeBatchesTotalFee[0].total) * 100).toFixed(2)
+
+            const batchData = await batch.aggregate([
+                {
+                    $project:{
+                        _id:0,
+                        batch:"$registerId",
+                        students:"$batchFill",
+                        seats:"$numberOfSeat"
+                    }
+                }
+            ])
+            const teacherData = await teacher.aggregate([
+                {
+                    $project:{
+                        _id:0,
+                        name:1,
+                        salary:1,
+                        experience:1
+                    }
+                }
+            ])
             res.json({
-                studentsCount, batchCount, teacherCount,feeCompletionRate
+                studentsCount, batchCount, teacherCount, feeCompletionRate,batchData,teacherData
             })
 
         } catch (err) {
@@ -634,6 +661,49 @@ module.exports = {
             next(err)
         }
 
+    },
+    getPaymentData: async (req, res, next) => {
+        try {
+            const paymentData = await payment.aggregate([
+                {
+                    $match: {}
+                },
+                {
+                    $lookup: {
+                        from: "students",
+                        localField: "registerId",
+                        foreignField:"registerId",
+                        pipeline: [
+                            {
+                                $project: {
+                                    _id: 0,
+                                    name: 1
+                                }
+                            }
+                        ],
+                        as: "studentData"
+                    }
+                },
+                {
+                    $unwind: "$studentData"
+                },
+                {
+                    $project:
+                    {
+                        registerId: 1,
+                        batch: 1,
+                        amount: 1,
+                        type: 1,
+                        status: 1,
+                        createdAt:1,
+                        name: "$studentData.name"
+                    }
+                }
+            ])
+            res.status(200).json({ paymentData })
+        } catch (err) {
+            next(err)
+        }
     }
 
 }

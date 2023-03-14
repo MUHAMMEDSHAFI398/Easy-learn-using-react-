@@ -96,6 +96,14 @@ const studentSchema = new Schema(
     pendingFee: {
      type:Number
     },
+    performance:{
+     type:Number,
+     default:0
+    },
+    avgAttendance:{
+      type:Number,
+     default:0
+    },
     attendance: {
       type: [
         {

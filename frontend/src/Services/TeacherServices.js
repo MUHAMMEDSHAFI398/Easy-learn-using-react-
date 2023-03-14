@@ -75,4 +75,12 @@ export const leaveApproveAPI = (data,headers) => {
 
 export const leaveRejectAPI = (data,headers) => {
   return axios.patch('/teacher/leave-reject',data, headers)
-}   
+}
+
+export const  getStudentPerformanceAPI = (stduentId,headers) => {
+  return axios.get(`/teacher/student-performance/${stduentId}`, headers)
+} 
+
+export const  getbatchPerformanceAPI = (headers) => {
+  return axios.get('/teacher/batch-performance', headers)
+}  

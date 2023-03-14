@@ -51,6 +51,9 @@ officeRouter.patch('/leave-reject', verifyToken.verifyTokenAdmin, officeControll
 
 officeRouter.get('/dashboard', verifyToken.verifyTokenAdmin, officeController.getDashbordData)
 
+officeRouter.get('/payments', verifyToken.verifyTokenAdmin, officeController.getPaymentData)
+
+    
 
 
 

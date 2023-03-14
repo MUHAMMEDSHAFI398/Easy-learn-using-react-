@@ -13,6 +13,7 @@ import EachBatch from "../Pages/Office/EachBatch";
 import EditBatch from "../Pages/Office/EditBatch";
 import EachStudent from '../Pages/Office/EachStudent';
 import TeacherLeaveApplications from '../Pages/Office/TeacherLeaveApplications';
+import Payments from '../Pages/Office/Payments';
 
 const OfficeRoutes = () => {
     return (
@@ -43,6 +44,9 @@ const OfficeRoutes = () => {
             <Route path="/each-student" element={<EachStudent />} ></Route>
 
             <Route path="/leave-applications" element={<TeacherLeaveApplications />} ></Route>
+
+            <Route path="/payments" element={<Payments/>} ></Route>
+
 
         </Routes>
     )

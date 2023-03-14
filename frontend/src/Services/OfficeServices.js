@@ -73,3 +73,8 @@ export const leaveRejectAPI = (data,headers) => {
 export const getDashbordDataAPI = (headers) => {
     return axios.get('/office/dashboard', headers)
 }
+
+export const paymentDataAPI = (headers) => {
+    return axios.get('/office/payments', headers)
+}
+

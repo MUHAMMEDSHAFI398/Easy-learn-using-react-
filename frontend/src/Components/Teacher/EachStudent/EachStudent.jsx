@@ -1,5 +1,8 @@
 import React from 'react'
-import { useLocation,useNavigate } from "react-router-dom"
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from "react-router-dom"
+import {  getStudentPerformanceAPI } from '../../../Services/TeacherServices';
 import './EachStudent.css'
 
 function EachStudent() {
@@ -9,13 +12,30 @@ function EachStudent() {
     const readableDate = birthDate.toLocaleDateString('en-US', options);
     const navigate = useNavigate()
 
+    const [Performance,setPerormance]=useState({performance: "", avgAttendance: "", feeCompletionRate: ""})
+
+    useEffect(() => {
+        const studentId = location.state.studentData.registerId
+
+        const headers = {
+            headers: {
+                Authorization: localStorage.getItem('teacherToken')
+            }
+        }
+        getStudentPerformanceAPI(studentId, headers).then((response) => {
+            if(response.status === 200){
+                setPerormance(response.data)
+            }
+        })
+    },[])
+
     const handleClick = () => {
         navigate('/teacher/student-data', {
-          state: {
-            studentId: location.state.studentData.registerId,
-          }
+            state: {
+                studentId: location.state.studentData.registerId,
+            }
         })
-      }
+    }
     return (
         <div className='container'>
 
@@ -25,25 +45,27 @@ function EachStudent() {
                     <div className='childs'>
                         <div className="d-flex flex-column align-items-center">
                             <h5>Attenddance</h5>
-                            <h4>25%</h4>
+                            <h4>{Performance.avgAttendance} %</h4>
                         </div>
                     </div>
                     <div className='childs'>
                         <div className="d-flex flex-column align-items-center">
                             <h5>Performance</h5>
-                            <h4>25%</h4>
+                            <h4>{Performance.performance} %</h4>
                         </div>
                     </div>
                     <div className='childs'>
                         <div className="d-flex flex-column align-items-center">
                             <h5>Fee completion</h5>
-                            <h4>25%</h4>
+                            <h4>
+                                {Performance.feeCompletionRate ===100 ? "Completed" : Performance.feeCompletionRate+"%"}
+                                </h4>
                         </div>
                     </div>
                     <div className='childs'>
                         <div className="d-flex flex-column align-items-center">
                             <h5>Student history</h5>
-                            <h5 className='mt-1' style={{cursor:"pointer"}} onClick={handleClick}><i class="fas fa-external-link-alt"></i></h5>
+                            <h5 className='mt-1' style={{ cursor: "pointer" }} onClick={handleClick}><i class="fas fa-external-link-alt"></i></h5>
                         </div>
                     </div>
 
